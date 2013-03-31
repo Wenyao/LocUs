@@ -1,3 +1,5 @@
+package com.example.locus.dht;
+
 
 public class TileKey implements de.uniba.wiai.lspi.chord.service.Key {
   private	String	theString ;

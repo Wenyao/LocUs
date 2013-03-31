@@ -1,4 +1,9 @@
+package com.example.locus.dht;
+
 import java.util.Set;
+
+import com.example.locus.entity.Result;
+import com.example.locus.entity.User;
 
 
 public class DHTFacade implements IDHT {
