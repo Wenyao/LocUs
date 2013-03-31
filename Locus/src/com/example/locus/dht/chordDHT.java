@@ -19,8 +19,38 @@ public class chordDHT implements IDHT {
     private static URL local_url = null ; 
 	private Chord chord_instance = null ; 
 	
+	static void set_properties() { 
+				System.setProperty("log4j.properties.file","log4j.properties");
+				
+				System.setProperty("de.uniba.wiai.lspi.chord.data.ID.number.of.displayed.bytes","4");
+
+				System.setProperty("de.uniba.wiai.lspi.chord.data.ID.displayed.representation","2");
+
+				System.setProperty("de.uniba.wiai.lspi.chord.service.impl.ChordImpl.successors","2");
+
+				System.setProperty("de.uniba.wiai.lspi.chord.service.impl.ChordImpl.AsyncThread.no","10");
+
+				System.setProperty("de.uniba.wiai.lspi.chord.service.impl.ChordImpl.StabilizeTask.start","12");
+
+				System.setProperty("de.uniba.wiai.lspi.chord.service.impl.ChordImpl.StabilizeTask.interval","12");
+
+				System.setProperty("de.uniba.wiai.lspi.chord.service.impl.ChordImpl.FixFingerTask.start","0");
+
+				System.setProperty("de.uniba.wiai.lspi.chord.service.impl.ChordImpl.FixFingerTask.interval","12");
+
+				System.setProperty("de.uniba.wiai.lspi.chord.service.impl.ChordImpl.CheckPredecessorTask.start","6");
+
+				System.setProperty("de.uniba.wiai.lspi.chord.service.impl.ChordImpl.CheckPredecessorTask.interval","12");
+
+				System.setProperty("de.uniba.wiai.lspi.chord.com.socket.InvocationThread.corepoolsize","10");
+
+				System.setProperty("de.uniba.wiai.lspi.chord.com.socket.InvocationThread.maxpoolsize","50");
+
+				System.setProperty("de.uniba.wiai.lspi.chord.com.socket.InvocationThread.keepalivetime","20");
+	}
 	public chordDHT() { 
-		de.uniba.wiai.lspi.chord.service.PropertiesLoader.loadPropertyFile();	  	
+		set_properties();
+		//de.uniba.wiai.lspi.chord.service.PropertiesLoader.loadPropertyFile();	  	
 	}
 	
 	
