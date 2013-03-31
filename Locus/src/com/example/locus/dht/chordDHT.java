@@ -3,6 +3,11 @@ package com.example.locus.dht;
 import java.net.MalformedURLException;
 import java.util.Set;
 
+
+import com.example.locus.entity.ErrorCodes;
+import com.example.locus.entity.Result;
+import com.example.locus.entity.User;
+
 import de.uniba.wiai.lspi.chord.data.URL;
 import de.uniba.wiai.lspi.chord.service.Chord;
 import de.uniba.wiai.lspi.chord.service.ServiceException;
@@ -63,13 +68,13 @@ public class chordDHT implements IDHT {
   	  chord_instance = new de.uniba.wiai.lspi.chord.service.impl.ChordImpl( );  
   	
   	  if ((local_url == null) || (bootstrap_url == null))
-  		  return new Result(false,-1);
+  		  return new Result(false,ErrorCodes.DHTError);
   	  
   	  try {
   		  chord_instance.join( local_url,bootstrap_url) ;
   		  } catch (ServiceException e) { 
   			  e.printStackTrace(); 
-  			  return new Result(false,-1);
+  			  return new Result(false,ErrorCodes.DHTError);
   		  }		
   	  return Result.Success;
 	}
@@ -92,7 +97,7 @@ public class chordDHT implements IDHT {
   		 lchord.create (bootstrap_url) ;
   	   } catch (ServiceException e) { 
   		   //throw new RuntimeException("Could not create DHT!",e); 
-  		   return new Result(false, -1);
+  		   return new Result(false, ErrorCodes.DHTError);
   	   }
 
  	  return Result.Success;
@@ -103,12 +108,12 @@ public class chordDHT implements IDHT {
 
 		/* chord is not instantiated properly */
 		if ((this.chord_instance == null) || (user == null) ) 
-			return new Result(false,-1);
+			return new Result(false,ErrorCodes.DHTError);
 
 		
 	    String tilenum = user.getTileNumber(); 
 	    if ( tilenum == null) 
-	    	return new Result(false,-1);
+	    	return new Result(false,ErrorCodes.DHTError);
 	    
 	    
   	    /* Create a key based on the tile number */
@@ -117,7 +122,7 @@ public class chordDHT implements IDHT {
       	  chord_instance.insert(tk,user);
         } catch (ServiceException e) { 
       	  //throw new RuntimeException("Can not insert the data into DHT!",e); 
-          return new Result(false,-1);	
+          return new Result(false,ErrorCodes.DHTError);	
         }
         return Result.Success ; 
 	}
@@ -146,7 +151,7 @@ public class chordDHT implements IDHT {
 		} catch (ServiceException e) {
 			//e.printStackTrace();
 			//throw new RuntimeException("Error occurred in removing the Data",e);			
-			return new Result(false,-1);
+			return new Result(false,ErrorCodes.DHTError);
 		} 
 		
 		return Result.Success ; 
