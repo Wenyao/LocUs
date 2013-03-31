@@ -41,7 +41,7 @@ public class CoreImpl implements ICore {
 	@Override
 	public List<User> getUsersNearby() {
 		if (user != null) {
-			nearbyUsers = dht.getUsersByKey(user);
+			nearbyUsers = (List<User>) dht.getUsersByKey(user);
 			return nearbyUsers;
 		} else {
 			return null;
