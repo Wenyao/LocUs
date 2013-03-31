@@ -1,6 +1,8 @@
 package com.example.locus.tilesystem;
 
 import java.security.InvalidParameterException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class TileSystem {
 	private static double EarthRadius = 6378137;
@@ -8,7 +10,7 @@ public class TileSystem {
 	private static double MaxLatitude = 85.05112878;
 	private static double MinLongitude = -180;
 	private static double MaxLongitude = 180;
-	
+
 	public static int DefaultLevelOfDetail = 15;
 
 	// / <summary>
@@ -201,10 +203,54 @@ public class TileSystem {
 				break;
 
 			default:
-				throw new InvalidParameterException("Invalid QuadKey digit sequence.");
+				throw new InvalidParameterException(
+						"Invalid QuadKey digit sequence.");
 			}
 		}
 
 		return levelOfDetail;
+	}
+
+	public static List<String> getNearbyQuadKey(String quadKey) {
+		Point2D tile = new Point2D();
+
+		QuadKeyToTileXY(quadKey, tile);
+		List<String> quadKeysList = new ArrayList<String>();
+		// left top
+		quadKeysList.add(TileXYToQuadKey((int) tile.getX() - 1,
+				(int) tile.getY() - 1, DefaultLevelOfDetail));
+
+		// top
+		quadKeysList.add(TileXYToQuadKey((int) tile.getX(),
+				(int) tile.getY() - 1, DefaultLevelOfDetail));
+
+		// right top
+		quadKeysList.add(TileXYToQuadKey((int) tile.getX() + 1,
+				(int) tile.getY() - 1, DefaultLevelOfDetail));
+
+		// left
+		quadKeysList.add(TileXYToQuadKey((int) tile.getX() - 1,
+				(int) tile.getY(), DefaultLevelOfDetail));
+
+		// center
+		quadKeysList.add(quadKey);
+
+		// right
+		quadKeysList.add(TileXYToQuadKey((int) tile.getX() + 1,
+				(int) tile.getY(), DefaultLevelOfDetail));
+
+		// left bottom
+		quadKeysList.add(TileXYToQuadKey((int) tile.getX() - 1,
+				(int) tile.getY() + 1, DefaultLevelOfDetail));
+
+		// bottom
+		quadKeysList.add(TileXYToQuadKey((int) tile.getX(),
+				(int) tile.getY() + 1, DefaultLevelOfDetail));
+
+		// right bottom
+		quadKeysList.add(TileXYToQuadKey((int) tile.getX() + 1,
+				(int) tile.getY() + 1, DefaultLevelOfDetail));
+		
+		return quadKeysList;
 	}
 }

@@ -1,12 +1,12 @@
 package com.example.locus.entity;
 
 public class Result {
-	public static Result Success = new Result(true, 0);
+	public static Result Success = new Result(true, ErrorCodes.None);
 	
 	private boolean isSuccessful;
-	private int errorCode;
+	private ErrorCodes errorCode;
 	
-	public Result(boolean isSuccessful, int errorCode) {
+	public Result(boolean isSuccessful, ErrorCodes errorCode) {
 		this.isSuccessful = isSuccessful;
 		this.errorCode = errorCode;
 	}
@@ -19,11 +19,11 @@ public class Result {
 		this.isSuccessful = isSuccessful;
 	}
 
-	public int getErrorCode() {
+	public ErrorCodes getErrorCode() {
 		return errorCode;
 	}
 
-	public void setErrorCode(int errorCode) {
+	public void setErrorCode(ErrorCodes errorCode) {
 		this.errorCode = errorCode;
 	}
 
