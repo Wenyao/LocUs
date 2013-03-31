@@ -2,7 +2,9 @@ package com.example.locus.core;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Logger;
 
 import com.example.locus.entity.Result;
@@ -24,8 +26,8 @@ public class FakeCoreImpl implements ICore {
 	}
 
 	@Override
-	public List<User> getUsersNearby() {
-		List<User> results = new ArrayList<User>();
+	public Set<User> getUsersNearby() {
+		Set<User> results = new HashSet<User>();
 		results.add(new User("Alice", Sex.Female, "192.168.1.1", 0, 0));
 		results.add(new User("Bob", Sex.Male, "192.168.1.2", 0, 0));
 		results.add(new User("Charlie", Sex.Unknown, "192.168.1.3", 0, 0));

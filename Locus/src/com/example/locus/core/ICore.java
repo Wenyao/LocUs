@@ -1,6 +1,6 @@
 package com.example.locus.core;
 
-import java.util.List;
+import java.util.Set;
 
 import com.example.locus.entity.Result;
 import com.example.locus.entity.User;
@@ -10,7 +10,7 @@ public interface ICore extends IObservable, IObserver {
 	Result logout();
 	Result refreshLocation(double lati, double longti);
 	
-	List<User> getUsersNearby();
+	Set<User> getUsersNearby();
 	
 	Result sendMessage(User user, String msg);
 	Result broadcastMessage(String msg);
