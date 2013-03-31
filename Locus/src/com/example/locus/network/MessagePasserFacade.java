@@ -1,6 +1,6 @@
 package com.example.locus.network;
 
-import java.util.List;
+import java.util.Set;
 
 import com.example.locus.core.IObserver;
 import com.example.locus.entity.Result;
@@ -34,7 +34,7 @@ public class MessagePasserFacade implements IMessagePasser {
 	}
 
 	@Override
-	public Result broadcast(User src, List<User> targets, String msg) {
+	public Result broadcast(User src, Set<User> targets, String msg) {
 		return messagePasser.broadcast(src, targets, msg);
 	}
 

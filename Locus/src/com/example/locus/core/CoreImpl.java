@@ -2,6 +2,7 @@ package com.example.locus.core;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import com.example.locus.dht.DHTFacade;
 import com.example.locus.dht.IDHT;
@@ -16,7 +17,7 @@ public class CoreImpl implements ICore {
 	private IDHT dht;
 	private IMessagePasser mp;
 	private User user;
-	private List<User> nearbyUsers;
+	private Set<User> nearbyUsers;
 
 	private List<IObserver> observers;
 
@@ -39,7 +40,7 @@ public class CoreImpl implements ICore {
 	}
 
 	@Override
-	public List<User> getUsersNearby() {
+	public Set<User> getUsersNearby() {
 		if (user != null) {
 			nearbyUsers = (List<User>) dht.getUsersByKey(user);
 			return nearbyUsers;

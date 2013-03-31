@@ -1,6 +1,6 @@
 package com.example.locus.core;
 
-import java.util.List;
+import java.util.Set;
 
 import com.example.locus.entity.Result;
 import com.example.locus.entity.User;
@@ -28,7 +28,7 @@ public class CoreFacade implements ICore {
 	}
 
 	@Override
-	public List<User> getUsersNearby() {
+	public Set<User> getUsersNearby() {
 		return coreImpl.getUsersNearby();
 	}
 
