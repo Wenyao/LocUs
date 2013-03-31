@@ -10,5 +10,6 @@
     <string name="title_activity_list_users">ListUsers</string>
     <string name="title_activity_list_adapter">ListAdapter</string>
     <string name="title_activity_demo">Demo</string>
+    <string name="title_activity_profile">Profile</string>
 
 </resources>

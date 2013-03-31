@@ -40,6 +40,10 @@
             android:name="com.example.locus.Demo"
             android:label="@string/title_activity_demo" >
         </activity>
+        <activity
+            android:name="com.example.locus.Profile"
+            android:label="@string/title_activity_profile" >
+        </activity>
     </application>
 
 </manifest>

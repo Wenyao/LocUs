@@ -24,17 +24,23 @@ public final class R {
         public static final int maleicon=0x7f02000a;
     }
     public static final class id {
+        public static final int EditText01=0x7f070013;
+        public static final int EditText02=0x7f070014;
+        public static final int EditText03=0x7f070015;
         public static final int ImageView=0x7f070005;
         public static final int ListImageView=0x7f070007;
         public static final int NameTextView=0x7f070006;
         public static final int button1=0x7f07000b;
-        public static final int editText1=0x7f07000c;
+        public static final int editText1=0x7f07000d;
         public static final int editText2=0x7f07000a;
         public static final int editText3=0x7f070009;
-        public static final int genderRadioGroup=0x7f07000d;
+        public static final int genderRadioGroup=0x7f07000c;
+        public static final int imageButton=0x7f070011;
+        public static final int imageView1=0x7f070012;
+        public static final int imgView=0x7f070010;
         public static final int linearLayout1=0x7f070008;
         public static final int listView=0x7f070004;
-        public static final int menu_settings=0x7f070010;
+        public static final int menu_settings=0x7f070016;
         public static final int radio1=0x7f07000e;
         public static final int radio2=0x7f07000f;
         public static final int textView1=0x7f070001;
@@ -47,12 +53,14 @@ public final class R {
         public static final int activity_list_adapter=0x7f030001;
         public static final int activity_list_users=0x7f030002;
         public static final int activity_main=0x7f030003;
+        public static final int activity_profile=0x7f030004;
     }
     public static final class menu {
         public static final int activity_demo=0x7f060000;
         public static final int activity_list_adapter=0x7f060001;
         public static final int activity_list_users=0x7f060002;
         public static final int activity_main=0x7f060003;
+        public static final int activity_profile=0x7f060004;
     }
     public static final class string {
         public static final int app_name=0x7f040000;
@@ -64,6 +72,7 @@ public final class R {
         public static final int title_activity_list_adapter=0x7f040007;
         public static final int title_activity_list_users=0x7f040006;
         public static final int title_activity_main=0x7f040004;
+        public static final int title_activity_profile=0x7f040009;
     }
     public static final class style {
         /** 
