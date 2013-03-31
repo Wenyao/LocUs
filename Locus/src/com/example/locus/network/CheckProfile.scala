@@ -1,8 +1,11 @@
 import java.net._
 import java.io._
+import com.example.locus.entity.User
+import com.example.locus.entity.Sex
+import com.example.locus.core.CoreFacade
 
 object CheckProfile {
-  	val user = new User("Bob", Sex.Male, "192.168.1.2", 0, 0) 
+  	val user = CoreFacade.getInstance().getCurrentUser();
 	
   	def listen(port: Integer): Unit = {
 		val ss = new ServerSocket(port)
@@ -28,6 +31,6 @@ object CheckProfile {
     }
 	
 	def main(args: Array[String]): Unit = {
-		connect("localhost", 2222)
+		listen(2222)
 	}
 }
