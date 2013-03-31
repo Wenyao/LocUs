@@ -1,11 +1,11 @@
-package com.example.locus.dht;
 
-import java.util.List;
-
-import com.example.locus.entity.User;
+import java.util.Set;
 
 public interface IDHT {
-	void put(User user);
-	List<User> getUsersByKey(User user);
-	void delete(User user);
+	    Result join();
+	    Result create();
+        Result put(User user);
+        Set<User> getUsersByKey(User user);
+        Result delete(User user);
+        void leave();
 }
