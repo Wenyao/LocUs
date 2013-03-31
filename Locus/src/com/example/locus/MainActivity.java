@@ -52,7 +52,7 @@ public class MainActivity extends Activity {
 		EditText lon = (EditText) findViewById(R.id.editText3);
 
 		if(isEmpty(userName))
-			Toast.makeText(this,"Enter UserName" , Toast.LENGTH_LONG).show();
+			Toast.makeText(this,"Enter UserName" + "ip = " + ipAdd, Toast.LENGTH_LONG).show();
 		else{
 			if( isEmpty(lat) || isEmpty(lon)){
 				Intent intent = new Intent(this, ListUsers.class);
