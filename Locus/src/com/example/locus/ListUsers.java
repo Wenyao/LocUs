@@ -128,9 +128,6 @@ public class ListUsers extends Activity implements LocationListener, IObserver {
 	            User o = (User)adapter.getItemAtPosition(position);
 	            String str_text = o.getName();
 	            Toast.makeText(getApplicationContext(),str_text+" SelecteD\n"+"IP = "+o.getIp()+"\nLat="+o.getLatitude()+" Lon="+o.getLongtitude(), Toast.LENGTH_LONG).show();
-	            Intent intent = new Intent(getApplicationContext(), Profile.class);
-	            intent.putExtra("user", o);
-	            startActivity(intent);
 	        }
 
 	    });  

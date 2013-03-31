@@ -56,4 +56,19 @@ public class CoreFacade implements ICore {
 	public Result logout() {
 		return coreImpl.logout();
 	}
+
+	@Override
+	public User getCurrentUser() {
+		return coreImpl.getCurrentUser();
+	}
+
+	@Override
+	public void onReceiveMessage(User src, String msg) {
+		coreImpl.onReceiveMessage(src, msg);
+	}
+
+	@Override
+	public void onReceiveUserProfile(User user) {
+		coreImpl.onReceiveUserProfile(user);
+	}
 }

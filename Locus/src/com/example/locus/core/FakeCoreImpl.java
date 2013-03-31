@@ -13,6 +13,7 @@ public class FakeCoreImpl implements ICore {
 	static Logger log = Logger.getLogger(FakeCoreImpl.class.getName());
 	
 	private User user;
+	private List<IObserver> observers = new ArrayList<IObserver>();
 
 	@Override
 	public Result refreshLocation(double lati, double longti) {
@@ -48,6 +49,7 @@ public class FakeCoreImpl implements ICore {
 	@Override
 	public Result addObserver(IObserver obs) {
 		log.info(String.format("addObserver %s", obs));
+		observers.add(obs);
 		return Result.Success;
 	}
 	
@@ -62,6 +64,25 @@ public class FakeCoreImpl implements ICore {
 	public Result logout() {
 		log.info(String.format("logout %s", user));
 		return Result.Success;
+	}
+
+	@Override
+	public User getCurrentUser() {
+		return new User("Test User", Sex.Female, "192.168.1.123", 0, 0);
+	}
+
+	@Override
+	public void onReceiveMessage(User src, String msg) {
+		for (IObserver observer : observers) {
+			observer.onReceiveMessage(src, msg);
+		}
+	}
+
+	@Override
+	public void onReceiveUserProfile(User user) {
+		for (IObserver observer : observers) {
+			observer.onReceiveUserProfile(user);
+		}
 	}
 
 }

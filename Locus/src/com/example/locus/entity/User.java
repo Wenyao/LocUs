@@ -5,9 +5,12 @@ import java.io.Serializable;
 import com.example.locus.tilesystem.Point2D;
 import com.example.locus.tilesystem.TileSystem;
 
+public class User implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8199692036850547691L;
 
-public class User implements Serializable{
-	private static final long serialVersionUID = 1L;
 	public static String UnknownName = "Unknown";
 
 	private String name;
