@@ -8,6 +8,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -27,11 +28,15 @@ public class Demo extends Activity implements IObserver{
 	 String username;
 	 String ipAdd;
 	 String gender;
+	 String interests;
 	 private ListView listView;
 	 private TextView latituteField;
 	 private TextView longitudeField;
 	 ICore core;
 	 User currentUser;
+	 
+	 private int groupId1=1;
+	 private int editProfileId = Menu.FIRST;
 
 	 @Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -47,11 +52,12 @@ public class Demo extends Activity implements IObserver{
 		longitude = Double.parseDouble(intent.getStringExtra("longitude"));
 		ipAdd = intent.getStringExtra("IP");
 		gender = intent.getStringExtra("sex");
-
+		interests = intent.getStringExtra("interests");
 		currentUser.setLatitude(latitude);
 	    currentUser.setLongtitude(longitude);
 	    currentUser.setIp(ipAdd);
 		currentUser.setName(username);
+		currentUser.setInterests(interests);
 		if(gender.equals("Male"))
 			currentUser.setSex(Sex.Male);
 		else
@@ -92,12 +98,25 @@ public class Demo extends Activity implements IObserver{
 	 /* Request updates at startup */
 
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.activity_list_users, menu);
-		return true;
-	}
+	 @Override
+		public boolean onCreateOptionsMenu(Menu menu) {
+			// Inflate the menu; this adds items to the action bar if it is present.
+			menu.add(groupId1, editProfileId, editProfileId, "Edit Profile" );
+			
+			return super.onCreateOptionsMenu(menu);
+		}
+		
+		 public boolean onOptionsItemSelected(MenuItem item) {
+			 
+			 switch (item.getItemId()){
+			 	
+			 case 1 : Intent intent = new Intent(this, MainActivity.class);
+			 		  startActivity(intent);
+			 		  break;
+			 
+			 }
+			 return super.onOptionsItemSelected(item);
+		 }
 
 	@Override
 	public void onReceiveMessage(User src, String msg) {

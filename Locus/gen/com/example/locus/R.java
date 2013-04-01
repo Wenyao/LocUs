@@ -24,9 +24,6 @@ public final class R {
         public static final int maleicon=0x7f02000a;
     }
     public static final class id {
-        public static final int EditText01=0x7f070013;
-        public static final int EditText02=0x7f070014;
-        public static final int EditText03=0x7f070015;
         public static final int ImageView=0x7f070005;
         public static final int ListImageView=0x7f070007;
         public static final int NameTextView=0x7f070006;
@@ -34,9 +31,10 @@ public final class R {
         public static final int editText1=0x7f07000d;
         public static final int editText2=0x7f07000a;
         public static final int editText3=0x7f070009;
+        public static final int editText4=0x7f070012;
         public static final int genderRadioGroup=0x7f07000c;
         public static final int imageButton=0x7f070011;
-        public static final int imageView1=0x7f070012;
+        public static final int imageView1=0x7f070013;
         public static final int imgView=0x7f070010;
         public static final int linearLayout1=0x7f070008;
         public static final int listView=0x7f070004;
@@ -47,6 +45,8 @@ public final class R {
         public static final int textView2=0x7f070003;
         public static final int textView3=0x7f070000;
         public static final int textView4=0x7f070002;
+        public static final int textView5=0x7f070014;
+        public static final int textView6=0x7f070015;
     }
     public static final class layout {
         public static final int activity_demo=0x7f030000;
@@ -73,6 +73,7 @@ public final class R {
         public static final int title_activity_list_users=0x7f040006;
         public static final int title_activity_main=0x7f040004;
         public static final int title_activity_profile=0x7f040009;
+        public static final int title_activity_settings=0x7f04000a;
     }
     public static final class style {
         /** 

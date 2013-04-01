@@ -18,18 +18,28 @@ public class User implements Serializable {
 	private String ip;
 	private double latitude;
 	private double longtitude;
+	private String interests;
+
+	public String getInterests() {
+		return interests;
+	}
+
+	public void setInterests(String interests) {
+		this.interests = interests;
+	}
 
 	public User() {
-		this(UnknownName, Sex.Unknown, null, Double.MIN_VALUE, Double.MIN_VALUE);
+		this(UnknownName, Sex.Unknown, null, Double.MIN_VALUE, Double.MIN_VALUE, null);
 	}
 
 	public User(String name, Sex sex, String ip, double latitude,
-			double longtitude) {
+			double longtitude, String interests) {
 		this.name = name;
 		this.sex = sex;
 		this.ip = ip;
 		this.latitude = latitude;
 		this.longtitude = longtitude;
+		this.interests = interests;
 	}
 
 	public String getName() {

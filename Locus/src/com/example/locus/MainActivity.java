@@ -87,6 +87,10 @@ public class MainActivity extends Activity {
         
 		EditText userName = (EditText) findViewById(R.id.editText1);
 		String message = userName.getText().toString();
+		
+		EditText interestText = (EditText) findViewById(R.id.editText4);
+		String interests = interestText.getText().toString();
+		
 		String ipAdd = IPAddress.getIPAddress(true);
 
 		EditText lat = (EditText) findViewById(R.id.editText2);
@@ -94,12 +98,15 @@ public class MainActivity extends Activity {
 
 		if(isEmpty(userName))
 			Toast.makeText(this,"Enter UserName" , Toast.LENGTH_LONG).show();
+		else if ( isEmpty(interestText))
+			Toast.makeText(this,"Enter Interests" , Toast.LENGTH_LONG).show();
 		else{
 			if( isEmpty(lat) || isEmpty(lon)){
 				Intent intent = new Intent(this, ListUsers.class);
 				intent.putExtra("userName", message);
 				intent.putExtra("sex", gender);	
 				intent.putExtra("IP", ipAdd);
+				intent.putExtra("interests", interests);
 				startActivity(intent);
 			}
 			else{
@@ -109,6 +116,7 @@ public class MainActivity extends Activity {
 				intent.putExtra("userName", message);
 				intent.putExtra("sex", gender);
 				intent.putExtra("IP", ipAdd);
+				intent.putExtra("interests", interests);
 				intent.putExtra("latitude", lati);
 				intent.putExtra("longitude", longi);
 				startActivity(intent);

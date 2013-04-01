@@ -13,6 +13,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -37,9 +38,13 @@ public class ListUsers extends Activity implements LocationListener, IObserver {
 	 String username;
 	 String ipAdd;
 	 String gender;
+	 String interests;
 	 private ListView listView;
 	 ICore core;
 	 User currentUser;
+	 
+	 private int groupId1=1;
+	 private int editProfileId = Menu.FIRST;
 
 	 @Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -54,8 +59,10 @@ public class ListUsers extends Activity implements LocationListener, IObserver {
 		username = intent.getStringExtra("userName");
 		gender = intent.getStringExtra("sex");
 		ipAdd = intent.getStringExtra("IP");
+		interests = intent.getStringExtra("interests");
 		currentUser.setIp(ipAdd);
 		currentUser.setName(username);
+		currentUser.setInterests(interests);
 		if(gender.equals("Male"))
 			currentUser.setSex(Sex.Male);
 		else
@@ -143,6 +150,9 @@ public class ListUsers extends Activity implements LocationListener, IObserver {
 
 	 //------------------------------------------------------------------------------------------------------------------------
 	 /* Request updates at startup */
+	 
+	 
+	 
 	  @Override
 	  protected void onResume() {
 	    super.onResume();
@@ -192,9 +202,22 @@ public class ListUsers extends Activity implements LocationListener, IObserver {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.activity_list_users, menu);
-		return true;
+		menu.add(groupId1, editProfileId, editProfileId, "Edit Profile" );
+		
+		return super.onCreateOptionsMenu(menu);
 	}
+	
+	 public boolean onOptionsItemSelected(MenuItem item) {
+		 
+		 switch (item.getItemId()){
+		 	
+		 case 1 : Intent intent = new Intent(this, MainActivity.class);
+		 		  startActivity(intent);
+		 		  break;
+		 
+		 }
+		 return super.onOptionsItemSelected(item);
+	 }
 
 	@Override
 	public void onReceiveMessage(User src, String msg) {

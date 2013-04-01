@@ -11,5 +11,6 @@
     <string name="title_activity_list_adapter">ListAdapter</string>
     <string name="title_activity_demo">Demo</string>
     <string name="title_activity_profile">Profile</string>
+    <string name="title_activity_settings">Settings</string>
 
 </resources>

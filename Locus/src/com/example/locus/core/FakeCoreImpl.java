@@ -28,9 +28,9 @@ public class FakeCoreImpl implements ICore {
 	@Override
 	public Set<User> getUsersNearby() {
 		Set<User> results = new HashSet<User>();
-		results.add(new User("Alice", Sex.Female, "192.168.1.1", 0, 0));
-		results.add(new User("Bob", Sex.Male, "192.168.1.2", 0, 0));
-		results.add(new User("Charlie", Sex.Unknown, "192.168.1.3", 0, 0));
+		results.add(new User("Alice", Sex.Female, "192.168.1.1", 0, 0, "PLaying Cricket"));
+		results.add(new User("Bob", Sex.Male, "192.168.1.2", 0, 0, "Cooking"));
+		results.add(new User("Charlie", Sex.Unknown, "192.168.1.3", 0, 0, "Music"));
 		results.add(new User());
 		log.info(Arrays.toString(results.toArray()));
 		return results;
@@ -70,7 +70,7 @@ public class FakeCoreImpl implements ICore {
 
 	@Override
 	public User getCurrentUser() {
-		return new User("Test User", Sex.Female, "192.168.1.123", 0, 0);
+		return new User("Test User", Sex.Female, "192.168.1.123", 0, 0, "Test Interest");
 	}
 
 	@Override
