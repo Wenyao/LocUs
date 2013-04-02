@@ -44,6 +44,14 @@
             android:name="com.example.locus.Profile"
             android:label="@string/title_activity_profile" >
         </activity>
+        <activity
+            android:name="com.example.locus.SettingsActivity"
+            android:label="@string/title_activity_settings" >
+        </activity>
+        <activity
+            android:name="com.example.locus.Settings"
+            android:label="@string/title_activity_settings" >
+        </activity>
     </application>
 
 </manifest>
