@@ -68,6 +68,7 @@ public class CoreImpl implements ICore {
 	@Override
 	public Result register(User user) {
 		this.user = user;
+		dht.join();
 		return refreshLocation(user.getLatitude(), user.getLongtitude());
 	}
 
