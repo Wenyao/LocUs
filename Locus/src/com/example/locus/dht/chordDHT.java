@@ -1,13 +1,17 @@
 package com.example.locus.dht;
 
+import java.io.IOException;
 import java.net.MalformedURLException;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 
+import com.example.locus.IPAddress;
 import com.example.locus.entity.ErrorCodes;
-
 import com.example.locus.entity.Result;
 import com.example.locus.entity.User;
+import com.example.locus.tilesystem.TileSystem;
 
 import de.uniba.wiai.lspi.chord.data.URL;
 import de.uniba.wiai.lspi.chord.service.Chord;
@@ -61,7 +65,7 @@ public class chordDHT implements IDHT {
 	 */
 	 public static void set_bootstrap_url () { 
 
-  	  if (bootstrap_url != null ) 
+  	  if (bootstrap_url != null) 
   		  return ; 
   	  
   	  String protocol = URL.KNOWN_PROTOCOLS.get(URL.SOCKET_PROTOCOL) ;
@@ -85,8 +89,16 @@ public class chordDHT implements IDHT {
   	   * want to change the port. For now fixing the port that is used to connect 
   	   * to to the CHord network.
   	   */
+	  String ip_address = null; 
+	  try {
+		ip_address = IPAddress.getIPAddress(true) ;
+	} catch (IOException e1) {
+		// TODO Auto-generated catch block
+		e1.printStackTrace();
+	} 
   	  try {
-  	  local_url = new URL( protocol + "://localhost:8082/ "); 
+  	  //local_url = new URL( protocol + "://localhost:8082/ ");
+  		local_url = new URL( protocol + "://" + ip_address + ":8082/ ");
   	  }	catch	( MalformedURLException	e ) { throw new RuntimeException(e);  	    
   	  }
 	}
@@ -159,20 +171,32 @@ public class chordDHT implements IDHT {
 	}
 
 	public Set<User> getUsersByKey(User user) {
-
-		Set s = null ; 
+		Set s = null; 
+	    Set<User> nearby_users = new HashSet<User>();
+		String tile_num = user.getTileNumber() ; 
+		System.out.println("Tile Number: " + tile_num);
+		List<String> nearby_tiles = TileSystem.getNearbyQuadKey(tile_num); 
+		for (String tile : nearby_tiles) {
+			System.out.println("\n: " + tile);
+		}
+		
     	try {
     		/* For now retrieving only the users from a given tile number. But 
     		 * we should call some tile api to get the surrounding tile numbers 
     		 * and then retrieve all the users from these tile numbers.
     		 */
-    		s = chord_instance.retrieve(new TileKey(user.getTileNumber())) ;
+    		for (String tile : nearby_tiles) {
+    			s = chord_instance.retrieve(new TileKey(user.getTileNumber())) ;
+    			if ( s!= null)
+    				nearby_users.addAll(s);
+    		}
+    		
     	} catch (ServiceException e) {
 			e.printStackTrace();
-			//throw new RuntimeException("Error occured in retreiving the Data",e);
+			//throw new RuntimeException("Error occurred in retrieving the Data",e);
 			return null ; 
 		} 
-    	return s;     	  
+    	return nearby_users;     	  
 	}
 	
 	public Result delete(User user) {
