@@ -67,10 +67,10 @@ public class chordDHT implements IDHT {
 
   	  if (bootstrap_url != null) 
   		  return ; 
-  	  
+         	  
   	  String protocol = URL.KNOWN_PROTOCOLS.get(URL.SOCKET_PROTOCOL) ;
   	  try {
-      	  bootstrap_url = new URL(protocol + "://localhost:8080/ ") ;
+      	  bootstrap_url = new URL(protocol + "://128.237.249.192:8080/ ") ;
       	  }	catch	( MalformedURLException	e ) { 
       		  /* what should we do in this case ? */
       		  //throw new RuntimeException(e);
