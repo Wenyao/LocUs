@@ -11,7 +11,7 @@ public class CoreFacade implements ICore {
 	private ICore coreImpl;
 	
 	private CoreFacade(){
-		coreImpl = new FakeCoreImpl();
+		coreImpl = new CoreImpl();
 	}
 	
 	public static CoreFacade getInstance(){
@@ -70,5 +70,10 @@ public class CoreFacade implements ICore {
 	@Override
 	public void onReceiveUserProfile(User user) {
 		coreImpl.onReceiveUserProfile(user);
+	}
+
+	@Override
+	public User getUserProfile(User target) {
+		return coreImpl.getUserProfile(target);
 	}
 }

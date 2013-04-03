@@ -9,5 +9,6 @@ import com.example.locus.entity.User;
 public interface IMessagePasser extends IObservable {
 	Result sendMessage(User src, User target, String msg);
 	Result broadcast(User src, Set<User> targets, String msg);
+	User getUserProfile(User target);
 	Result startReceive();
 }
