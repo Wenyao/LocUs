@@ -1,6 +1,8 @@
 package com.example.locus.entity;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 import com.example.locus.tilesystem.Point2D;
 import com.example.locus.tilesystem.TileSystem;
@@ -13,6 +15,7 @@ public class User implements Serializable {
 
 	public static String UnknownName = "Unknown";
 
+	private String id;
 	private String name;
 	private Sex sex;
 	private String ip;
@@ -29,11 +32,15 @@ public class User implements Serializable {
 	}
 
 	public User() {
-		this(UnknownName, Sex.Unknown, null, Double.MIN_VALUE, Double.MIN_VALUE, null);
+		this(UnknownName, Sex.Unknown, null, Double.MIN_VALUE,
+				Double.MIN_VALUE, null);
 	}
 
 	public User(String name, Sex sex, String ip, double latitude,
 			double longtitude, String interests) {
+		Calendar cal = Calendar.getInstance();
+		SimpleDateFormat sdf = new SimpleDateFormat("HH_mm_ss");
+		id = name + sdf.format(cal.getTime());
 		this.name = name;
 		this.sex = sex;
 		this.ip = ip;
@@ -83,10 +90,10 @@ public class User implements Serializable {
 	}
 
 	public String getTileNumber() {
-		if (latitude == Double.MIN_VALUE || longtitude == Double.MIN_VALUE){
+		if (latitude == Double.MIN_VALUE || longtitude == Double.MIN_VALUE) {
 			return null;
 		}
-		
+
 		Point2D pixel = new Point2D();
 		TileSystem.LatLongToPixelXY(latitude, longtitude,
 				TileSystem.DefaultLevelOfDetail, pixel);
@@ -104,6 +111,19 @@ public class User implements Serializable {
 		return "User [name=" + name + ", sex=" + sex + ", ip=" + ip + ", lat="
 				+ latitude + ", lon=" + longtitude + ", tile="
 				+ getTileNumber() + "]";
+	}
+
+	@Override
+	public int hashCode() {
+		return id.hashCode();
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (o instanceof User) {
+			return id.equals(((User) o).id);
+		}
+		return false;
 	}
 
 }

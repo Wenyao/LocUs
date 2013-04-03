@@ -69,6 +69,7 @@ public class CoreImpl implements ICore {
 	public Result register(User user) {
 		this.user = user;
 		dht.join();
+		mp.startReceive();
 		return refreshLocation(user.getLatitude(), user.getLongtitude());
 	}
 
@@ -97,6 +98,11 @@ public class CoreImpl implements ICore {
 		for (IObserver observer : observers) {
 			observer.onReceiveUserProfile(user);
 		}
+	}
+
+	@Override
+	public User getUserProfile(User target) {
+		return mp.getUserProfile(target);
 	}
 
 }

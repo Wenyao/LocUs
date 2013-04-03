@@ -71,4 +71,9 @@ public class CoreFacade implements ICore {
 	public void onReceiveUserProfile(User user) {
 		coreImpl.onReceiveUserProfile(user);
 	}
+
+	@Override
+	public User getUserProfile(User target) {
+		return coreImpl.getUserProfile(target);
+	}
 }

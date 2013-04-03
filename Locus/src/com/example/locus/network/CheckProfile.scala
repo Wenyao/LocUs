@@ -5,8 +5,6 @@ import com.example.locus.entity.Sex
 import com.example.locus.core.CoreFacade
 
 object CheckProfile {
-  	val userprofile = CoreFacade.getInstance().getCurrentUser()
-	val haha  = CoreFacade.getInstance().onReceiveUserProfile(new User)
   	def listen(port: Integer): Unit = {
 		val ss = new ServerSocket(port)
 		while(true){
@@ -14,7 +12,7 @@ object CheckProfile {
 			val sock = ss.accept()
 			actors.Actor.actor{
 				val oos = new ObjectOutputStream(sock.getOutputStream())
-				oos.writeObject(this.userprofile)
+				oos.writeObject(CoreFacade.getInstance().getCurrentUser())
 				oos.flush()
 			}
 		}
