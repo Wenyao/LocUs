@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import com.example.locus.entity.Sex;
 import com.example.locus.entity.User;
-
+import com.example.locus.core.CoreFacade;
 public class Profile extends Activity {
 
 	 private int groupId1=1;
@@ -23,6 +23,9 @@ public class Profile extends Activity {
 		
 		Intent intent = getIntent();
 		user = (User)intent.getSerializableExtra("user");
+		User userProfile = new User();
+		
+		userProfile = CoreFacade.getInstance().getUserProfile(user);
 		
 		TextView textName = (TextView) findViewById(R.id.textView2);
 		TextView textGender = (TextView) findViewById(R.id.textView4);

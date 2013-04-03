@@ -90,10 +90,17 @@ public class ListUsers extends Activity implements LocationListener, IObserver {
 
 	    //----------------------------- FOR LIST VIEW ---------------------------------------------------------
 
-	    Set<User> data_set = core.getUsersNearby();
+	    Set<User> data_set;
 	    List<User> data = new ArrayList<User>();
+	    try{
+	    data_set = core.getUsersNearby();
+	    
 	    data.addAll(data_set);
-
+	    }
+	    catch(NullPointerException e){
+	    	Toast.makeText(getBaseContext(),"No users Nearby", Toast.LENGTH_SHORT).show();
+	    }
+	    
 
 	    /*ListDetails data[] = new ListDetails[]{
 	    		
