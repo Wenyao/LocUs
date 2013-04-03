@@ -63,15 +63,25 @@ public class Demo extends Activity implements IObserver{
 		else
 			currentUser.setSex(Sex.Female);
 
+		CoreFacade.getInstance().register(currentUser);
 		latituteField = (TextView) findViewById(R.id.textView1);
 	    longitudeField = (TextView) findViewById(R.id.textView2);
 	    latituteField.setText(String.valueOf(latitude));
 	    longitudeField.setText(String.valueOf(longitude));
 
 	    //----------------------------- FOR LIST VIEW ---------------------------------------------------------
-	    Set<User> data_set = core.getUsersNearby();
+	    Set<User> data_set;
 	    List<User> data = new ArrayList<User>();
+	    try{
+	    data_set = core.getUsersNearby();
+	    
 	    data.addAll(data_set);
+	    }
+	    catch(NullPointerException e){
+	    	Toast.makeText(getBaseContext(),"No users Nearby", Toast.LENGTH_SHORT).show();
+	    }
+	    
+
 
 	    AdapterList adapter = new AdapterList (this, R.layout.activity_list_adapter, data);
 

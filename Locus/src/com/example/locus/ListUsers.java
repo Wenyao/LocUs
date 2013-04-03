@@ -172,6 +172,8 @@ public class ListUsers extends Activity implements LocationListener, IObserver {
 	    longitude = (double) (location.getLongitude());
 	    currentUser.setLatitude(latitude);
 	    currentUser.setLongtitude(longitude);
+	    
+	    CoreFacade.getInstance().register(currentUser);
 	    //core.refreshLocation(latitude, longitude);
 	    latituteField.setText(String.valueOf(latitude));
 	    longitudeField.setText(String.valueOf(longitude));
