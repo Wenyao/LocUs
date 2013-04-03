@@ -121,15 +121,7 @@ public class ListUsers extends Activity implements LocationListener, IObserver {
 	    listView = (ListView)findViewById(R.id.listView);
 	    listView.setAdapter(adapter);
 
-	    /*listView.setOnItemClickListener(new OnItemClickListener() {
-			@Override
-			public void onItemClick(AdapterView<?> arg0, View view,
-                                           int position, long id) {
-				// user clicked a list item, make it "selected"
-				
-				Toast.makeText(getApplicationContext(),listView.getItemAtPosition(position).toString()+" selected", Toast.LENGTH_SHORT).show();
-			}
-        });*/
+	  
 	    listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
 	        @Override
@@ -138,7 +130,7 @@ public class ListUsers extends Activity implements LocationListener, IObserver {
 	            // TODO Auto-generated method stub
 	            User o = (User)adapter.getItemAtPosition(position);
 	            String str_text = o.getName();
-	            Toast.makeText(getApplicationContext(),str_text+" \n"+"123IP = "+o.getIp()+"\nLat="+o.getLatitude()+" Lon="+o.getLongtitude(), Toast.LENGTH_LONG).show();
+	            Toast.makeText(getApplicationContext(),str_text+" \n"+"IP = "+o.getIp()+"\nLat="+o.getLatitude()+" Lon="+o.getLongtitude(), Toast.LENGTH_LONG).show();
 	            Intent intent = new Intent(getApplicationContext(), Profile.class);
 	            intent.putExtra("user", o);
 	            
