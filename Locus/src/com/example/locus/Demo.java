@@ -102,23 +102,23 @@ public class Demo extends Activity implements IObserver {
 		listView = (ListView) findViewById(R.id.listView);
 		listView.setAdapter(adapter);
 
-		listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-			@Override
-			public void onItemClick(AdapterView<?> adapter, View view,
-					int position, long id) {
-				// TODO Auto-generated method stub
-				User o = (User) adapter.getItemAtPosition(position);
-				String str_text = o.getName();
-				Toast.makeText(
-						getApplicationContext(),
-						str_text + " SelecteD\n" + "IP = " + o.getIp()
-								+ "\nLat=" + o.getLatitude() + " Lon="
-								+ o.getLongtitude(), Toast.LENGTH_LONG).show();
-
-			}
-
-		});
+//		listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//
+//			@Override
+//			public void onItemClick(AdapterView<?> adapter, View view,
+//					int position, long id) {
+//				// TODO Auto-generated method stub
+//				User o = (User) adapter.getItemAtPosition(position);
+//				String str_text = o.getName();
+//				Toast.makeText(
+//						getApplicationContext(),
+//						str_text + " SelecteD\n" + "IP = " + o.getIp()
+//								+ "\nLat=" + o.getLatitude() + " Lon="
+//								+ o.getLongtitude(), Toast.LENGTH_LONG).show();
+//
+//			}
+//
+//		});
 	}
 
 	// ------------------------------------------------------------------------------------------------------------------------
