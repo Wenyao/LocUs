@@ -6,6 +6,7 @@ import java.util.Set;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,6 +19,7 @@ import android.widget.Toast;
 import com.example.locus.core.CoreFacade;
 import com.example.locus.core.ICore;
 import com.example.locus.core.IObserver;
+import com.example.locus.entity.Result;
 import com.example.locus.entity.Sex;
 import com.example.locus.entity.User;
 
@@ -76,6 +78,10 @@ public class Demo extends Activity implements IObserver {
 		// });
 		//
 		// thread.start();
+		
+		AsyncTask<User, Integer, Set<User>> registerTask = new RegisterTask();
+		registerTask.execute(currentUser);
+		
 		System.out.println("Call CoreFacade's register");
 		CoreFacade.getInstance().register(currentUser);
 		latituteField = (TextView) findViewById(R.id.textView1);
@@ -85,40 +91,40 @@ public class Demo extends Activity implements IObserver {
 
 		// ----------------------------- FOR LIST VIEW
 		// ---------------------------------------------------------
-		Set<User> data_set;
-		List<User> data = new ArrayList<User>();
-		try {
-			data_set = core.getUsersNearby();
+//		Set<User> data_set;
+//		List<User> data = new ArrayList<User>();
+//		try {
+//			data_set = core.getUsersNearby();
+//
+//			data.addAll(data_set);
+//		} catch (NullPointerException e) {
+//			Toast.makeText(getBaseContext(), "No users Nearby",
+//					Toast.LENGTH_SHORT).show();
+//		}
+//
+//		AdapterList adapter = new AdapterList(this,
+//				R.layout.activity_list_adapter, data);
 
-			data.addAll(data_set);
-		} catch (NullPointerException e) {
-			Toast.makeText(getBaseContext(), "No users Nearby",
-					Toast.LENGTH_SHORT).show();
-		}
+//		listView = (ListView) findViewById(R.id.listView);
+//		listView.setAdapter(adapter);
 
-		AdapterList adapter = new AdapterList(this,
-				R.layout.activity_list_adapter, data);
-
-		listView = (ListView) findViewById(R.id.listView);
-		listView.setAdapter(adapter);
-
-		listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-			@Override
-			public void onItemClick(AdapterView<?> adapter, View view,
-					int position, long id) {
-				// TODO Auto-generated method stub
-				User o = (User) adapter.getItemAtPosition(position);
-				String str_text = o.getName();
-				Toast.makeText(
-						getApplicationContext(),
-						str_text + " SelecteD\n" + "IP = " + o.getIp()
-								+ "\nLat=" + o.getLatitude() + " Lon="
-								+ o.getLongtitude(), Toast.LENGTH_LONG).show();
-
-			}
-
-		});
+//		listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//
+//			@Override
+//			public void onItemClick(AdapterView<?> adapter, View view,
+//					int position, long id) {
+//				// TODO Auto-generated method stub
+//				User o = (User) adapter.getItemAtPosition(position);
+//				String str_text = o.getName();
+//				Toast.makeText(
+//						getApplicationContext(),
+//						str_text + " SelecteD\n" + "IP = " + o.getIp()
+//								+ "\nLat=" + o.getLatitude() + " Lon="
+//								+ o.getLongtitude(), Toast.LENGTH_LONG).show();
+//
+//			}
+//
+//		});
 	}
 
 	// ------------------------------------------------------------------------------------------------------------------------
@@ -164,36 +170,53 @@ public class Demo extends Activity implements IObserver {
 
 	@Override
 	public void onReceiveNearbyUsers(Set<User> users) {
-		List<User> data = null;
-		try {
-			data.addAll(users);
-		} catch (NullPointerException e) {
-			Toast.makeText(getBaseContext(), "No users Nearby",
-					Toast.LENGTH_SHORT).show();
+	}
+
+	private class RegisterTask extends AsyncTask<User, Integer, Set<User>> {
+
+		@Override
+		protected Set<User> doInBackground(User... params) {
+			CoreFacade.getInstance().register(currentUser);
+			
+			return CoreFacade.getInstance().getUsersNearby();
 		}
 
-		AdapterList adapter = new AdapterList(this,
-				R.layout.activity_list_adapter, data);
-
-		listView = (ListView) findViewById(R.id.listView);
-		listView.setAdapter(adapter);
-
-		listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-			@Override
-			public void onItemClick(AdapterView<?> adapter, View view,
-					int position, long id) {
-				// TODO Auto-generated method stub
-				User o = (User) adapter.getItemAtPosition(position);
-				String str_text = o.getName();
-				Toast.makeText(
-						getApplicationContext(),
-						str_text + " SelecteD\n" + "IP = " + o.getIp()
-								+ "\nLat=" + o.getLatitude() + " Lon="
-								+ o.getLongtitude(), Toast.LENGTH_LONG).show();
-
+		@Override
+		protected void onPostExecute(Set<User> result) {
+			System.out.println("onPostExecute");
+			List<User> data = null;
+			try {
+				data.addAll(result);
+			} catch (NullPointerException e) {
+				Toast.makeText(getBaseContext(), "No users Nearby",
+						Toast.LENGTH_SHORT).show();
 			}
 
-		});
+			AdapterList adapter = new AdapterList(getApplicationContext(),
+					R.layout.activity_list_adapter, data);
+
+			listView = (ListView) findViewById(R.id.listView);
+			listView.setAdapter(adapter);
+
+			listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+				@Override
+				public void onItemClick(AdapterView<?> adapter, View view,
+						int position, long id) {
+					// TODO Auto-generated method stub
+					User o = (User) adapter.getItemAtPosition(position);
+					String str_text = o.getName();
+					Toast.makeText(
+							getApplicationContext(),
+							str_text + " SelecteD\n" + "IP = " + o.getIp()
+									+ "\nLat=" + o.getLatitude() + " Lon="
+									+ o.getLongtitude(), Toast.LENGTH_LONG)
+							.show();
+
+				}
+
+			});
+		}
+
 	}
 }
