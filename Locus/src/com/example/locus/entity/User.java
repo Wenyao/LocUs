@@ -54,7 +54,7 @@ public class User implements Serializable {
 		String[] splitsStrings = value.split(",");
 		id = splitsStrings[0];
 		name = splitsStrings[1];
-		sex = Sex.values()[Integer.parseInt(splitsStrings[2])];
+		sex = Sex.valueOf((splitsStrings[2]));
 		ip = splitsStrings[3];
 		latitude = Double.parseDouble(splitsStrings[4]);
 		longtitude = Double.parseDouble(splitsStrings[5]);
@@ -118,7 +118,7 @@ public class User implements Serializable {
 	}
 	
 	public String serialize(){
-		return String.format("%s,%s,%d,%s,%f,%f", id, name, sex, ip, latitude, longtitude);
+		return String.format("%s,%s,%s,%s,%f,%f", id, name, sex, ip, latitude, longtitude);
 	}
 	
 	@Override
