@@ -76,4 +76,9 @@ public class CoreFacade implements ICore {
 	public User getUserProfile(User target) {
 		return coreImpl.getUserProfile(target);
 	}
+
+	@Override
+	public void onReceiveNearbyUsers(Set<User> users) {
+		coreImpl.onReceiveNearbyUsers(users);
+	}
 }

@@ -71,7 +71,7 @@ public class chordDHT implements IDHT {
          	  
   	  String protocol = URL.KNOWN_PROTOCOLS.get(URL.SOCKET_PROTOCOL) ;
   	  try {
-      	  bootstrap_url = new URL(protocol + "://128.237.214.227:8080/ ") ;
+      	  bootstrap_url = new URL(protocol + "://10.0.2.2:8080/ ") ;
       	  }	catch	( MalformedURLException	e ) { 
       		  /* what should we do in this case ? */
       		  //throw new RuntimeException(e);
@@ -151,6 +151,7 @@ public class chordDHT implements IDHT {
 	
 	public Result put(User user) {
 
+		System.out.println("Put user " + user);
 		/* chord is not instantiated properly */
 		if ((this.chord_instance == null) || (user == null) ) 
 			return new Result(false,ErrorCodes.DHTError);
@@ -163,9 +164,9 @@ public class chordDHT implements IDHT {
 	    TileKey testKey = new TileKey("1234");
 	    try {
 			chord_instance.insert(testKey, "222");
-			System.err.println("TestKey 1234");
+			System.out.println("TestKey 1234");
 		} catch (ServiceException e1) {
-			// TODO Auto-generated catch block
+			System.out.println("insert ERROR");
 			e1.printStackTrace();
 		}
   	    /* Create a key based on the tile number */

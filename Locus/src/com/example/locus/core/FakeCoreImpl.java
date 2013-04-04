@@ -13,16 +13,18 @@ import com.example.locus.entity.User;
 
 public class FakeCoreImpl implements ICore {
 	static Logger log = Logger.getLogger(FakeCoreImpl.class.getName());
-	
+
 	private User user;
 	private List<IObserver> observers = new ArrayList<IObserver>();
-	
+
 	Set<User> results = new HashSet<User>();
 
 	public FakeCoreImpl() {
-		results.add(new User("Alice", Sex.Female, "192.168.1.1", 0, 0, "PLaying Cricket"));
+		results.add(new User("Alice", Sex.Female, "192.168.1.1", 0, 0,
+				"PLaying Cricket"));
 		results.add(new User("Bob", Sex.Male, "192.168.1.2", 0, 0, "Cooking"));
-		results.add(new User("Charlie", Sex.Unknown, "192.168.1.3", 0, 0, "Music"));
+		results.add(new User("Charlie", Sex.Unknown, "192.168.1.3", 0, 0,
+				"Music"));
 		results.add(new User());
 	}
 
@@ -42,7 +44,8 @@ public class FakeCoreImpl implements ICore {
 
 	@Override
 	public Result sendMessage(User user, String msg) {
-		log.info(String.format("sendMessage target = %s, msg = %s", user.toString(), msg));
+		log.info(String.format("sendMessage target = %s, msg = %s",
+				user.toString(), msg));
 		return Result.Success;
 	}
 
@@ -58,7 +61,7 @@ public class FakeCoreImpl implements ICore {
 		observers.add(obs);
 		return Result.Success;
 	}
-	
+
 	@Override
 	public Result register(User user) {
 		log.info(String.format("register %s", user));
@@ -74,7 +77,8 @@ public class FakeCoreImpl implements ICore {
 
 	@Override
 	public User getCurrentUser() {
-		return new User("Test User", Sex.Female, "192.168.1.123", 0, 0, "Test Interest");
+		return new User("Test User", Sex.Female, "192.168.1.123", 0, 0,
+				"Test Interest");
 	}
 
 	@Override
@@ -97,8 +101,15 @@ public class FakeCoreImpl implements ICore {
 			if (iterable.equals(target))
 				return iterable;
 		}
-		
+
 		return null;
+	}
+
+	@Override
+	public void onReceiveNearbyUsers(Set<User> users) {
+		for (IObserver observer : observers) {
+			observer.onReceiveUserProfile(user);
+		}
 	}
 
 }

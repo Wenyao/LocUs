@@ -43,6 +43,7 @@ public class CoreImpl implements ICore {
 	public Set<User> getUsersNearby() {
 		if (user != null) {
 			nearbyUsers =  dht.getUsersByKey(user);
+			onReceiveNearbyUsers(nearbyUsers);
 			return nearbyUsers;
 		} else {
 			return null;
@@ -103,6 +104,13 @@ public class CoreImpl implements ICore {
 	@Override
 	public User getUserProfile(User target) {
 		return mp.getUserProfile(target);
+	}
+
+	@Override
+	public void onReceiveNearbyUsers(Set<User> users) {
+		for (IObserver observer : observers) {
+			observer.onReceiveUserProfile(user);
+		}
 	}
 
 }
