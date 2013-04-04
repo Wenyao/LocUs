@@ -68,6 +68,7 @@ public class Demo extends Activity implements IObserver{
 		    public void run() {
 		        try {
 		        	CoreFacade.getInstance().register(currentUser);
+		        	
 		        } catch (Exception e) {
 		            e.printStackTrace();
 		        }
@@ -153,6 +154,6 @@ public class Demo extends Activity implements IObserver{
 	}
 	public void onDestroy(){
 		super.onDestroy();
-		core.logout();
+		//core.logout();
 	}
 }

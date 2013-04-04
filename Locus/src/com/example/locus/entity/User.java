@@ -48,6 +48,17 @@ public class User implements Serializable {
 		this.longtitude = longtitude;
 		this.interests = interests;
 	}
+	
+	public User(String value){
+		//TODO refactor
+		String[] splitsStrings = value.split(",");
+		id = splitsStrings[0];
+		name = splitsStrings[1];
+		sex = Sex.values()[Integer.parseInt(splitsStrings[2])];
+		ip = splitsStrings[3];
+		latitude = Double.parseDouble(splitsStrings[4]);
+		longtitude = Double.parseDouble(splitsStrings[5]);
+	}
 
 	public String getName() {
 		return name;
@@ -105,10 +116,14 @@ public class User implements Serializable {
 		return TileSystem.TileXYToQuadKey((int) tile.getX(), (int) tile.getY(),
 				TileSystem.DefaultLevelOfDetail);
 	}
-
+	
+	public String serialize(){
+		return String.format("%s,%s,%d,%s,%f,%f", id, name, sex, ip, latitude, longtitude);
+	}
+	
 	@Override
 	public String toString() {
-		return "User [name=" + name + ", sex=" + sex + ", ip=" + ip + ", lat="
+		return "User [id = "+ id + ", name = " + name + ", sex=" + sex + ", ip=" + ip + ", lat="
 				+ latitude + ", lon=" + longtitude + ", tile="
 				+ getTileNumber() + "]";
 	}
