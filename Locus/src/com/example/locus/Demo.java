@@ -63,7 +63,19 @@ public class Demo extends Activity implements IObserver{
 		else
 			currentUser.setSex(Sex.Female);
 
-		CoreFacade.getInstance().register(currentUser);
+		Thread thread = new Thread(new Runnable(){
+		    @Override
+		    public void run() {
+		        try {
+		        	CoreFacade.getInstance().register(currentUser);
+		        } catch (Exception e) {
+		            e.printStackTrace();
+		        }
+		    }
+		});
+
+		thread.start(); 
+		//CoreFacade.getInstance().register(currentUser);
 		latituteField = (TextView) findViewById(R.id.textView1);
 	    longitudeField = (TextView) findViewById(R.id.textView2);
 	    latituteField.setText(String.valueOf(latitude));

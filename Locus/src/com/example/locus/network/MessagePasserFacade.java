@@ -2,6 +2,7 @@ package com.example.locus.network;
 
 import java.util.Set;
 
+import com.example.locus.core.CoreFacade;
 import com.example.locus.core.IObserver;
 import com.example.locus.entity.Result;
 import com.example.locus.entity.User;
@@ -46,12 +47,13 @@ public class MessagePasserFacade implements IMessagePasser {
 	@Override
 	public Result startReceive() {
 		//return messagePasser.startReceive();
-		CheckProfile.listen(port);
+		CheckProfile.listen(port, CoreFacade.getInstance());
 		return Result.Success;
 	}
 
 	@Override
 	public User getUserProfile(User target) {
 		return (User) CheckProfile.connect(target.getIp(), port);
+		//return null;
 	}
 }

@@ -81,7 +81,7 @@ public class ListUsers extends Activity implements LocationListener, IObserver {
 	    // Initialize the location fields
 	    if (location != null) {
 	    	Toast.makeText(getBaseContext(),"Provider " + provider + " has been selected.",Toast.LENGTH_SHORT).show();
-	      onLocationChanged(location);
+	      //onLocationChanged(location);
 	    } else {
 	    	Toast.makeText(getBaseContext(),"Location NOt available", Toast.LENGTH_SHORT).show();
 	    	latituteField.setText("Location not available");
