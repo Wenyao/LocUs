@@ -237,5 +237,11 @@ public class ListUsers extends Activity implements LocationListener, IObserver {
 		core.logout();
 	}
 
+	@Override
+	public void onReceiveNearbyUsers(Set<User> users) {
+		// TODO Auto-generated method stub
+		
+	}
+
 
 }

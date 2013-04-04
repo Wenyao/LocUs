@@ -54,7 +54,9 @@ public class User implements Serializable {
 		String[] splitsStrings = value.split(",");
 		id = splitsStrings[0];
 		name = splitsStrings[1];
+
 		sex = Sex.valueOf((splitsStrings[2]));
+
 		ip = splitsStrings[3];
 		latitude = Double.parseDouble(splitsStrings[4]);
 		longtitude = Double.parseDouble(splitsStrings[5]);
