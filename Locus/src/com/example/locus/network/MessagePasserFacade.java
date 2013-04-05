@@ -47,7 +47,7 @@ public class MessagePasserFacade implements IMessagePasser {
 	@Override
 	public Result startReceive() {
 		//return messagePasser.startReceive();
-		CheckProfile.listen(port, CoreFacade.getInstance());
+		//CheckProfile.listen(port, CoreFacade.getInstance());
 		return Result.Success;
 	}
 

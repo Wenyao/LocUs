@@ -151,15 +151,15 @@ public class Demo extends Activity implements IObserver {
 						int position, long id) {
 					// TODO Auto-generated method stub
 					User o = (User) adapter.getItemAtPosition(position);
-					GetUserProfileTask getUserProfileTask = new GetUserProfileTask();
-					getUserProfileTask.execute(o);
-					// String str_text = o.getName();
-					// Toast.makeText(
-					// getApplicationContext(),
-					// str_text + " SelecteD\n" + "IP = " + o.getIp()
-					// + "\nLat=" + o.getLatitude() + " Lon="
-					// + o.getLongtitude(), Toast.LENGTH_LONG)
-					// .show();
+//					GetUserProfileTask getUserProfileTask = new GetUserProfileTask();
+//					getUserProfileTask.execute(o);
+					 String str_text = o.getName();
+					 Toast.makeText(
+					 getApplicationContext(),
+					 str_text + " SelecteD\n" + "IP = " + o.getIp()
+					 + "\nLat=" + o.getLatitude() + " Lon="
+					 + o.getLongtitude(), Toast.LENGTH_LONG)
+					 .show();
 
 				}
 
