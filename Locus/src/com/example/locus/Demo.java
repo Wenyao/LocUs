@@ -8,7 +8,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -41,58 +40,6 @@ public class Demo extends Activity implements IObserver {
 	private int groupId1 = 1;
 	private int editProfileId = Menu.FIRST;
 
-//	private final Handler myHandler = new Handler();
-//
-//	final Runnable updateRunnable = new Runnable() {
-//		public void run() {
-//			// call the activity method that updates the UI
-//			updateUI();
-//		}
-//	};
-//
-//	private void updateUI() {
-//		System.out.println("onPostExecute");
-//		List<User> data = null;
-//		try {
-//			data.addAll(nearbyUsers);
-//		} catch (NullPointerException e) {
-//			Toast.makeText(getBaseContext(), "No users Nearby",
-//					Toast.LENGTH_SHORT).show();
-//		}
-//
-//		AdapterList adapter = new AdapterList(getApplicationContext(),
-//				R.layout.activity_list_adapter, data);
-//
-//		listView = (ListView) findViewById(R.id.listView);
-//		listView.setAdapter(adapter);
-//
-//		listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//
-//			@Override
-//			public void onItemClick(AdapterView<?> adapter, View view,
-//					int position, long id) {
-//				// TODO Auto-generated method stub
-//				User o = (User) adapter.getItemAtPosition(position);
-//				String str_text = o.getName();
-//				Toast.makeText(
-//						getApplicationContext(),
-//						str_text + " SelecteD\n" + "IP = " + o.getIp()
-//								+ "\nLat=" + o.getLatitude() + " Lon="
-//								+ o.getLongtitude(), Toast.LENGTH_LONG).show();
-//
-//			}
-//
-//		});
-//	}
-//
-//	private void doSomeHardWork() {
-//		CoreFacade.getInstance().register(currentUser);
-//
-//		nearbyUsers = CoreFacade.getInstance().getUsersNearby();
-//		myHandler.post(updateRunnable);
-//
-//	}
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -118,80 +65,15 @@ public class Demo extends Activity implements IObserver {
 		else
 			currentUser.setSex(Sex.Female);
 
-		// Thread thread = new Thread(new Runnable(){
-		// @Override
-		// public void run() {
-		// try {
-		// CoreFacade.getInstance().register(currentUser);
-		//
-		// } catch (Exception e) {
-		// e.printStackTrace();
-		// }
-		// }
-		// });
-		//
-		// thread.start();
-		
-		//CoreFacade.getInstance().register(currentUser);
-
-//		new Thread(new Runnable() {
-//
-//			@Override
-//			public void run() {
-//				doSomeHardWork();
-//
-//			}
-//
-//		}).start();
-
 		 AsyncTask<User, Integer, Set<User>> registerTask = new
 		 RegisterTask();
 		 registerTask.execute(currentUser);
 
 		System.out.println("Call CoreFacade's register");
-		CoreFacade.getInstance().register(currentUser);
 		latituteField = (TextView) findViewById(R.id.textView1);
 		longitudeField = (TextView) findViewById(R.id.textView2);
 		latituteField.setText(String.valueOf(latitude));
 		longitudeField.setText(String.valueOf(longitude));
-
-		// ----------------------------- FOR LIST VIEW
-		// ---------------------------------------------------------
-//		 Set<User> data_set;
-//		 List<User> data = new ArrayList<User>();
-//		 try {
-//		 data_set = core.getUsersNearby();
-//		
-//		 data.addAll(data_set);
-//		 } catch (NullPointerException e) {
-//		 Toast.makeText(getBaseContext(), "No users Nearby",
-//		 Toast.LENGTH_SHORT).show();
-//		 }
-//		
-//		 AdapterList adapter = new AdapterList(this,
-//		 R.layout.activity_list_adapter, data);
-//
-//		 listView = (ListView) findViewById(R.id.listView);
-//		 listView.setAdapter(adapter);
-//
-//		 listView.setOnItemClickListener(new AdapterView.OnItemClickListener()
-//		 {
-//		
-//		 @Override
-//		 public void onItemClick(AdapterView<?> adapter, View view,
-//		 int position, long id) {
-//		 // TODO Auto-generated method stub
-//		 User o = (User) adapter.getItemAtPosition(position);
-//		 String str_text = o.getName();
-//		 Toast.makeText(
-//		 getApplicationContext(),
-//		 str_text + " SelecteD\n" + "IP = " + o.getIp()
-//		 + "\nLat=" + o.getLatitude() + " Lon="
-//		 + o.getLongtitude(), Toast.LENGTH_LONG).show();
-//		
-//		 }
-//		
-//		 });
 	}
 
 	// ------------------------------------------------------------------------------------------------------------------------
@@ -244,7 +126,6 @@ public class Demo extends Activity implements IObserver {
 		@Override
 		protected Set<User> doInBackground(User... params) {
 			CoreFacade.getInstance().register(currentUser);
-
 			return CoreFacade.getInstance().getUsersNearby();
 		}
 
