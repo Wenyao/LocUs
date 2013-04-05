@@ -35,7 +35,6 @@ public class Demo extends Activity implements IObserver {
 	private TextView longitudeField;
 	ICore core;
 	User currentUser;
-	Set<User> nearbyUsers;
 
 	private int groupId1 = 1;
 	private int editProfileId = Menu.FIRST;
@@ -65,9 +64,8 @@ public class Demo extends Activity implements IObserver {
 		else
 			currentUser.setSex(Sex.Female);
 
-		 AsyncTask<User, Integer, Set<User>> registerTask = new
-		 RegisterTask();
-		 registerTask.execute(currentUser);
+		AsyncTask<User, Integer, Set<User>> registerTask = new RegisterTask();
+		registerTask.execute(currentUser);
 
 		System.out.println("Call CoreFacade's register");
 		latituteField = (TextView) findViewById(R.id.textView1);
@@ -153,17 +151,37 @@ public class Demo extends Activity implements IObserver {
 						int position, long id) {
 					// TODO Auto-generated method stub
 					User o = (User) adapter.getItemAtPosition(position);
-					String str_text = o.getName();
-					Toast.makeText(
-							getApplicationContext(),
-							str_text + " SelecteD\n" + "IP = " + o.getIp()
-									+ "\nLat=" + o.getLatitude() + " Lon="
-									+ o.getLongtitude(), Toast.LENGTH_LONG)
-							.show();
+					GetUserProfileTask getUserProfileTask = new GetUserProfileTask();
+					getUserProfileTask.execute(o);
+					// String str_text = o.getName();
+					// Toast.makeText(
+					// getApplicationContext(),
+					// str_text + " SelecteD\n" + "IP = " + o.getIp()
+					// + "\nLat=" + o.getLatitude() + " Lon="
+					// + o.getLongtitude(), Toast.LENGTH_LONG)
+					// .show();
 
 				}
 
 			});
+		}
+
+		private class GetUserProfileTask extends AsyncTask<User, Integer, User> {
+			@Override
+			protected User doInBackground(User... params) {
+				return CoreFacade.getInstance().getUserProfile(params[0]);
+			}
+
+			@Override
+			protected void onPostExecute(User result) {
+				String str_text = result.getName();
+				Toast.makeText(
+						getApplicationContext(),
+						str_text + " \n" + "IP = " + result.getIp() + "\nLat="
+								+ result.getLatitude() + " Lon=" + result.getLongtitude()
+								+ " Int = " + result.getInterests(),
+						Toast.LENGTH_LONG).show();
+			}
 		}
 
 	}
