@@ -12,8 +12,9 @@ public interface ICore extends IObservable, IObserver {
 	
 	Set<User> getUsersNearby();
 	
-	Result sendMessage(User user, String msg);
+	Result sendMessage(User target, String msg);
 	Result broadcastMessage(String msg);
+	User getUserProfile(User target);
 	
 	User getCurrentUser();
 }

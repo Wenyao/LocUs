@@ -21,6 +21,7 @@
         android:layout_alignParentRight="true"
         android:layout_toRightOf="@+id/button1"
         android:ems="10"
+        android:hint = "Longitude"
         android:inputType="numberSigned" />
 
     <Button
@@ -32,35 +33,6 @@
         android:layout_marginBottom="24dp"
         android:onClick="onClick"
         android:text="Go" />
-
-    <EditText
-        android:id="@+id/editText2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/button1"
-        android:layout_marginBottom="27dp"
-        android:layout_toLeftOf="@+id/button1"
-        android:ems="10"
-        android:inputType="numberSigned" />
-
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/textView1"
-        android:layout_alignBottom="@+id/textView1"
-        android:layout_alignLeft="@+id/editText3"
-        android:text="Longitude"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
-
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/editText2"
-        android:layout_alignParentLeft="true"
-        android:text="Latitude"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <RadioGroup
         android:id="@+id/genderRadioGroup"
@@ -120,5 +92,26 @@
         android:layout_above="@+id/genderRadioGroup"
         android:layout_alignParentRight="true"
         android:text="LoadImage" />
+
+    <EditText
+        android:id="@+id/editText2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/button1"
+        android:layout_toLeftOf="@+id/button1"
+        android:ems="10"
+        android:hint="Latitude"
+        android:inputType="numberSigned" />
+
+    <EditText
+        android:id="@+id/editText4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/editText1"
+        android:layout_marginTop="15dp"
+        android:ems="10"
+        android:hint="Interests" />
 
 </RelativeLayout>

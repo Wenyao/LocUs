@@ -42,7 +42,8 @@ public class CoreImpl implements ICore {
 	@Override
 	public Set<User> getUsersNearby() {
 		if (user != null) {
-			nearbyUsers = dht.getUsersByKey(user);
+			nearbyUsers =  dht.getUsersByKey(user);
+			onReceiveNearbyUsers(nearbyUsers);
 			return nearbyUsers;
 		} else {
 			return null;
@@ -68,6 +69,8 @@ public class CoreImpl implements ICore {
 	@Override
 	public Result register(User user) {
 		this.user = user;
+		dht.join();
+		mp.startReceive();
 		return refreshLocation(user.getLatitude(), user.getLongtitude());
 	}
 
@@ -93,6 +96,18 @@ public class CoreImpl implements ICore {
 
 	@Override
 	public void onReceiveUserProfile(User user) {
+		for (IObserver observer : observers) {
+			observer.onReceiveUserProfile(user);
+		}
+	}
+
+	@Override
+	public User getUserProfile(User target) {
+		return mp.getUserProfile(target);
+	}
+
+	@Override
+	public void onReceiveNearbyUsers(Set<User> users) {
 		for (IObserver observer : observers) {
 			observer.onReceiveUserProfile(user);
 		}
