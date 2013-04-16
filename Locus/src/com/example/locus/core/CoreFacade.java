@@ -2,6 +2,8 @@ package com.example.locus.core;
 
 import java.util.Set;
 
+import android.content.Context;
+
 import com.example.locus.entity.Result;
 import com.example.locus.entity.User;
 
@@ -48,6 +50,13 @@ public class CoreFacade implements ICore {
 	}
 
 	@Override
+	/*
+	 * call this method after null value returning from getCurrentUser()
+	 * or call it after user update his/her profile.
+	 * 
+	 * this method is for registers new user or updating user profiles
+	 * @see com.example.locus.core.ICore#register(com.example.locus.entity.User)
+	 */
 	public Result register(User user) {
 		return coreImpl.register(user);
 	}
@@ -58,6 +67,12 @@ public class CoreFacade implements ICore {
 	}
 
 	@Override
+	/*
+	 * call this method every time app launches after setContext() is called
+	 * returns null if no user is registered or context is not set
+	 * returns User if there is a registered user.  Always have only one user registered.
+	 * @see com.example.locus.core.ICore#getCurrentUser()
+	 */
 	public User getCurrentUser() {
 		return coreImpl.getCurrentUser();
 	}
@@ -80,5 +95,16 @@ public class CoreFacade implements ICore {
 	@Override
 	public void onReceiveNearbyUsers(Set<User> users) {
 		coreImpl.onReceiveNearbyUsers(users);
+	}
+
+	@Override
+	/*
+	 * call this method initially once when app launches.
+	 * The context is required to create a database helper.
+	 * @see com.example.locus.core.ICore#setContext(android.content.Context)
+	 */
+	public void setContext(Context context) {
+		coreImpl.setContext(context);
+		
 	}
 }
