@@ -1,9 +1,19 @@
 package com.example.locus;
 
+<<<<<<< HEAD
+import java.awt.Menu;
+=======
 import java.util.ArrayList;
+>>>>>>> 47881eb630631c527dc32d7cad8f21bccc9e1c3e
 import java.util.List;
 import java.util.Set;
 
+<<<<<<< HEAD
+import javax.swing.text.View;
+import javax.swing.text.html.ListView;
+
+import sun.jkernel.Bundle;
+=======
 import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -15,6 +25,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+>>>>>>> 47881eb630631c527dc32d7cad8f21bccc9e1c3e
 
 import com.example.locus.core.CoreFacade;
 import com.example.locus.core.ICore;
