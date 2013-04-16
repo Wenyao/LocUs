@@ -1,17 +1,12 @@
 package com.example.locus;
 
-import java.io.IOException;
+import java.awt.Menu;
 import java.util.List;
 
-import android.app.Activity;
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.Menu;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
+import javax.swing.text.View;
+import javax.swing.text.html.ListView;
+
+import sun.jkernel.Bundle;
 
 import com.example.locus.core.CoreFacade;
 import com.example.locus.core.ICore;
