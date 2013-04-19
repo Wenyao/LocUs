@@ -4,8 +4,6 @@ import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-import android.R.integer;
-
 import com.example.locus.tilesystem.Point2D;
 import com.example.locus.tilesystem.TileSystem;
 
