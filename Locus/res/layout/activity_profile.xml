@@ -21,6 +21,7 @@
         android:layout_alignParentRight="true"
         android:layout_marginBottom="15dp"
         android:layout_marginRight="46dp"
+        android:onClick="chatClick"
         android:text="Chat" />
 
     <TextView
@@ -30,7 +31,7 @@
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/imageView1"
         android:layout_marginTop="64dp"
-        android:text="Name :          "
+        android:text="Name           :"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <TextView
@@ -50,7 +51,7 @@
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/textView1"
         android:layout_marginTop="24dp"
-        android:text="Gender :        "
+        android:text="Gender         :"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <TextView
@@ -70,7 +71,7 @@
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/textView3"
         android:layout_marginTop="24dp"
-        android:text="Interests :     "
+        android:text="Interests      :"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <TextView
