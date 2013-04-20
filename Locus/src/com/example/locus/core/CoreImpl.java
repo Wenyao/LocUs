@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import android.content.Context;
+import android.util.Log;
+
 import com.example.locus.dht.DHTFacade;
 import com.example.locus.dht.IDHT;
 import com.example.locus.entity.ErrorCodes;
@@ -14,6 +17,9 @@ import com.example.locus.network.MessagePasserFacade;
 
 public class CoreImpl implements ICore {
 
+	private Context context;
+	private AccountDataSource accountDataSource;
+
 	private IDHT dht;
 	private IMessagePasser mp;
 	private User user;
@@ -22,6 +28,9 @@ public class CoreImpl implements ICore {
 	private List<IObserver> observers;
 
 	public CoreImpl() {
+		context = null;
+		accountDataSource = null;
+
 		dht = DHTFacade.getInstance();
 		mp = MessagePasserFacade.getInstance();
 		observers = new ArrayList<IObserver>();
@@ -42,7 +51,7 @@ public class CoreImpl implements ICore {
 	@Override
 	public Set<User> getUsersNearby() {
 		if (user != null) {
-			nearbyUsers =  dht.getUsersByKey(user);
+			nearbyUsers = dht.getUsersByKey(user);
 			onReceiveNearbyUsers(nearbyUsers);
 			return nearbyUsers;
 		} else {
@@ -68,10 +77,16 @@ public class CoreImpl implements ICore {
 
 	@Override
 	public Result register(User user) {
-		this.user = user;
-		dht.join();
-		mp.startReceive();
-		return refreshLocation(user.getLatitude(), user.getLongtitude());
+		if (accountDataSource != null) {
+			this.user = accountDataSource.createUser(user);
+			dht.join();
+			mp.startReceive();
+			return refreshLocation(user.getLatitude(), user.getLongtitude());
+		} else {
+			Log.e("Locus.DataSource",
+					"Please set context before call register.");
+			return new Result(false, ErrorCodes.DataSourceError);
+		}
 	}
 
 	@Override
@@ -84,7 +99,27 @@ public class CoreImpl implements ICore {
 
 	@Override
 	public User getCurrentUser() {
-		return this.user;
+		if (user == null) {
+			if (accountDataSource == null) {
+				Log.e("Locus.DataSource",
+						"Please set context before call getCurrentUser.");
+				return null;
+			} else {
+				List<User> users = accountDataSource.getAllUsers();
+				if (users.size() == 0){
+					return null; 
+				}
+				else{
+					user = users.get(0);
+					dht.join();
+					mp.startReceive();
+					refreshLocation(user.getLatitude(), user.getLongtitude());
+					return user;
+				}
+			}
+		} else {
+			return user;
+		}
 	}
 
 	@Override
@@ -111,6 +146,12 @@ public class CoreImpl implements ICore {
 		for (IObserver observer : observers) {
 			observer.onReceiveUserProfile(user);
 		}
+	}
+
+	@Override
+	public void setContext(Context context) {
+		this.context = context;
+		accountDataSource = new AccountDataSource(context);
 	}
 
 }

@@ -8,10 +8,6 @@ import java.net.NetworkInterface;
 import java.util.Collections;
 import java.util.List;
 
-import org.apache.http.conn.util.InetAddressUtils;
-
-import android.annotation.SuppressLint;
-
 public class IPAddress {
 
     /**

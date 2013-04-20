@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+import android.R.integer;
+
 import com.example.locus.tilesystem.Point2D;
 import com.example.locus.tilesystem.TileSystem;
 
@@ -22,6 +24,7 @@ public class User implements Serializable {
 	private double latitude;
 	private double longtitude;
 	private String interests;
+	private String picURL;
 
 	public String getInterests() {
 		return interests;
@@ -34,6 +37,13 @@ public class User implements Serializable {
 	public User() {
 		this(UnknownName, Sex.Unknown, null, Double.MIN_VALUE,
 				Double.MIN_VALUE, null);
+	}
+	
+	public User(String name, int sex, String interests, String picURL){
+		this.name = name;
+		this.sex = Sex.values()[sex];
+		this.interests = interests;
+		this.picURL = picURL;
 	}
 
 	public User(String name, Sex sex, String ip, double latitude,
@@ -60,6 +70,14 @@ public class User implements Serializable {
 		ip = splitsStrings[3];
 		latitude = Double.parseDouble(splitsStrings[4]);
 		longtitude = Double.parseDouble(splitsStrings[5]);
+	}
+	
+	public String getId() {
+		return id;
+	}
+	
+	public void setId(String id) {
+		this.id = id;
 	}
 
 	public String getName() {
@@ -141,6 +159,14 @@ public class User implements Serializable {
 			return id.equals(((User) o).id);
 		}
 		return false;
+	}
+
+	public String getPicURL() {
+		return picURL;
+	}
+
+	public void setPicURL(String picURL) {
+		this.picURL = picURL;
 	}
 
 }

@@ -10,7 +10,7 @@ import com.example.locus.entity.User;
 public class MessagePasserFacade implements IMessagePasser {
 	private static MessagePasserFacade instance = null;
 	
-	private static int port = 8888;
+	private static int port = 2222;
 	
 	//private IMessagePasser messagePasser;
 	
@@ -49,7 +49,7 @@ public class MessagePasserFacade implements IMessagePasser {
 		//return messagePasser.startReceive();
 		CheckProfile.listen(port, CoreFacade.getInstance());
 		return Result.Success;
-	}
+	}  
 
 	@Override
 	public User getUserProfile(User target) {
