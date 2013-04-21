@@ -31,13 +31,28 @@ public class Message implements Serializable {
 		this.data = data;
 	}
 	
+	/**
+	 * Constructor
+	 * @param src
+	 * @param dest
+	 * @param kind
+	 * @param data
+	 */
+	public Message(User src, User dest, String kind, Object data, int id) {
+		this.src = src;
+		this.dest = dest;
+		this.kind = kind;
+		this.data = data;
+		this.id = id;
+	}
+	
 	/* Accessors */
 	public int    getId()       { return id;   }	
 	public User getSrc()      { return src;  }
 	public User getDst()      { return dest; }
 	public String getKind()     { return kind; }
 	public Object getData()     { return data; }
-	public void setId() 			      { this.id  = ID++;      }
+	public void setId(int id) 			      { this.id  = Math.max(ID, id) + 1; }
 	public void setSrc(User src)        { this.src = src;       }
 	public void setDest(User dest)      { this.dest = dest;     }
 	public void setKind(String kind)      { this.kind = kind;     }
