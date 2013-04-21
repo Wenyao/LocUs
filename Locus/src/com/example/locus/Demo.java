@@ -123,7 +123,7 @@ public class Demo extends Activity implements IObserver {
 
 	public void onDestroy() {
 		super.onDestroy();
-		// core.logout();
+		 core.logout();
 	}
 
 	@Override

@@ -5,11 +5,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 
+import com.example.locus.core.CoreFacade;
 import com.example.locus.entity.Sex;
 import com.example.locus.entity.User;
-import com.example.locus.core.CoreFacade;
 public class Profile extends Activity {
 
 	 private int groupId1=1;
@@ -38,6 +39,12 @@ public class Profile extends Activity {
 			textGender.setText("Female");
 		textInterests.setText(user.getInterests());
 	}
+	
+	public void chatClick(View view){
+		Intent intent = new Intent(this, Chat.class);
+		startActivity(intent);
+	}
+	
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
