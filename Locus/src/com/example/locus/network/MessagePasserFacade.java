@@ -34,7 +34,7 @@ public class MessagePasserFacade implements IMessagePasser {
 
 	@Override
 	public Result sendMessage(User src, User target, String msg) {
-		//return messagePasser.sendMessage(src, target, msg);
+		//return messagePasser.sendMessage(src, target.getIp(), port, msg);
 		return Result.Success;
 	}
 
@@ -47,13 +47,15 @@ public class MessagePasserFacade implements IMessagePasser {
 	@Override
 	public Result startReceive() {
 		//return messagePasser.startReceive();
-		CheckProfile.listen(port, CoreFacade.getInstance());
+		//CheckProfile.listen(port, CoreFacade.getInstance());
+		MessagePasser.listen(port, CoreFacade.getInstance());
 		return Result.Success;
 	}  
 
 	@Override
 	public User getUserProfile(User target) {
-		return (User) CheckProfile.connect(target.getIp(), port);
+		//return (User) CheckProfile.connect(target.getIp(), port);
+		return (User) MessagePasser.checkProfile(target.getIp(), port);
 		//return null;
 	}
 }
