@@ -34,19 +34,20 @@ public class MessagePasserFacade implements IMessagePasser {
 
 	@Override
 	public Result sendMessage(User src, User target, String msg) {
-		//return messagePasser.sendMessage(src, target.getIp(), port, msg);
+		MessagePasser.sendMessage(src, target, port, msg);
 		return Result.Success;
 	}
 
 	@Override
 	public Result broadcast(User src, Set<User> targets, String msg) {
-		//return messagePasser.broadcast(src, targets, msg);
+		for (User target : targets){
+			MessagePasser.sendMessage(src, targets, port, msg);
+		}
 		return Result.Success;
 	}
 
 	@Override
 	public Result startReceive() {
-		//return messagePasser.startReceive();
 		//CheckProfile.listen(port, CoreFacade.getInstance());
 		MessagePasser.listen(port, CoreFacade.getInstance());
 		return Result.Success;
