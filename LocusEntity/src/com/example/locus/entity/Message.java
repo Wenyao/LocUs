@@ -52,7 +52,8 @@ public class Message implements Serializable {
 	public User getDst()      { return dest; }
 	public String getKind()     { return kind; }
 	public Object getData()     { return data; }
-	public void setId(int id) 			      { this.id  = Math.max(ID, id) + 1; }
+	public static void refreshId(int id)	{ ID  = Math.max(ID, id) + 1; }
+	public void setId() 			      { this.id = ID++; }
 	public void setSrc(User src)        { this.src = src;       }
 	public void setDest(User dest)      { this.dest = dest;     }
 	public void setKind(String kind)      { this.kind = kind;     }
