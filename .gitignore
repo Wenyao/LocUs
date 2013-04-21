@@ -5,3 +5,4 @@
 *.ear
 .cache
 *.jar
+bin
