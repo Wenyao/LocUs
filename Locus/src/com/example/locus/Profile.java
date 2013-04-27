@@ -42,6 +42,7 @@ public class Profile extends Activity {
 	
 	public void chatClick(View view){
 		Intent intent = new Intent(this, Chat.class);
+		intent.putExtra("username", user.getName());
 		startActivity(intent);
 	}
 	

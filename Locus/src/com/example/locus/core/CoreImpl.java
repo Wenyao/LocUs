@@ -129,7 +129,7 @@ public class CoreImpl implements ICore {
 
 	@Override
 	public void onReceiveMessage(Message msg) {
-		Log.i("com.example.locus.CoreImpl", "receive msg = " + msg.toString());
+		Log.i(Constants.AppCoreTag, "receive msg = " + msg.toString());
 		System.out.println("receive msg = " + msg.toString());
 		
 		if (msg != null) {
@@ -169,8 +169,13 @@ public class CoreImpl implements ICore {
 		this.context = context;
 		accountDataSource = new AccountDataSource(context);
 		accountDataSource.open();
-		messageDataSource = new MessageDataSource(context);
+		messageDataSource = new MessageDataSource(context, accountDataSource);
 		messageDataSource.open();
+	}
+
+	@Override
+	public List<Message> getMessagesByUser(User user) {
+		return messageDataSource.getAllMessagesWithUser(user);
 	}
 
 }

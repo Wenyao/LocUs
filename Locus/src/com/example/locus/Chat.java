@@ -14,6 +14,7 @@ import com.sun.xml.internal.bind.v2.TODO;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
+import android.content.Intent;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -29,11 +30,13 @@ public class Chat extends Activity implements OnClickListener, IObserver {
 	private EditText tv;
 	private List<String> msg;
 	private ChatAdapter chatAdapter;
-
+	String userName;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
+		Intent intent = getIntent();
+		userName = intent.getStringExtra("username");
 		CoreFacade.getInstance().addObserver(this);
 
 		setContentView(R.layout.activity_chat);

@@ -7,7 +7,7 @@ import android.util.Log;
 
 public class MessageSQLiteHelper extends SQLiteOpenHelper {
 
-	public static final String TABLE_ACCOUNT = "message";
+	public static final String TABLE_MESSAGE = "message";
 	public static final String COLUMN_ID = "_id";
 	public static final String COLUMN_SRC_ID = "srcId";
 	public static final String COLUMN_DES_ID = "desId";
@@ -21,7 +21,7 @@ public class MessageSQLiteHelper extends SQLiteOpenHelper {
 	// Database creation sql statement
 	private static final String DATABASE_CREATE = String
 			.format("create table %s(%s integer primary key autoincrement, %s text not null, %s text not null, %s text, %s text, %s integer);",
-					TABLE_ACCOUNT, COLUMN_ID, COLUMN_SRC_ID, COLUMN_DES_ID,
+					TABLE_MESSAGE, COLUMN_ID, COLUMN_SRC_ID, COLUMN_DES_ID,
 					COLUMN_KIND, COLUMN_DATA, COLUMN_MSG_ID);
 
 	public MessageSQLiteHelper(Context context) {
@@ -30,7 +30,13 @@ public class MessageSQLiteHelper extends SQLiteOpenHelper {
 
 	@Override
 	public void onCreate(SQLiteDatabase db) {
-		db.execSQL(DATABASE_CREATE);
+		Log.i(Constants.AppCoreTag, "enter create db for message");
+		try {
+			db.execSQL(DATABASE_CREATE);
+		} catch (Exception e) {
+			Log.e(Constants.AppCoreTag, e.toString());
+		}
+		Log.i(Constants.AppCoreTag, "exit create db for message");
 	}
 
 	@Override
@@ -38,7 +44,7 @@ public class MessageSQLiteHelper extends SQLiteOpenHelper {
 		Log.w(MessageSQLiteHelper.class.getName(),
 				"Upgrading database from version " + oldVersion + " to "
 						+ newVersion + ", which will destroy all old data");
-		db.execSQL("DROP TABLE IF EXISTS " + TABLE_ACCOUNT);
+		db.execSQL("DROP TABLE IF EXISTS " + TABLE_MESSAGE);
 		onCreate(db);
 	}
 
