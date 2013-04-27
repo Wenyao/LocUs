@@ -23,6 +23,7 @@ import android.widget.Toast;
 import com.example.locus.core.CoreFacade;
 import com.example.locus.core.ICore;
 import com.example.locus.core.IObserver;
+import com.example.locus.entity.Message;
 import com.example.locus.entity.Sex;
 import com.example.locus.entity.User;
 
@@ -221,7 +222,7 @@ public class ListUsers extends Activity implements LocationListener, IObserver {
 	 }
 
 	@Override
-	public void onReceiveMessage(User src, String msg) {
+	public void onReceiveMessage(Message msg) {
 		// TODO Auto-generated method stub
 
 	}
