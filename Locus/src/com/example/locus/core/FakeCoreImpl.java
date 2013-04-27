@@ -106,4 +106,9 @@ public class FakeCoreImpl implements ICore {
 	public void onReceiveNearbyUsers(Set<User> users) {
 	}
 
+	@Override
+	public List<Message> getMessagesByUser(User user) {
+		return null;
+	}
+
 }

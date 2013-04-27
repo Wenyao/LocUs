@@ -22,10 +22,10 @@ public class MessageDataSource {
 			MessageSQLiteHelper.COLUMN_DES_ID, MessageSQLiteHelper.COLUMN_KIND,
 			MessageSQLiteHelper.COLUMN_DATA, MessageSQLiteHelper.COLUMN_MSG_ID };
 
-	public MessageDataSource(Context context) {
+	public MessageDataSource(Context context, AccountDataSource accountDataSource) {
 		dbHelper = new MessageSQLiteHelper(context);
 
-		accountDataSource = new AccountDataSource(context);
+		this.accountDataSource = accountDataSource;
 	}
 
 	public void open() throws SQLException {
@@ -44,9 +44,9 @@ public class MessageDataSource {
 		// TODO object msg?
 		values.put(MessageSQLiteHelper.COLUMN_DATA, (String) message.getData());
 		values.put(MessageSQLiteHelper.COLUMN_MSG_ID, message.getId());
-		long insertId = database.insert(MessageSQLiteHelper.TABLE_ACCOUNT,
+		long insertId = database.insert(MessageSQLiteHelper.TABLE_MESSAGE,
 				null, values);
-		Cursor cursor = database.query(MessageSQLiteHelper.TABLE_ACCOUNT,
+		Cursor cursor = database.query(MessageSQLiteHelper.TABLE_MESSAGE,
 				allColumns, MessageSQLiteHelper.COLUMN_ID + " = '" + insertId
 						+ "'", null, null, null, null);
 		cursor.moveToFirst();
@@ -60,7 +60,7 @@ public class MessageDataSource {
 
 		String orderBy = MessageSQLiteHelper.COLUMN_MSG_ID + " ASC";
 
-		Cursor cursor = database.query(MessageSQLiteHelper.TABLE_ACCOUNT,
+		Cursor cursor = database.query(MessageSQLiteHelper.TABLE_MESSAGE,
 				allColumns, MessageSQLiteHelper.COLUMN_SRC_ID + "= ? OR "
 						+ MessageSQLiteHelper.COLUMN_DES_ID + "= ?",
 				new String[] { user.getId(), user.getId() }, null, null,

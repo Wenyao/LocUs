@@ -1,5 +1,6 @@
 package com.example.locus.core;
 
+import java.util.List;
 import java.util.Set;
 
 import android.content.Context;
@@ -107,5 +108,10 @@ public class CoreFacade implements ICore {
 		if (coreImpl instanceof CoreImpl){
 			((CoreImpl)coreImpl).setContext(context);
 		}
+	}
+
+	@Override
+	public List<Message> getMessagesByUser(User user) {
+		return coreImpl.getMessagesByUser(user);
 	}
 }
