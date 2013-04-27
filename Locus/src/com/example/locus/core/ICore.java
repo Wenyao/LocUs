@@ -2,8 +2,6 @@ package com.example.locus.core;
 
 import java.util.Set;
 
-import android.content.Context;
-
 import com.example.locus.entity.Result;
 import com.example.locus.entity.User;
 
@@ -19,6 +17,4 @@ public interface ICore extends IObservable, IObserver {
 	User getUserProfile(User target);
 	
 	User getCurrentUser();
-	
-	void setContext(Context context);
 }

@@ -4,6 +4,7 @@ import java.util.Set;
 
 import android.content.Context;
 
+import com.example.locus.entity.Message;
 import com.example.locus.entity.Result;
 import com.example.locus.entity.User;
 
@@ -78,8 +79,8 @@ public class CoreFacade implements ICore {
 	}
 
 	@Override
-	public void onReceiveMessage(User src, String msg) {
-		coreImpl.onReceiveMessage(src, msg);
+	public void onReceiveMessage(Message msg) {
+		coreImpl.onReceiveMessage(msg);
 	}
 
 	@Override
@@ -97,14 +98,14 @@ public class CoreFacade implements ICore {
 		coreImpl.onReceiveNearbyUsers(users);
 	}
 
-	@Override
 	/*
 	 * call this method initially once when app launches.
 	 * The context is required to create a database helper.
 	 * @see com.example.locus.core.ICore#setContext(android.content.Context)
 	 */
 	public void setContext(Context context) {
-		coreImpl.setContext(context);
-		
+		if (coreImpl instanceof CoreImpl){
+			((CoreImpl)coreImpl).setContext(context);
+		}
 	}
 }

@@ -10,6 +10,7 @@ import android.util.Log;
 import com.example.locus.dht.DHTFacade;
 import com.example.locus.dht.IDHT;
 import com.example.locus.entity.ErrorCodes;
+import com.example.locus.entity.Message;
 import com.example.locus.entity.Result;
 import com.example.locus.entity.User;
 import com.example.locus.network.IMessagePasser;
@@ -19,6 +20,7 @@ public class CoreImpl implements ICore {
 
 	private Context context;
 	private AccountDataSource accountDataSource;
+	private MessageDataSource messageDataSource;
 
 	private IDHT dht;
 	private IMessagePasser mp;
@@ -30,6 +32,7 @@ public class CoreImpl implements ICore {
 	public CoreImpl() {
 		context = null;
 		accountDataSource = null;
+		messageDataSource = null;
 
 		dht = DHTFacade.getInstance();
 		mp = MessagePasserFacade.getInstance();
@@ -94,6 +97,9 @@ public class CoreImpl implements ICore {
 		if (user != null) {
 			dht.delete(user);
 		}
+		
+		accountDataSource.close();
+		messageDataSource.close();
 		return Result.Success;
 	}
 
@@ -106,10 +112,9 @@ public class CoreImpl implements ICore {
 				return null;
 			} else {
 				List<User> users = accountDataSource.getAllUsers();
-				if (users.size() == 0){
-					return null; 
-				}
-				else{
+				if (users.size() == 0) {
+					return null;
+				} else {
 					user = users.get(0);
 					dht.join();
 					mp.startReceive();
@@ -123,9 +128,21 @@ public class CoreImpl implements ICore {
 	}
 
 	@Override
-	public void onReceiveMessage(User src, String msg) {
-		for (IObserver observer : observers) {
-			observer.onReceiveMessage(src, msg);
+	public void onReceiveMessage(Message msg) {
+		Log.i("com.example.locus.CoreImpl", "receive msg = " + msg.toString());
+		System.out.println("receive msg = " + msg.toString());
+		
+		if (msg != null) {
+			User temp = accountDataSource.getUserById(msg.getSrc().getId());
+			if (temp == null) {
+				accountDataSource.createUser(msg.getSrc());
+			}
+
+			messageDataSource.createMessage(msg);
+
+			for (IObserver observer : observers) {
+				observer.onReceiveMessage(msg);
+			}
 		}
 	}
 
@@ -148,10 +165,12 @@ public class CoreImpl implements ICore {
 		}
 	}
 
-	@Override
 	public void setContext(Context context) {
 		this.context = context;
 		accountDataSource = new AccountDataSource(context);
+		accountDataSource.open();
+		messageDataSource = new MessageDataSource(context);
+		messageDataSource.open();
 	}
 
 }

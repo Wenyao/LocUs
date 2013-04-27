@@ -7,8 +7,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
 
-import android.content.Context;
-
+import com.example.locus.entity.Message;
 import com.example.locus.entity.Result;
 import com.example.locus.entity.Sex;
 import com.example.locus.entity.User;
@@ -80,9 +79,9 @@ public class FakeCoreImpl implements ICore {
 	}
 
 	@Override
-	public void onReceiveMessage(User src, String msg) {
+	public void onReceiveMessage(Message msg) {
 		for (IObserver observer : observers) {
-			observer.onReceiveMessage(src, msg);
+			observer.onReceiveMessage(msg);
 		}
 	}
 
@@ -105,10 +104,6 @@ public class FakeCoreImpl implements ICore {
 
 	@Override
 	public void onReceiveNearbyUsers(Set<User> users) {
-	}
-
-	@Override
-	public void setContext(Context context) {
 	}
 
 }

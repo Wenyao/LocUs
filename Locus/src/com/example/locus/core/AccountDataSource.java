@@ -41,14 +41,17 @@ public class AccountDataSource {
 		values.put(AccountSQLiteHelper.COLUMN_SEX, user.getSex().getValue());
 		values.put(AccountSQLiteHelper.COLUMN_INTEREST, user.getInterests());
 		values.put(AccountSQLiteHelper.COLUMN_PIC, user.getPicURL());
-		long insertId = database.insert(AccountSQLiteHelper.TABLE_ACCOUNT, null,
-				values);
+		database.insert(AccountSQLiteHelper.TABLE_ACCOUNT, null, values);
 		Cursor cursor = database.query(AccountSQLiteHelper.TABLE_ACCOUNT,
-				allColumns, AccountSQLiteHelper.COLUMN_ID + " = " + insertId, null,
+				allColumns, AccountSQLiteHelper.COLUMN_ID + " = '" + user.getId() + "'", null,
 				null, null, null);
 		cursor.moveToFirst();
 		User newUser = cursorToUser(cursor);
 		cursor.close();
+		
+		newUser.setIp(user.getIp());
+		newUser.setLatitude(user.getLatitude());
+		newUser.setLongtitude(user.getLongtitude());
 		return newUser;
 	}
 
@@ -56,7 +59,17 @@ public class AccountDataSource {
 		String id = user.getId();
 		System.out.println("User deleted with id: " + id);
 		database.delete(AccountSQLiteHelper.TABLE_ACCOUNT, AccountSQLiteHelper.COLUMN_ID
-				+ " = " + id, null);
+				+ " = '" + id + "'", null);
+	}
+	
+	public User getUserById(String id){
+		Cursor cursor = database.query(AccountSQLiteHelper.TABLE_ACCOUNT,
+				allColumns, AccountSQLiteHelper.COLUMN_ID + " = '" + id + "'", null,
+				null, null, null);
+		cursor.moveToFirst();
+		User newUser = cursorToUser(cursor);
+		cursor.close();
+		return newUser;
 	}
 
 	public List<User> getAllUsers() {

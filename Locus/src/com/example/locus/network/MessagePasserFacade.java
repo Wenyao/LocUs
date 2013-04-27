@@ -41,7 +41,7 @@ public class MessagePasserFacade implements IMessagePasser {
 	@Override
 	public Result broadcast(User src, Set<User> targets, String msg) {
 		for (User target : targets){
-			MessagePasser.sendMessage(src, targets, port, msg);
+			MessagePasser.sendMessage(src, target, port, msg);
 		}
 		return Result.Success;
 	}
@@ -56,7 +56,7 @@ public class MessagePasserFacade implements IMessagePasser {
 	@Override
 	public User getUserProfile(User target) {
 		//return (User) CheckProfile.connect(target.getIp(), port);
-		return (User) MessagePasser.checkProfile(target.getIp(), port);
+		return (User) MessagePasser.checkProfile(target, Integer.valueOf(port));
 		//return null;
 	}
 }
