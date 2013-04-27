@@ -5,11 +5,17 @@ import java.util.List;
 import javax.swing.text.View;
 import javax.swing.text.html.ImageView;
 
+import android.app.Activity;
+import android.view.LayoutInflater;
+import android.view.ViewGroup;
+import android.widget.TextView;
+
 import com.example.locus.entity.Sex;
 import com.example.locus.entity.User;
 import com.sun.xml.internal.bind.CycleRecoverable.Context;
+import com.sun.xml.internal.ws.api.server.Adapter;
 
-public class AdapterList extends ArrayAdapter<User> {
+public class AdapterList extends Adapter<User> {
   
 	Context context; 
     int layoutResourceId;    
@@ -57,6 +63,12 @@ public class AdapterList extends ArrayAdapter<User> {
         
         return row;
     }
+
+	@Override
+	protected User createToolkit() {
+		// TODO Auto-generated method stub
+		return null;
+	}
     
     
 }
