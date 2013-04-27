@@ -1,19 +1,9 @@
 package com.example.locus;
 
-<<<<<<< HEAD
-import java.awt.Menu;
-=======
 import java.util.ArrayList;
->>>>>>> 47881eb630631c527dc32d7cad8f21bccc9e1c3e
 import java.util.List;
 import java.util.Set;
 
-<<<<<<< HEAD
-import javax.swing.text.View;
-import javax.swing.text.html.ListView;
-
-import sun.jkernel.Bundle;
-=======
 import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -25,11 +15,10 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
->>>>>>> 47881eb630631c527dc32d7cad8f21bccc9e1c3e
 
 import com.example.locus.core.CoreFacade;
-import com.example.locus.core.ICore;
 import com.example.locus.core.IObserver;
+import com.example.locus.entity.Message;
 import com.example.locus.entity.Sex;
 import com.example.locus.entity.User;
 
@@ -44,7 +33,7 @@ public class Demo extends Activity implements IObserver {
 	private ListView listView;
 	private TextView latituteField;
 	private TextView longitudeField;
-	ICore core;
+	CoreFacade core;
 	User currentUser;
 
 	private int groupId1 = 1;
@@ -58,7 +47,9 @@ public class Demo extends Activity implements IObserver {
 		currentUser = new User();
 		// create Icore instance
 		core = CoreFacade.getInstance();
-		// core.addObserver(this);
+		core.setContext(this.getApplicationContext());
+		core.addObserver(this);
+
 		username = intent.getStringExtra("userName");
 		latitude = Double.parseDouble(intent.getStringExtra("latitude"));
 		longitude = Double.parseDouble(intent.getStringExtra("longitude"));
@@ -110,20 +101,18 @@ public class Demo extends Activity implements IObserver {
 	}
 
 	@Override
-	public void onReceiveMessage(User src, String msg) {
-		// TODO Auto-generated method stub
-
+	public void onReceiveMessage(Message msg) {
+		AsyncTask<Message, Integer, Message> updateUITask = new OnReceiveMessageUpdateUITask();
+		updateUITask.execute(msg);
 	}
 
 	@Override
 	public void onReceiveUserProfile(User user) {
-		// TODO Auto-generated method stub
-
 	}
 
 	public void onDestroy() {
 		super.onDestroy();
-		 core.logout();
+		core.logout();
 	}
 
 	@Override
@@ -160,40 +149,66 @@ public class Demo extends Activity implements IObserver {
 				@Override
 				public void onItemClick(AdapterView<?> adapter, View view,
 						int position, long id) {
-					// TODO Auto-generated method stub
 					User o = (User) adapter.getItemAtPosition(position);
-//					GetUserProfileTask getUserProfileTask = new GetUserProfileTask();
-//					getUserProfileTask.execute(o);
-					 String str_text = o.getName();
-					 Toast.makeText(
-					 getApplicationContext(),
-					 str_text + " SelecteD\n" + "IP = " + o.getIp()
-					 + "\nLat=" + o.getLatitude() + " Lon="
-					 + o.getLongtitude(), Toast.LENGTH_LONG)
-					 .show();
-
+					GetUserProfileTask getUserProfileTask = new GetUserProfileTask();
+					getUserProfileTask.execute(o);
+					
+					SendMessageTask sendMessageTask = new SendMessageTask();
+					
+					Message msg = new Message(currentUser, o, "Normal", "lala");
+					sendMessageTask.execute(msg);
 				}
-
 			});
 		}
+	}
 
-		private class GetUserProfileTask extends AsyncTask<User, Integer, User> {
-			@Override
-			protected User doInBackground(User... params) {
-				return CoreFacade.getInstance().getUserProfile(params[0]);
-			}
-
-			@Override
-			protected void onPostExecute(User result) {
-				String str_text = result.getName();
-				Toast.makeText(
-						getApplicationContext(),
-						str_text + " \n" + "IP = " + result.getIp() + "\nLat="
-								+ result.getLatitude() + " Lon=" + result.getLongtitude()
-								+ " Int = " + result.getInterests(),
-						Toast.LENGTH_LONG).show();
-			}
+	private class GetUserProfileTask extends AsyncTask<User, Integer, User> {
+		@Override
+		protected User doInBackground(User... params) {
+			return CoreFacade.getInstance().getUserProfile(params[0]);
 		}
 
+		@Override
+		protected void onPostExecute(User result) {
+			String str_text = result.getName();
+			Toast.makeText(
+					getApplicationContext(),
+					str_text + " \n" + "IP = " + result.getIp() + "\nLat="
+							+ result.getLatitude() + " Lon="
+							+ result.getLongtitude() + " Int = "
+							+ result.getInterests(), Toast.LENGTH_LONG).show();
+		}
+	}
+
+	private class OnReceiveMessageUpdateUITask extends
+			AsyncTask<Message, Integer, Message> {
+		@Override
+		protected Message doInBackground(Message... params) {
+			return params[0];
+		}
+
+		@Override
+		protected void onPostExecute(Message result) {
+			// TODO add new message notification on the list
+			String str_text = result.toString();
+			Toast.makeText(getApplicationContext(), str_text, Toast.LENGTH_LONG)
+					.show();
+		}
+	}
+
+	private class SendMessageTask extends
+			AsyncTask<Message, Integer, Message> {
+		@Override
+		protected Message doInBackground(Message... params) {
+			CoreFacade.getInstance().sendMessage(params[0].getDst(), (String)params[0].getData());
+			return params[0];
+		}
+
+		@Override
+		protected void onPostExecute(Message result) {
+			String str_text = String.format("msg sent.  msg = %s", result.toString());
+			Toast.makeText(getApplicationContext(), str_text, Toast.LENGTH_LONG)
+					.show();
+		}
 	}
 }
