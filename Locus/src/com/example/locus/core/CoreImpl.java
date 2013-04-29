@@ -103,6 +103,7 @@ public class CoreImpl implements ICore {
 	@Override
 	public Result logout() {
 		if (user != null) {
+			Log.i(Constants.AppCoreTag, "delete user on chord");
 			dht.delete(user);
 		}
 
@@ -126,12 +127,12 @@ public class CoreImpl implements ICore {
 				} else {
 					user = users.get(0);
 					Log.v(Constants.AppCoreTag, "already registered user = " + user);
-					Log.v(Constants.AppCoreTag, "Enter join dht");
-					dht.join();
-					Log.v(Constants.AppCoreTag, "Enter start message passer");
-					mp.startReceive();
-					Log.v(Constants.AppCoreTag, "Enter refresh location");
-					refreshLocation(user.getLatitude(), user.getLongtitude());
+//					Log.v(Constants.AppCoreTag, "Enter join dht");
+//					dht.join();
+//					Log.v(Constants.AppCoreTag, "Enter start message passer");
+//					mp.startReceive();
+//					Log.v(Constants.AppCoreTag, "Enter refresh location");
+//					refreshLocation(user.getLatitude(), user.getLongtitude());
 					return user;
 				}
 			}

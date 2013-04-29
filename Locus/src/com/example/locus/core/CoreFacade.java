@@ -15,7 +15,7 @@ public class CoreFacade implements ICore {
 	private ICore coreImpl;
 	
 	private CoreFacade(){
-		coreImpl = new FakeCoreImpl();
+		coreImpl = new CoreImpl();
 	}
 	
 	public static CoreFacade getInstance(){

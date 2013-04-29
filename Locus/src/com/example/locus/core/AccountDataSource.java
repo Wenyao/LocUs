@@ -3,6 +3,8 @@ package com.example.locus.core;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.http.client.UserTokenHandler;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -20,7 +22,9 @@ public class AccountDataSource {
 			AccountSQLiteHelper.COLUMN_NAME, 
 			AccountSQLiteHelper.COLUMN_SEX,
 			AccountSQLiteHelper.COLUMN_INTEREST,
-			AccountSQLiteHelper.COLUMN_PIC
+			AccountSQLiteHelper.COLUMN_PIC,
+			AccountSQLiteHelper.COLUMN_LATI,
+			AccountSQLiteHelper.COLUMN_LONGTI,
 			};
 
 	public AccountDataSource(Context context) {
@@ -42,6 +46,8 @@ public class AccountDataSource {
 		values.put(AccountSQLiteHelper.COLUMN_SEX, user.getSex().getValue());
 		values.put(AccountSQLiteHelper.COLUMN_INTEREST, user.getInterests());
 		values.put(AccountSQLiteHelper.COLUMN_PIC, user.getPicURL());
+		values.put(AccountSQLiteHelper.COLUMN_LATI, "" + user.getLatitude());
+		values.put(AccountSQLiteHelper.COLUMN_LONGTI, "" + user.getLongtitude());
 		database.insert(AccountSQLiteHelper.TABLE_ACCOUNT, null, values);
 		Cursor cursor = database.query(AccountSQLiteHelper.TABLE_ACCOUNT,
 				allColumns, AccountSQLiteHelper.COLUMN_ID + " = '" + user.getId() + "'", null,
@@ -99,6 +105,8 @@ public class AccountDataSource {
 				cursor.getString(3),
 				cursor.getString(4));
 		user.setId(cursor.getString(0));
+		user.setLatitude(Double.parseDouble(cursor.getString(5)));
+		user.setLongtitude(Double.parseDouble(cursor.getString(6)));
 		return user;
 	}
 }

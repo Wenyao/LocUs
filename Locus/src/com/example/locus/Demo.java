@@ -36,6 +36,7 @@ public class Demo extends Activity implements IObserver {
 	private TextView longitudeField;
 	CoreFacade core;
 	User currentUser;
+	Sex gend;
 
 	private int groupId1 = 1;
 	private int editProfileId = Menu.FIRST;
@@ -48,7 +49,6 @@ public class Demo extends Activity implements IObserver {
 		currentUser = new User();
 		// create Icore instance
 		core = CoreFacade.getInstance();
-		core.setContext(this.getApplicationContext());
 		core.addObserver(this);
 
 		username = intent.getStringExtra("userName");

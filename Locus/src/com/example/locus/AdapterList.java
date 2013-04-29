@@ -11,11 +11,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import android.app.Activity;
-import android.view.LayoutInflater;
-import android.view.ViewGroup;
-import android.widget.TextView;
-
 import com.example.locus.entity.Sex;
 import com.example.locus.entity.User;
 
@@ -69,10 +64,6 @@ public class AdapterList extends ArrayAdapter<User> {
         return row;
     }
 
-	
-
-    
-    
 }
   
   
