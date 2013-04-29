@@ -55,6 +55,11 @@ public class CoreImpl implements ICore {
 	public Set<User> getUsersNearby() {
 		if (user != null) {
 			nearbyUsers = dht.getUsersByKey(user);
+			
+			for (User user : nearbyUsers) {
+				accountDataSource.createUser(user);
+			}
+			
 			onReceiveNearbyUsers(nearbyUsers);
 			return nearbyUsers;
 		} else {
@@ -127,12 +132,6 @@ public class CoreImpl implements ICore {
 				} else {
 					user = users.get(0);
 					Log.v(Constants.AppCoreTag, "already registered user = " + user);
-//					Log.v(Constants.AppCoreTag, "Enter join dht");
-//					dht.join();
-//					Log.v(Constants.AppCoreTag, "Enter start message passer");
-//					mp.startReceive();
-//					Log.v(Constants.AppCoreTag, "Enter refresh location");
-//					refreshLocation(user.getLatitude(), user.getLongtitude());
 					return user;
 				}
 			}
