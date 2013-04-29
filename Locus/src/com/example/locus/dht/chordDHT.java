@@ -96,7 +96,7 @@ public class chordDHT implements IDHT {
 
 		String protocol = URL.KNOWN_PROTOCOLS.get(URL.SOCKET_PROTOCOL);
 		try {
-			bootstrap_url = new URL(protocol + "://128.237.117.248:8080/ ");
+			bootstrap_url = new URL(protocol + "://catshark.ics.cs.cmu.edu:58384/ ");
 		} catch (MalformedURLException e) {
 			/* what should we do in this case ? */
 			// throw new RuntimeException(e);

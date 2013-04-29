@@ -64,6 +64,11 @@ public class CoreImpl implements ICore {
 
 	@Override
 	public Result sendMessage(User user, String msg) {
+		//Save message to database
+		Message newMsg = new Message(this.user, user, "Normal", msg);
+		newMsg.setId();
+		messageDataSource.createMessage(newMsg);
+		
 		return mp.sendMessage(this.user, user, msg);
 	}
 
@@ -80,9 +85,12 @@ public class CoreImpl implements ICore {
 
 	@Override
 	public Result register(User user) {
+		Log.v(Constants.AppCoreTag, "Enter Register user = " + user);
 		if (accountDataSource != null) {
 			this.user = accountDataSource.createUser(user);
+			Log.v(Constants.AppCoreTag, "Enter join dht");
 			dht.join();
+			Log.v(Constants.AppCoreTag, "Enter start message passer");
 			mp.startReceive();
 			return refreshLocation(user.getLatitude(), user.getLongtitude());
 		} else {
@@ -97,7 +105,7 @@ public class CoreImpl implements ICore {
 		if (user != null) {
 			dht.delete(user);
 		}
-		
+
 		accountDataSource.close();
 		messageDataSource.close();
 		return Result.Success;
@@ -105,6 +113,7 @@ public class CoreImpl implements ICore {
 
 	@Override
 	public User getCurrentUser() {
+		Log.v(Constants.AppCoreTag, "Enter Get current user");
 		if (user == null) {
 			if (accountDataSource == null) {
 				Log.e("Locus.DataSource",
@@ -116,8 +125,12 @@ public class CoreImpl implements ICore {
 					return null;
 				} else {
 					user = users.get(0);
+					Log.v(Constants.AppCoreTag, "already registered user = " + user);
+					Log.v(Constants.AppCoreTag, "Enter join dht");
 					dht.join();
+					Log.v(Constants.AppCoreTag, "Enter start message passer");
 					mp.startReceive();
+					Log.v(Constants.AppCoreTag, "Enter refresh location");
 					refreshLocation(user.getLatitude(), user.getLongtitude());
 					return user;
 				}
@@ -130,15 +143,30 @@ public class CoreImpl implements ICore {
 	@Override
 	public void onReceiveMessage(Message msg) {
 		Log.i(Constants.AppCoreTag, "receive msg = " + msg.toString());
-		System.out.println("receive msg = " + msg.toString());
-		
+
+		for (IObserver observer : observers) {
+			observer.onReceiveMessage(msg);
+		}
+
 		if (msg != null) {
 			User temp = accountDataSource.getUserById(msg.getSrc().getId());
+
 			if (temp == null) {
 				accountDataSource.createUser(msg.getSrc());
+				Log.i(Constants.AppCoreTag, "create user = " + msg.getSrc());
 			}
 
 			messageDataSource.createMessage(msg);
+			Log.i(Constants.AppCoreTag, "create message = " + msg);
+
+			List<Message> msgs = messageDataSource.getAllMessagesWithUser(msg
+					.getSrc());
+
+			for (Message message : msgs) {
+				Log.v(Constants.AppCoreTag,
+						String.format("All messages[%d] = %s",
+								msgs.indexOf(message), message));
+			}
 
 			for (IObserver observer : observers) {
 				observer.onReceiveMessage(msg);

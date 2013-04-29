@@ -8,6 +8,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.example.locus.entity.Message;
 import com.example.locus.entity.User;
@@ -52,10 +53,14 @@ public class MessageDataSource {
 		cursor.moveToFirst();
 		Message newMessage = cursorToMessage(cursor);
 		cursor.close();
+		
+		Log.i(Constants.AppCoreTag, "new message created = " + message);
 		return newMessage;
 	}
 
 	public List<Message> getAllMessagesWithUser(User user) {
+		Log.v(Constants.AppCoreTag, "getAllMessagesWithUser user = " + user);
+		
 		List<Message> msgs = new ArrayList<Message>();
 
 		String orderBy = MessageSQLiteHelper.COLUMN_MSG_ID + " ASC";

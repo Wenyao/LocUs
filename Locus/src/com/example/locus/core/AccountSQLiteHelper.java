@@ -29,7 +29,13 @@ public class AccountSQLiteHelper extends SQLiteOpenHelper {
 
 	@Override
 	public void onCreate(SQLiteDatabase db) {
-		db.execSQL(DATABASE_CREATE);
+		Log.i(Constants.AppCoreTag, "enter create db for account");
+		try {
+			db.execSQL(DATABASE_CREATE);
+		} catch (Exception e) {
+			Log.e(Constants.AppCoreTag, e.toString());
+		}
+		Log.i(Constants.AppCoreTag, "exit create db for account");
 	}
 
 	@Override

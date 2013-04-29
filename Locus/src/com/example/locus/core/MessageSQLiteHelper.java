@@ -15,7 +15,7 @@ public class MessageSQLiteHelper extends SQLiteOpenHelper {
 	public static final String COLUMN_DATA = "data";
 	public static final String COLUMN_MSG_ID = "msgId";
 
-	private static final String DATABASE_NAME = "locus.db";
+	private static final String DATABASE_NAME = "locus_msg.db";
 	private static final int DATABASE_VERSION = 1;
 
 	// Database creation sql statement
