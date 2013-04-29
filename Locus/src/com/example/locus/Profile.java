@@ -24,9 +24,9 @@ public class Profile extends Activity {
 		
 		Intent intent = getIntent();
 		user = (User)intent.getSerializableExtra("user");
-		User userProfile = new User();
+//		User userProfile = new User();
 		
-		userProfile = CoreFacade.getInstance().getUserProfile(user);
+//		userProfile = CoreFacade.getInstance().getUserProfile(user);
 		
 		TextView textName = (TextView) findViewById(R.id.textView2);
 		TextView textGender = (TextView) findViewById(R.id.textView4);
@@ -42,7 +42,7 @@ public class Profile extends Activity {
 	
 	public void chatClick(View view){
 		Intent intent = new Intent(this, Chat.class);
-		intent.putExtra("username", user.getName());
+		intent.putExtra("user", user);
 		startActivity(intent);
 	}
 	
@@ -59,7 +59,7 @@ public class Profile extends Activity {
 		 
 		 switch (item.getItemId()){
 		 	
-		 case 1 : Intent intent = new Intent(this, MainActivity.class);
+		 case 1 : Intent intent = new Intent(this, MyProfile.class);
 		 		  startActivity(intent);
 		 		  break;
 		 

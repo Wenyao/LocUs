@@ -2,34 +2,29 @@ package com.example.locus;
 
 import java.util.List;
 
-import com.example.locus.AdapterList.ListDetailsHolder;
-import com.example.locus.entity.Sex;
-import com.example.locus.entity.User;
-
-import android.os.Bundle;
 import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-public class ChatAdapter extends ArrayAdapter<String> {
+import com.example.locus.entity.Message;
+
+public class ChatAdapter extends ArrayAdapter<Message> {
 
 	Context context; 
     int layoutResourceId;    
-    List<String> data;
+    List<Message> data;
     
     static class ChatHolder
     {
-        ImageView ImageView;
+        TextView NameView;
         TextView StringView;
     }
     
-    public ChatAdapter(Context context, int layoutResourceId, List<String> data){
+    public ChatAdapter(Context context, int layoutResourceId, List<Message> data){
     	 super(context, layoutResourceId, data);
          this.layoutResourceId = layoutResourceId;
          this.context = context;
@@ -46,7 +41,7 @@ public class ChatAdapter extends ArrayAdapter<String> {
             row = inflater.inflate(layoutResourceId, parent, false);
             
             holder = new ChatHolder();
-            holder.ImageView = (ImageView)row.findViewById(R.id.chatImageView);
+            holder.NameView = (TextView)row.findViewById(R.id.textView1);
             holder.StringView = (TextView)row.findViewById(R.id.chatTextView);
             
             row.setTag(holder);
@@ -56,8 +51,9 @@ public class ChatAdapter extends ArrayAdapter<String> {
             holder = (ChatHolder)row.getTag();
         }
         
-        String msg = data.get(position);
-        holder.StringView.setText(msg);
+        Message msg = data.get(position);
+        holder.StringView.setText((String) msg.getData());
+        holder.NameView.setText((String) msg.getSrc().getName());
 //        if(user.getSex() == Sex.Female)
 //        	holder.ImageView.setImageResource(R.drawable.femaleicon);
 //        else

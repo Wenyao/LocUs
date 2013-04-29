@@ -18,13 +18,9 @@ import android.widget.TextView;
 
 import com.example.locus.entity.Sex;
 import com.example.locus.entity.User;
-<<<<<<< HEAD
-import com.sun.xml.internal.bind.CycleRecoverable.Context;
-import com.sun.xml.internal.ws.api.server.Adapter;
-=======
->>>>>>> 2953950c2d9b2af78ded876166d4dbbd03f2cddf
 
-public class AdapterList extends Adapter<User> {
+
+public class AdapterList extends ArrayAdapter<User> {
   
 	Context context; 
     int layoutResourceId;    
@@ -73,11 +69,8 @@ public class AdapterList extends Adapter<User> {
         return row;
     }
 
-	@Override
-	protected User createToolkit() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	
+
     
     
 }

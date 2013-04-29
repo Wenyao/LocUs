@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -82,18 +83,23 @@ public class Demo extends Activity implements IObserver {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		menu.add(groupId1, editProfileId, editProfileId, "Edit Profile");
+		MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.layout.menus, menu);
+        return true;
 
-		return super.onCreateOptionsMenu(menu);
 	}
 
 	public boolean onOptionsItemSelected(MenuItem item) {
 
 		switch (item.getItemId()) {
 
-		case 1:
-			Intent intent = new Intent(this, MainActivity.class);
+		case R.id.editProfile:
+			Intent intent = new Intent(this, MyProfile.class);
 			startActivity(intent);
+			break;
+		case R.id.broadCast:
+			Intent intentBroadCast = new Intent(this, BroadCast.class);
+			startActivity(intentBroadCast);
 			break;
 
 		}
@@ -211,4 +217,5 @@ public class Demo extends Activity implements IObserver {
 					.show();
 		}
 	}
+	
 }

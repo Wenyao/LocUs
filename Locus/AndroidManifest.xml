@@ -60,6 +60,14 @@
             android:name="com.example.locus.ChatAdapter"
             android:label="@string/title_activity_chat_adapter" >
         </activity>
+        <activity
+            android:name="com.example.locus.BroadCast"
+            android:label="@string/title_activity_broad_cast" >
+        </activity>
+        <activity
+            android:name="com.example.locus.MyProfile"
+            android:label="@string/title_activity_my_profile" >
+        </activity>
     </application>
 
 </manifest>

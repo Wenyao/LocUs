@@ -213,7 +213,7 @@ public class ListUsers extends Activity implements LocationListener, IObserver {
 		 
 		 switch (item.getItemId()){
 		 	
-		 case 1 : Intent intent = new Intent(this, MainActivity.class);
+		 case 1 : Intent intent = new Intent(this, MyProfile.class);
 		 		  startActivity(intent);
 		 		  break;
 		 
