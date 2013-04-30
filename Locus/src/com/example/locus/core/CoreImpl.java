@@ -57,11 +57,11 @@ public class CoreImpl implements ICore {
 	public Set<User> getUsersNearby() {
 		if (user != null) {
 			nearbyUsers = dht.getUsersByKey(user);
-			
+
 			for (User user : nearbyUsers) {
 				accountDataSource.createUser(user);
 			}
-			
+
 			onReceiveNearbyUsers(nearbyUsers);
 			return nearbyUsers;
 		} else {
@@ -71,11 +71,11 @@ public class CoreImpl implements ICore {
 
 	@Override
 	public Result sendMessage(User user, String msg) {
-		//Save message to database
+		// Save message to database
 		Message newMsg = new Message(this.user, user, "Normal", msg);
 		newMsg.setId();
 		messageDataSource.createMessage(newMsg);
-		
+
 		return mp.sendMessage(this.user, user, msg);
 	}
 
@@ -95,7 +95,7 @@ public class CoreImpl implements ICore {
 		Log.v(Constants.AppCoreTag, "Enter Register user = " + user);
 		if (accountDataSource != null) {
 			this.user = accountDataSource.createUser(user);
-			if (!isJoined){
+			if (!isJoined) {
 				Log.v(Constants.AppCoreTag, "Enter join dht");
 				dht.join();
 				isJoined = true;
@@ -136,7 +136,8 @@ public class CoreImpl implements ICore {
 					return null;
 				} else {
 					user = users.get(0);
-					Log.v(Constants.AppCoreTag, "already registered user = " + user);
+					Log.v(Constants.AppCoreTag, "already registered user = "
+							+ user);
 					return user;
 				}
 			}
@@ -199,11 +200,14 @@ public class CoreImpl implements ICore {
 	}
 
 	public void setContext(Context context) {
-		this.context = context;
-		accountDataSource = new AccountDataSource(context);
-		accountDataSource.open();
-		messageDataSource = new MessageDataSource(context, accountDataSource);
-		messageDataSource.open();
+		if (this.context != null) {
+			this.context = context;
+			accountDataSource = new AccountDataSource(context);
+			accountDataSource.open();
+			messageDataSource = new MessageDataSource(context,
+					accountDataSource);
+			messageDataSource.open();
+		}
 	}
 
 	@Override
