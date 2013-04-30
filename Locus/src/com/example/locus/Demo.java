@@ -101,6 +101,11 @@ public class Demo extends Activity implements IObserver {
 			Intent intentBroadCast = new Intent(this, BroadCast.class);
 			startActivity(intentBroadCast);
 			break;
+			
+		case R.id.refresh:
+			Intent intentMain = new Intent(this, MainActivity.class);
+			startActivity(intentMain);
+			break;
 
 		}
 		return super.onOptionsItemSelected(item);
@@ -150,21 +155,37 @@ public class Demo extends Activity implements IObserver {
 			listView = (ListView) findViewById(R.id.listView);
 			listView.setAdapter(adapter);
 
+//			listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//
+//				@Override
+//				public void onItemClick(AdapterView<?> adapter, View view,
+//						int position, long id) {
+//					User o = (User) adapter.getItemAtPosition(position);
+//					GetUserProfileTask getUserProfileTask = new GetUserProfileTask();
+//					getUserProfileTask.execute(o);
+//					
+//					SendMessageTask sendMessageTask = new SendMessageTask();
+//					
+//					Message msg = new Message(currentUser, o, "Normal", "lala");
+//					sendMessageTask.execute(msg);
+//				}
+//			});
 			listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
-				@Override
-				public void onItemClick(AdapterView<?> adapter, View view,
-						int position, long id) {
-					User o = (User) adapter.getItemAtPosition(position);
-					GetUserProfileTask getUserProfileTask = new GetUserProfileTask();
-					getUserProfileTask.execute(o);
-					
-					SendMessageTask sendMessageTask = new SendMessageTask();
-					
-					Message msg = new Message(currentUser, o, "Normal", "lala");
-					sendMessageTask.execute(msg);
-				}
-			});
+		        @Override
+		        public void onItemClick(AdapterView<?> adapter, View view, int position,
+		                long id) {
+		            // TODO Auto-generated method stub
+		            User o = (User)adapter.getItemAtPosition(position);
+		            String str_text = o.getName();
+		            Toast.makeText(getApplicationContext(),str_text+" \n"+"IP = "+o.getIp()+"\nLat="+o.getLatitude()+" Lon="+o.getLongtitude(), Toast.LENGTH_LONG).show();
+		            Intent intent = new Intent(getApplicationContext(), Profile.class);
+		            intent.putExtra("user", o);
+		            
+		            startActivity(intent);
+		        }
+
+		    });  
 		}
 	}
 

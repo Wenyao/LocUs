@@ -56,7 +56,10 @@ public class Chat extends Activity implements OnClickListener, IObserver {
 	}
 
 	private void addItemsToList(Message m) {
-		msg.add(m);
+		//msg.add(m);
+		//chatAdapter.clear();
+		
+		chatAdapter.add(m);
 		chatAdapter.notifyDataSetChanged();
 	}
 
@@ -71,11 +74,14 @@ public class Chat extends Activity implements OnClickListener, IObserver {
 	public void onClick(View v) {
 		//Message m = new Message();
 		String messg = tv.getText().toString();
+		
 		SendMessageTask sendMessageTask = new SendMessageTask();
 		
 		User currentUser = CoreFacade.getInstance().getCurrentUser();
 		Message mesg = new Message(currentUser, oppUser, "Normal", messg);
+		addItemsToList(mesg);
 		sendMessageTask.execute(mesg);
+		tv.setText("");
 
 	}
 	private class SendMessageTask extends
@@ -120,10 +126,12 @@ public class Chat extends Activity implements OnClickListener, IObserver {
 			String str_text = result.toString();
 			Toast.makeText(getApplicationContext(), str_text, Toast.LENGTH_LONG)
 			.show();
-			List<Message> chats = CoreFacade.getInstance().getMessagesByUser(result.getSrc());
 			msg.removeAll(msg);
+			
+			List<Message> chats = CoreFacade.getInstance().getMessagesByUser(result.getSrc());
+			
 			for(Message s : chats){
-				//addItemsToList((String)s.getData());
+				addItemsToList(s);
 			}
 
 

@@ -4,6 +4,9 @@
           
      <item android:id="@+id/broadCast"         
           android:title="MultiCast" />
+     
+     <item android:id="@+id/refresh"         
+          android:title="Refresh List" />
                
     
 </menu>
