@@ -4,24 +4,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import sun.util.logging.resources.logging;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
-
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-
 import android.content.ActivityNotFoundException;
-
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -170,7 +165,7 @@ public class Chat extends Activity implements OnClickListener, IObserver {
 		
 		// Build notification
 		// Actions are just fake
-		Notification noti = new Notification.Builder(this)
+		Notification noti = new NotificationCompat.Builder(this).setAutoCancel(true)
 		.setContentTitle("New Message from " + m.getSrc().getName())
 		.setContentText(m.getData().toString())
 		.setSmallIcon(R.drawable.locus)
