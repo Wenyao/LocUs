@@ -6,6 +6,7 @@ import com.example.locus.core.CoreFacade;
 import com.example.locus.core.IObserver;
 import com.example.locus.entity.Result;
 import com.example.locus.entity.User;
+import com.example.locus.security.SecurityFacade;
 
 public class MessagePasserFacade implements IMessagePasser {
 	private static MessagePasserFacade instance = null;
@@ -34,7 +35,8 @@ public class MessagePasserFacade implements IMessagePasser {
 
 	@Override
 	public Result sendMessage(User src, User target, String msg) {
-		MessagePasser.sendMessage(src, target, port, msg);
+		MessagePasser.sendMessage(src, target, port, SecurityFacade
+				.getInstance().encrypt_data(msg, target.getPublicKey()));
 		return Result.Success;
 	}
 
@@ -42,7 +44,7 @@ public class MessagePasserFacade implements IMessagePasser {
 	public Result broadcast(User src, Set<User> targets, String msg) {
 		for (User target : targets) {
 			if (!src.equals(target)) {
-				MessagePasser.sendMessage(src, target, port, msg);
+				sendMessage(src, target, msg);
 			}
 		}
 		return Result.Success;
@@ -50,16 +52,13 @@ public class MessagePasserFacade implements IMessagePasser {
 
 	@Override
 	public Result startReceive() {
-		// CheckProfile.listen(port, CoreFacade.getInstance());
 		MessagePasser.listen(port, CoreFacade.getInstance());
 		return Result.Success;
 	}
 
 	@Override
 	public User getUserProfile(User target) {
-		// return (User) CheckProfile.connect(target.getIp(), port);
 		return (User) MessagePasser.checkProfile(target, Integer.valueOf(port));
-		// return null;
 	}
 
 	@Override

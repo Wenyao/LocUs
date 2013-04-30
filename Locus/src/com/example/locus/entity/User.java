@@ -25,6 +25,16 @@ public class User implements Serializable {
 	private double longtitude;
 	private String interests;
 	private String picURL;
+	
+	private String publicKey;
+
+	public String getPublicKey() {
+		return publicKey;
+	}
+
+	public void setPublicKey(String publicKey) {
+		this.publicKey = publicKey;
+	}
 
 	public String getInterests() {
 		return interests;
@@ -70,6 +80,14 @@ public class User implements Serializable {
 		ip = splitsStrings[3];
 		latitude = Double.parseDouble(splitsStrings[4]);
 		longtitude = Double.parseDouble(splitsStrings[5]);
+		
+		publicKey = splitsStrings[6];
+		if (splitsStrings.length > 7){
+			for (int i = 7; i < splitsStrings.length; i++) {
+				publicKey += "," + splitsStrings[i];
+			}
+			
+		}
 	}
 	
 	public String getId() {
@@ -138,7 +156,7 @@ public class User implements Serializable {
 	}
 	
 	public String serialize(){
-		return String.format("%s,%s,%s,%s,%f,%f", id, name, sex, ip, latitude, longtitude);
+		return String.format("%s,%s,%s,%s,%f,%f,%s", id, name, sex, ip, latitude, longtitude,publicKey);
 	}
 	
 	@Override
