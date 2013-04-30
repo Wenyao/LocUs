@@ -126,7 +126,6 @@ public class chordDHT implements IDHT {
 		try {
 			ip_address = IPAddress.getIPAddress(true);
 		} catch (IOException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		try {
@@ -224,7 +223,7 @@ public class chordDHT implements IDHT {
 			 * and then retrieve all the users from these tile numbers.
 			 */
 			for (String tile : nearby_tiles) {
-				s = chord_instance.retrieve(new TileKey(user.getTileNumber()));
+				s = chord_instance.retrieve(new TileKey(tile));
 				if (s != null) {
 					for (Serializable serializableObjs : s) {
 						nearby_users.add(new User((String) serializableObjs));
@@ -234,8 +233,6 @@ public class chordDHT implements IDHT {
 
 		} catch (ServiceException e) {
 			e.printStackTrace();
-			// throw new
-			// RuntimeException("Error occurred in retrieving the Data",e);
 			return null;
 		}
 		return nearby_users;
@@ -244,11 +241,8 @@ public class chordDHT implements IDHT {
 	public Result delete(User user) {
 
 		try {
-			chord_instance.remove(new TileKey(user.getTileNumber()), user);
+			chord_instance.remove(new TileKey(user.getTileNumber()), user.serialize());
 		} catch (ServiceException e) {
-			// e.printStackTrace();
-			// throw new
-			// RuntimeException("Error occurred in removing the Data",e);
 			return new Result(false, ErrorCodes.DHTError);
 		}
 
@@ -256,5 +250,10 @@ public class chordDHT implements IDHT {
 	}
 
 	public void leave() {
+		try {
+			chord_instance.leave();
+		} catch (ServiceException e) {
+			e.printStackTrace();
+		} 
 	}
 }
