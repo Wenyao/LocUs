@@ -179,8 +179,8 @@ public class Chat extends Activity implements OnClickListener, IObserver {
 		// Hide the notification after its selected
 		noti.flags |= Notification.FLAG_AUTO_CANCEL;
 	
-		noti.flags |= Notification.DEFAULT_VIBRATE;
-		noti.flags |= Notification.DEFAULT_SOUND;
+		//noti.flags |= Notification.DEFAULT_VIBRATE;
+		//noti.flags |= Notification.DEFAULT_SOUND;
 		
 		notificationManager.notify(0, noti); 
 
