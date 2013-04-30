@@ -32,6 +32,7 @@ public class Demo extends Activity implements IObserver {
 	String username;
 	String ipAdd;
 	String gender;
+	Sex sex;
 	String interests;
 	private ListView listView;
 	private TextView latituteField;
@@ -51,26 +52,30 @@ public class Demo extends Activity implements IObserver {
 		core = CoreFacade.getInstance();
 		currentUser = core.getCurrentUser();
 
-		if (currentUser == null) {
-			currentUser = new User();
-			core.addObserver(this);
-		}
-
 		username = intent.getStringExtra("userName");
 		latitude = Double.parseDouble(intent.getStringExtra("latitude"));
 		longitude = Double.parseDouble(intent.getStringExtra("longitude"));
 		ipAdd = intent.getStringExtra("IP");
 		gender = intent.getStringExtra("sex");
-		interests = intent.getStringExtra("interests");
-		currentUser.setLatitude(latitude);
-		currentUser.setLongtitude(longitude);
-		currentUser.setIp(ipAdd);
-		currentUser.setName(username);
-		currentUser.setInterests(interests);
 		if (gender.equals("Male"))
-			currentUser.setSex(Sex.Male);
+			sex = Sex.Male;
 		else
-			currentUser.setSex(Sex.Female);
+			sex = Sex.Female;
+
+		interests = intent.getStringExtra("interests");
+
+		if (currentUser == null) {
+			currentUser = new User(username, sex, ipAdd, latitude, longitude,
+					interests);
+			core.addObserver(this);
+		} else {
+			currentUser.setLatitude(latitude);
+			currentUser.setLongtitude(longitude);
+			currentUser.setIp(ipAdd);
+			currentUser.setName(username);
+			currentUser.setInterests(interests);
+			currentUser.setSex(sex);
+		}
 
 		AsyncTask<User, Integer, Set<User>> registerTask = new RegisterTask();
 		registerTask.execute(currentUser);
@@ -256,7 +261,7 @@ public class Demo extends Activity implements IObserver {
 					.show();
 		}
 	}
-	
+
 	private class LogoutTask extends AsyncTask<Object, Integer, Object> {
 		@Override
 		protected Object doInBackground(Object... params) {
@@ -266,8 +271,8 @@ public class Demo extends Activity implements IObserver {
 
 		@Override
 		protected void onPostExecute(Object result) {
-			Toast.makeText(getApplicationContext(), "Good bye!", Toast.LENGTH_LONG)
-					.show();
+			Toast.makeText(getApplicationContext(), "Good bye!",
+					Toast.LENGTH_LONG).show();
 		}
 	}
 
