@@ -59,4 +59,12 @@ public class MessagePasserFacade implements IMessagePasser {
 		return (User) MessagePasser.checkProfile(target, Integer.valueOf(port));
 		//return null;
 	}
+
+	@Override
+	public Result stopReceive() {
+		MessagePasser.stopListen();
+		return Result.Success;
+	}
+	
+	
 }

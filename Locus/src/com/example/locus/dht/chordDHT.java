@@ -7,7 +7,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import sun.util.logging.resources.logging;
+
+import android.util.Log;
+
 import com.example.locus.IPAddress;
+import com.example.locus.core.Constants;
 import com.example.locus.entity.ErrorCodes;
 import com.example.locus.entity.Result;
 import com.example.locus.entity.User;
@@ -96,7 +101,8 @@ public class chordDHT implements IDHT {
 
 		String protocol = URL.KNOWN_PROTOCOLS.get(URL.SOCKET_PROTOCOL);
 		try {
-			bootstrap_url = new URL(protocol + "://catshark.ics.cs.cmu.edu:58384/ ");
+			bootstrap_url = new URL(protocol
+					+ "://catshark.ics.cs.cmu.edu:58384/ ");
 		} catch (MalformedURLException e) {
 			/* what should we do in this case ? */
 			// throw new RuntimeException(e);
@@ -146,6 +152,7 @@ public class chordDHT implements IDHT {
 			chord_instance.join(local_url, bootstrap_url);
 		} catch (ServiceException e) {
 			e.printStackTrace();
+			Log.e(Constants.appChordTag, "join error e = " + e);
 			return new Result(false, ErrorCodes.DHTError);
 		}
 		return Result.Success;
@@ -249,7 +256,5 @@ public class chordDHT implements IDHT {
 	}
 
 	public void leave() {
-
 	}
-
 }

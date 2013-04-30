@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.apache.http.client.UserTokenHandler;
 
+import android.R.bool;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -15,28 +16,36 @@ import android.util.Log;
 import com.example.locus.entity.User;
 
 public class AccountDataSource {
+	private boolean isDatabaseOpen;
 	private SQLiteDatabase database;
 	private AccountSQLiteHelper dbHelper;
-	private String[] allColumns = { 
-			AccountSQLiteHelper.COLUMN_ID,
-			AccountSQLiteHelper.COLUMN_NAME, 
-			AccountSQLiteHelper.COLUMN_SEX,
+	private String[] allColumns = { AccountSQLiteHelper.COLUMN_ID,
+			AccountSQLiteHelper.COLUMN_NAME, AccountSQLiteHelper.COLUMN_SEX,
 			AccountSQLiteHelper.COLUMN_INTEREST,
-			AccountSQLiteHelper.COLUMN_PIC,
-			AccountSQLiteHelper.COLUMN_LATI,
-			AccountSQLiteHelper.COLUMN_LONGTI,
-			};
+			AccountSQLiteHelper.COLUMN_PIC, AccountSQLiteHelper.COLUMN_LATI,
+			AccountSQLiteHelper.COLUMN_LONGTI, };
 
 	public AccountDataSource(Context context) {
 		dbHelper = new AccountSQLiteHelper(context);
+		isDatabaseOpen = false;
 	}
 
 	public void open() throws SQLException {
-		database = dbHelper.getWritableDatabase();
+		if (!isDatabaseOpen) {
+			database = dbHelper.getWritableDatabase();
+			isDatabaseOpen = true;
+		}
 	}
 
 	public void close() {
-		dbHelper.close();
+		if (isDatabaseOpen) {
+			dbHelper.close();
+			isDatabaseOpen = false;
+		}
+	}
+
+	public boolean isOpen() {
+		return isDatabaseOpen;
 	}
 
 	public User createUser(User user) {
@@ -48,18 +57,30 @@ public class AccountDataSource {
 		values.put(AccountSQLiteHelper.COLUMN_PIC, user.getPicURL());
 		values.put(AccountSQLiteHelper.COLUMN_LATI, "" + user.getLatitude());
 		values.put(AccountSQLiteHelper.COLUMN_LONGTI, "" + user.getLongtitude());
-		database.insert(AccountSQLiteHelper.TABLE_ACCOUNT, null, values);
 		Cursor cursor = database.query(AccountSQLiteHelper.TABLE_ACCOUNT,
-				allColumns, AccountSQLiteHelper.COLUMN_ID + " = '" + user.getId() + "'", null,
-				null, null, null);
+				allColumns,
+				AccountSQLiteHelper.COLUMN_ID + " = '" + user.getId() + "'",
+				null, null, null, null);
+		if (!cursor.moveToFirst()) {
+			database.insert(AccountSQLiteHelper.TABLE_ACCOUNT, null, values);
+		} else {
+			database.update(
+					AccountSQLiteHelper.TABLE_ACCOUNT,
+					values,
+					AccountSQLiteHelper.COLUMN_ID + " = '" + user.getId() + "'",
+					null);
+		}
+		cursor = database.query(AccountSQLiteHelper.TABLE_ACCOUNT, allColumns,
+				AccountSQLiteHelper.COLUMN_ID + " = '" + user.getId() + "'",
+				null, null, null, null);
 		cursor.moveToFirst();
 		User newUser = cursorToUser(cursor);
 		cursor.close();
-		
+
 		newUser.setIp(user.getIp());
 		newUser.setLatitude(user.getLatitude());
 		newUser.setLongtitude(user.getLongtitude());
-		
+
 		Log.i(Constants.AppCoreTag, "new user created or updated = " + user);
 		return newUser;
 	}
@@ -67,14 +88,14 @@ public class AccountDataSource {
 	public void deleteUser(User user) {
 		String id = user.getId();
 		System.out.println("User deleted with id: " + id);
-		database.delete(AccountSQLiteHelper.TABLE_ACCOUNT, AccountSQLiteHelper.COLUMN_ID
-				+ " = '" + id + "'", null);
+		database.delete(AccountSQLiteHelper.TABLE_ACCOUNT,
+				AccountSQLiteHelper.COLUMN_ID + " = '" + id + "'", null);
 	}
-	
-	public User getUserById(String id){
+
+	public User getUserById(String id) {
 		Cursor cursor = database.query(AccountSQLiteHelper.TABLE_ACCOUNT,
-				allColumns, AccountSQLiteHelper.COLUMN_ID + " = '" + id + "'", null,
-				null, null, null);
+				allColumns, AccountSQLiteHelper.COLUMN_ID + " = '" + id + "'",
+				null, null, null, null);
 		cursor.moveToFirst();
 		User newUser = cursorToUser(cursor);
 		cursor.close();
@@ -99,11 +120,8 @@ public class AccountDataSource {
 	}
 
 	private User cursorToUser(Cursor cursor) {
-		User user = new User(
-				cursor.getString(1),
-				cursor.getInt(2),
-				cursor.getString(3),
-				cursor.getString(4));
+		User user = new User(cursor.getString(1), cursor.getInt(2),
+				cursor.getString(3), cursor.getString(4));
 		user.setId(cursor.getString(0));
 		user.setLatitude(Double.parseDouble(cursor.getString(5)));
 		user.setLongtitude(Double.parseDouble(cursor.getString(6)));

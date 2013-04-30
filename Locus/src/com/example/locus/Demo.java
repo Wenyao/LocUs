@@ -8,6 +8,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -17,6 +18,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.locus.core.Constants;
 import com.example.locus.core.CoreFacade;
 import com.example.locus.core.IObserver;
 import com.example.locus.entity.Message;
@@ -46,10 +48,13 @@ public class Demo extends Activity implements IObserver {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_list_users);
 		Intent intent = getIntent();
-		currentUser = new User();
-		// create Icore instance
 		core = CoreFacade.getInstance();
-		core.addObserver(this);
+		currentUser = core.getCurrentUser();
+
+		if (currentUser == null) {
+			currentUser = new User();
+			core.addObserver(this);
+		}
 
 		username = intent.getStringExtra("userName");
 		latitude = Double.parseDouble(intent.getStringExtra("latitude"));
@@ -84,8 +89,8 @@ public class Demo extends Activity implements IObserver {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		MenuInflater menuInflater = getMenuInflater();
-        menuInflater.inflate(R.layout.menus, menu);
-        return true;
+		menuInflater.inflate(R.layout.menus, menu);
+		return true;
 
 	}
 
@@ -101,7 +106,7 @@ public class Demo extends Activity implements IObserver {
 			Intent intentBroadCast = new Intent(this, BroadCast.class);
 			startActivity(intentBroadCast);
 			break;
-			
+
 		case R.id.refresh:
 			Intent intentMain = new Intent(this, MainActivity.class);
 			startActivity(intentMain);
@@ -123,7 +128,8 @@ public class Demo extends Activity implements IObserver {
 
 	public void onDestroy() {
 		super.onDestroy();
-		core.logout();
+		LogoutTask logoutTask = new LogoutTask();
+		logoutTask.execute(new Object[1]);
 	}
 
 	@Override
@@ -140,7 +146,11 @@ public class Demo extends Activity implements IObserver {
 
 		@Override
 		protected void onPostExecute(Set<User> result) {
-			System.out.println("onPostExecute");
+			if (result != null) {
+				Log.i(Constants.AppUITag,
+						"refreshed user number = " + result.size());
+			}
+
 			List<User> data = new ArrayList<User>();
 			try {
 				data.addAll(result);
@@ -155,37 +165,44 @@ public class Demo extends Activity implements IObserver {
 			listView = (ListView) findViewById(R.id.listView);
 			listView.setAdapter(adapter);
 
-//			listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//
-//				@Override
-//				public void onItemClick(AdapterView<?> adapter, View view,
-//						int position, long id) {
-//					User o = (User) adapter.getItemAtPosition(position);
-//					GetUserProfileTask getUserProfileTask = new GetUserProfileTask();
-//					getUserProfileTask.execute(o);
-//					
-//					SendMessageTask sendMessageTask = new SendMessageTask();
-//					
-//					Message msg = new Message(currentUser, o, "Normal", "lala");
-//					sendMessageTask.execute(msg);
-//				}
-//			});
+			// listView.setOnItemClickListener(new
+			// AdapterView.OnItemClickListener() {
+			//
+			// @Override
+			// public void onItemClick(AdapterView<?> adapter, View view,
+			// int position, long id) {
+			// User o = (User) adapter.getItemAtPosition(position);
+			// GetUserProfileTask getUserProfileTask = new GetUserProfileTask();
+			// getUserProfileTask.execute(o);
+			//
+			// SendMessageTask sendMessageTask = new SendMessageTask();
+			//
+			// Message msg = new Message(currentUser, o, "Normal", "lala");
+			// sendMessageTask.execute(msg);
+			// }
+			// });
 			listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
-		        @Override
-		        public void onItemClick(AdapterView<?> adapter, View view, int position,
-		                long id) {
-		            // TODO Auto-generated method stub
-		            User o = (User)adapter.getItemAtPosition(position);
-		            String str_text = o.getName();
-		            Toast.makeText(getApplicationContext(),str_text+" \n"+"IP = "+o.getIp()+"\nLat="+o.getLatitude()+" Lon="+o.getLongtitude(), Toast.LENGTH_LONG).show();
-		            Intent intent = new Intent(getApplicationContext(), Profile.class);
-		            intent.putExtra("user", o);
-		            
-		            startActivity(intent);
-		        }
+				@Override
+				public void onItemClick(AdapterView<?> adapter, View view,
+						int position, long id) {
+					// TODO Auto-generated method stub
+					User o = (User) adapter.getItemAtPosition(position);
+					String str_text = o.getName();
+					Toast.makeText(
+							getApplicationContext(),
+							str_text + " \n" + "IP = " + o.getIp() + "\nLat="
+									+ o.getLatitude() + " Lon="
+									+ o.getLongtitude(), Toast.LENGTH_LONG)
+							.show();
+					Intent intent = new Intent(getApplicationContext(),
+							Profile.class);
+					intent.putExtra("user", o);
 
-		    });  
+					startActivity(intent);
+				}
+
+			});
 		}
 	}
 
@@ -223,20 +240,35 @@ public class Demo extends Activity implements IObserver {
 		}
 	}
 
-	private class SendMessageTask extends
-			AsyncTask<Message, Integer, Message> {
+	private class SendMessageTask extends AsyncTask<Message, Integer, Message> {
 		@Override
 		protected Message doInBackground(Message... params) {
-			CoreFacade.getInstance().sendMessage(params[0].getDst(), (String)params[0].getData());
+			CoreFacade.getInstance().sendMessage(params[0].getDst(),
+					(String) params[0].getData());
 			return params[0];
 		}
 
 		@Override
 		protected void onPostExecute(Message result) {
-			String str_text = String.format("msg sent.  msg = %s", result.toString());
+			String str_text = String.format("msg sent.  msg = %s",
+					result.toString());
 			Toast.makeText(getApplicationContext(), str_text, Toast.LENGTH_LONG)
 					.show();
 		}
 	}
 	
+	private class LogoutTask extends AsyncTask<Object, Integer, Object> {
+		@Override
+		protected Object doInBackground(Object... params) {
+			CoreFacade.getInstance().logout();
+			return null;
+		}
+
+		@Override
+		protected void onPostExecute(Object result) {
+			Toast.makeText(getApplicationContext(), "Good bye!", Toast.LENGTH_LONG)
+					.show();
+		}
+	}
+
 }
