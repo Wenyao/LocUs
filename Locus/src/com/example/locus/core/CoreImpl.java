@@ -200,7 +200,7 @@ public class CoreImpl implements ICore {
 	}
 
 	public void setContext(Context context) {
-		if (this.context != null) {
+		if (this.context == null) {
 			this.context = context;
 			accountDataSource = new AccountDataSource(context);
 			accountDataSource.open();
