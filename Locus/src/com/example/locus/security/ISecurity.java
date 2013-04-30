@@ -20,3 +20,29 @@ public interface ISecurity {
          */
         public String decrypt_data(String enc_data);
 }
+
+/*    	SAMPLE CODE TO USE/TEST THE SECURITY INTERFACE
+SecurityFacade sFacade = SecurityFacade.getInstance() ; 
+String pubKey = null ; 
+String text = "Some text that has to be encrypted..." ;
+String encrypted_text = null ; 
+String decrypted_text = null ; 
+if ( sFacade != null )  { 
+	pubKey = sFacade.generate_keypair() ; 
+	if ( pubKey != null) { 
+		encrypted_text = sFacade.encrypt_data(text, pubKey) ; 
+		if (encrypted_text != null) {
+			Log.d("#Enc Text#",encrypted_text);
+			decrypted_text = sFacade.decrypt_data(encrypted_text) ; 
+			if ( decrypted_text != null) { 
+				Log.d("# Dec Text#",decrypted_text); 
+				if ( ! decrypted_text.equals(text)) { 
+					Log.d("STATUS","ENCRYPTION/DECRYPTION Failed");
+				} else { 
+					Log.d("STATUS","ENCRYPTION/DECRYPTION Passed");
+				}
+			}
+		}
+	}
+}
+*/
