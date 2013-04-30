@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import sun.util.logging.resources.logging;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 
@@ -17,6 +19,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -28,6 +31,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.locus.core.Constants;
 import com.example.locus.core.CoreFacade;
 import com.example.locus.core.IObserver;
 import com.example.locus.entity.Message;
@@ -50,7 +54,6 @@ public class Chat extends Activity implements OnClickListener, IObserver {
 		super.onCreate(savedInstanceState);
 
 		Intent intent = getIntent();
-		oppUser = new User();
 		oppUser = (User) intent.getSerializableExtra("user");
 		CoreFacade.getInstance().addObserver(this);
 
@@ -63,6 +66,7 @@ public class Chat extends Activity implements OnClickListener, IObserver {
 		msgText = (TextView) findViewById(R.id.chatText);
 
 		msg = new ArrayList<Message>();
+		
 		chatAdapter = new ChatAdapter(this, R.layout.activity_chat_adapter, msg);
 		chatView.setAdapter(chatAdapter);
 
@@ -70,6 +74,7 @@ public class Chat extends Activity implements OnClickListener, IObserver {
 		msg.removeAll(msg);
 
 		List<Message> chats = new ArrayList<Message>();
+		Log.v(Constants.AppUITag, "get msgs with user = " + oppUser);
 		chats = CoreFacade.getInstance().getMessagesByUser(oppUser);
 		if( chats != null){
 			for(Message s : chats){

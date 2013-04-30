@@ -93,11 +93,13 @@ public class AccountDataSource {
 	}
 
 	public User getUserById(String id) {
+		User newUser = null;
 		Cursor cursor = database.query(AccountSQLiteHelper.TABLE_ACCOUNT,
 				allColumns, AccountSQLiteHelper.COLUMN_ID + " = '" + id + "'",
 				null, null, null, null);
-		cursor.moveToFirst();
-		User newUser = cursorToUser(cursor);
+		if (cursor.moveToFirst()) {
+			newUser = cursorToUser(cursor);
+		}
 		cursor.close();
 		return newUser;
 	}

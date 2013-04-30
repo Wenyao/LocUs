@@ -15,6 +15,7 @@ import com.example.locus.entity.Result;
 import com.example.locus.entity.User;
 import com.example.locus.network.IMessagePasser;
 import com.example.locus.network.MessagePasserFacade;
+import com.example.locus.security.SecurityFacade;
 
 public class CoreImpl implements ICore {
 
@@ -25,6 +26,7 @@ public class CoreImpl implements ICore {
 	private IDHT dht;
 	private IMessagePasser mp;
 	private User user;
+	private User oldUser;
 	private boolean isJoined;
 	private Set<User> nearbyUsers;
 
@@ -35,6 +37,7 @@ public class CoreImpl implements ICore {
 		accountDataSource = null;
 		messageDataSource = null;
 		isJoined = false;
+		oldUser = null;
 
 		dht = DHTFacade.getInstance();
 		mp = MessagePasserFacade.getInstance();
@@ -47,8 +50,12 @@ public class CoreImpl implements ICore {
 			user.setLatitude(lati);
 			user.setLongtitude(longti);
 
-			// TODO verify it
-			//dht.delete(user);
+			if (oldUser != null){
+				Log.i(Constants.AppCoreTag, "delete old user = " + oldUser);
+				dht.delete(user);
+			}
+			
+			Log.i(Constants.AppCoreTag, "put new user = " + user);
 			dht.put(user);
 			return Result.Success;
 		} else {
@@ -97,8 +104,17 @@ public class CoreImpl implements ICore {
 	public Result register(User user) {
 		Log.v(Constants.AppCoreTag, "Enter Register user = " + user);
 		if (accountDataSource != null) {
+			oldUser = accountDataSource.getUserById(user.getId());
 			this.user = accountDataSource.createUser(user);
+			
 			if (!isJoined) {
+				Log.v(Constants.AppCoreTag, "Generate public key");
+				this.user.setPublicKey(SecurityFacade.getInstance()
+						.generate_keypair());
+				
+				//just joined, not on Chord
+				oldUser = null;
+
 				Log.v(Constants.AppCoreTag, "Enter join dht");
 				dht.join();
 				isJoined = true;
@@ -115,18 +131,18 @@ public class CoreImpl implements ICore {
 
 	@Override
 	public Result logout() {
-		//TODO
-//		if (user != null) {
-//			Log.i(Constants.AppCoreTag, "delete user on chord");
-//			dht.delete(user);
-//		}
+		// TODO
+		 if (user != null) {
+			 Log.i(Constants.AppCoreTag, "delete user on chord");
+			 dht.delete(user);
+		 }
 
-//		if (isJoined) {
-//			Log.i(Constants.AppCoreTag, "leave chord");
-//			dht.leave();
-//			mp.stopReceive();
-//			isJoined = false;
-//		}
+		 if (isJoined) {
+			 Log.i(Constants.AppCoreTag, "leave chord");
+			 dht.leave();
+			 mp.stopReceive();
+			 isJoined = false;
+		 }
 
 		accountDataSource.close();
 		messageDataSource.close();
@@ -159,6 +175,8 @@ public class CoreImpl implements ICore {
 
 	@Override
 	public void onReceiveMessage(Message msg) {
+		msg.setData(SecurityFacade.getInstance().decrypt_data(
+				(String) msg.getData()));
 		Log.i(Constants.AppCoreTag, "receive msg = " + msg.toString());
 
 		for (IObserver observer : observers) {
@@ -218,8 +236,7 @@ public class CoreImpl implements ICore {
 			messageDataSource = new MessageDataSource(context,
 					accountDataSource);
 			messageDataSource.open();
-		}
-		else{
+		} else {
 			accountDataSource.open();
 			messageDataSource.open();
 		}
