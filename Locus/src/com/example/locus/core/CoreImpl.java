@@ -25,6 +25,7 @@ public class CoreImpl implements ICore {
 	private IDHT dht;
 	private IMessagePasser mp;
 	private User user;
+	private boolean isJoined;
 	private Set<User> nearbyUsers;
 
 	private List<IObserver> observers;
@@ -33,6 +34,7 @@ public class CoreImpl implements ICore {
 		context = null;
 		accountDataSource = null;
 		messageDataSource = null;
+		isJoined = false;
 
 		dht = DHTFacade.getInstance();
 		mp = MessagePasserFacade.getInstance();
@@ -93,10 +95,13 @@ public class CoreImpl implements ICore {
 		Log.v(Constants.AppCoreTag, "Enter Register user = " + user);
 		if (accountDataSource != null) {
 			this.user = accountDataSource.createUser(user);
-			Log.v(Constants.AppCoreTag, "Enter join dht");
-			dht.join();
-			Log.v(Constants.AppCoreTag, "Enter start message passer");
-			mp.startReceive();
+			if (!isJoined){
+				Log.v(Constants.AppCoreTag, "Enter join dht");
+				dht.join();
+				isJoined = true;
+				Log.v(Constants.AppCoreTag, "Enter start message passer");
+				mp.startReceive();
+			}
 			return refreshLocation(user.getLatitude(), user.getLongtitude());
 		} else {
 			Log.e("Locus.DataSource",
