@@ -17,6 +17,7 @@ public class Profile extends Activity {
 	 private int editProfileId = Menu.FIRST;
 	 User user;
 	 
+	 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -24,6 +25,7 @@ public class Profile extends Activity {
 		
 		Intent intent = getIntent();
 		user = (User)intent.getSerializableExtra("user");
+		
 //		User userProfile = new User();
 		
 //		userProfile = CoreFacade.getInstance().getUserProfile(user);

@@ -14,6 +14,7 @@ import com.example.locus.entity.Message;
 import com.example.locus.entity.User;
 
 public class MessageDataSource {
+	private boolean isDatabaseOpen;
 	private SQLiteDatabase database;
 	private MessageSQLiteHelper dbHelper;
 	private AccountDataSource accountDataSource;
@@ -23,18 +24,30 @@ public class MessageDataSource {
 			MessageSQLiteHelper.COLUMN_DES_ID, MessageSQLiteHelper.COLUMN_KIND,
 			MessageSQLiteHelper.COLUMN_DATA, MessageSQLiteHelper.COLUMN_MSG_ID };
 
-	public MessageDataSource(Context context, AccountDataSource accountDataSource) {
+	public MessageDataSource(Context context,
+			AccountDataSource accountDataSource) {
 		dbHelper = new MessageSQLiteHelper(context);
 
 		this.accountDataSource = accountDataSource;
+		isDatabaseOpen = false;
 	}
 
 	public void open() throws SQLException {
-		database = dbHelper.getWritableDatabase();
+		if (!isDatabaseOpen) {
+			database = dbHelper.getWritableDatabase();
+			isDatabaseOpen = true;
+		}
 	}
 
 	public void close() {
-		dbHelper.close();
+		if (isDatabaseOpen) {
+			dbHelper.close();
+			isDatabaseOpen = false;
+		}
+	}
+
+	public boolean isOpen() {
+		return isDatabaseOpen;
 	}
 
 	public Message createMessage(Message message) {
@@ -53,14 +66,14 @@ public class MessageDataSource {
 		cursor.moveToFirst();
 		Message newMessage = cursorToMessage(cursor);
 		cursor.close();
-		
+
 		Log.i(Constants.AppCoreTag, "new message created = " + message);
 		return newMessage;
 	}
 
 	public List<Message> getAllMessagesWithUser(User user) {
 		Log.v(Constants.AppCoreTag, "getAllMessagesWithUser user = " + user);
-		
+
 		List<Message> msgs = new ArrayList<Message>();
 
 		String orderBy = MessageSQLiteHelper.COLUMN_MSG_ID + " ASC";
@@ -79,6 +92,9 @@ public class MessageDataSource {
 		}
 		// Make sure to close the cursor
 		cursor.close();
+
+		Log.v(Constants.AppCoreTag, "totally reteive %d messages" + msgs.size());
+
 		return msgs;
 	}
 

@@ -46,6 +46,9 @@ public class CoreImpl implements ICore {
 		if (user != null) {
 			user.setLatitude(lati);
 			user.setLongtitude(longti);
+
+			// TODO verify it
+			//dht.delete(user);
 			dht.put(user);
 			return Result.Success;
 		} else {
@@ -112,10 +115,18 @@ public class CoreImpl implements ICore {
 
 	@Override
 	public Result logout() {
-		if (user != null) {
-			Log.i(Constants.AppCoreTag, "delete user on chord");
-			dht.delete(user);
-		}
+		//TODO
+//		if (user != null) {
+//			Log.i(Constants.AppCoreTag, "delete user on chord");
+//			dht.delete(user);
+//		}
+
+//		if (isJoined) {
+//			Log.i(Constants.AppCoreTag, "leave chord");
+//			dht.leave();
+//			mp.stopReceive();
+//			isJoined = false;
+//		}
 
 		accountDataSource.close();
 		messageDataSource.close();
@@ -206,6 +217,10 @@ public class CoreImpl implements ICore {
 			accountDataSource.open();
 			messageDataSource = new MessageDataSource(context,
 					accountDataSource);
+			messageDataSource.open();
+		}
+		else{
+			accountDataSource.open();
 			messageDataSource.open();
 		}
 	}

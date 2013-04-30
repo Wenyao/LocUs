@@ -11,5 +11,6 @@ public interface IMessagePasser extends IObservable {
 	Result broadcast(User src, Set<User> targets, String msg);
 	User getUserProfile(User target);
 	Result startReceive();
+	Result stopReceive();
 	//CheckProfile.listen(2222);
 }

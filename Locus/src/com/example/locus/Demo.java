@@ -8,6 +8,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -17,6 +18,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.locus.core.Constants;
 import com.example.locus.core.CoreFacade;
 import com.example.locus.core.IObserver;
 import com.example.locus.entity.Message;
@@ -30,6 +32,7 @@ public class Demo extends Activity implements IObserver {
 	String username;
 	String ipAdd;
 	String gender;
+	Sex sex;
 	String interests;
 	private ListView listView;
 	private TextView latituteField;
@@ -47,39 +50,34 @@ public class Demo extends Activity implements IObserver {
 		setContentView(R.layout.activity_list_users);
 		Intent intent = getIntent();
 		core = CoreFacade.getInstance();
-		core.addObserver(this);
-		currentUser = CoreFacade.getInstance().getCurrentUser();
 
-		if(currentUser == null){
-			currentUser = new User();
-			username = intent.getStringExtra("userName");
-			latitude = Double.parseDouble(intent.getStringExtra("latitude"));
-			longitude = Double.parseDouble(intent.getStringExtra("longitude"));
-			ipAdd = intent.getStringExtra("IP");
-			gender = intent.getStringExtra("sex");
-			interests = intent.getStringExtra("interests");
+		currentUser = CoreFacade.getInstance().getCurrentUser();
+		username = intent.getStringExtra("userName");
+		latitude = Double.parseDouble(intent.getStringExtra("latitude"));
+		longitude = Double.parseDouble(intent.getStringExtra("longitude"));
+		ipAdd = intent.getStringExtra("IP");
+		gender = intent.getStringExtra("sex");
+		if (gender.equals("Male"))
+			sex = Sex.Male;
+		else
+			sex = Sex.Female;
+
+		interests = intent.getStringExtra("interests");
+
+		if (currentUser == null) {
+			currentUser = new User(username, sex, ipAdd, latitude, longitude,
+					interests);
+			core.addObserver(this);
+		} else {
 			currentUser.setLatitude(latitude);
 			currentUser.setLongtitude(longitude);
 			currentUser.setIp(ipAdd);
 			currentUser.setName(username);
 			currentUser.setInterests(interests);
-			if (gender.equals("Male"))
-				currentUser.setSex(Sex.Male);
-			else
-				currentUser.setSex(Sex.Female);
+			currentUser.setSex(sex);
 		}
-		else{
-			username = currentUser.getName();
-			latitude = currentUser.getLatitude();
-			longitude = currentUser.getLongtitude();
-			ipAdd = intent.getStringExtra("IP");
-			interests = currentUser.getInterests();
-			if(currentUser.getSex() == Sex.Female)
-				gender = "Female";
-			else
-				gender = "Male";
-				
-		}
+
+
 		AsyncTask<User, Integer, Set<User>> registerTask = new RegisterTask();
 		registerTask.execute(currentUser);
 
@@ -136,7 +134,8 @@ public class Demo extends Activity implements IObserver {
 
 	public void onDestroy() {
 		super.onDestroy();
-		core.logout();
+		LogoutTask logoutTask = new LogoutTask();
+		logoutTask.execute(new Object[1]);
 	}
 
 	@Override
@@ -153,7 +152,11 @@ public class Demo extends Activity implements IObserver {
 
 		@Override
 		protected void onPostExecute(Set<User> result) {
-			System.out.println("onPostExecute");
+			if (result != null) {
+				Log.i(Constants.AppUITag,
+						"refreshed user number = " + result.size());
+			}
+
 			List<User> data = new ArrayList<User>();
 			try {
 				data.addAll(result);
@@ -168,37 +171,50 @@ public class Demo extends Activity implements IObserver {
 			listView = (ListView) findViewById(R.id.listView);
 			listView.setAdapter(adapter);
 
-			//			listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+			Intent intent = new Intent(getApplicationContext(), Profile.class);
+
+			// listView.setOnItemClickListener(new
+			// AdapterView.OnItemClickListener() {
 			//
-			//				@Override
-			//				public void onItemClick(AdapterView<?> adapter, View view,
-			//						int position, long id) {
-			//					User o = (User) adapter.getItemAtPosition(position);
-			//					GetUserProfileTask getUserProfileTask = new GetUserProfileTask();
-			//					getUserProfileTask.execute(o);
-			//					
-			//					SendMessageTask sendMessageTask = new SendMessageTask();
-			//					
-			//					Message msg = new Message(currentUser, o, "Normal", "lala");
-			//					sendMessageTask.execute(msg);
-			//				}
-			//			});
+			// @Override
+			// public void onItemClick(AdapterView<?> adapter, View view,
+			// int position, long id) {
+			// User o = (User) adapter.getItemAtPosition(position);
+			// GetUserProfileTask getUserProfileTask = new GetUserProfileTask();
+			// getUserProfileTask.execute(o);
+			//
+			// SendMessageTask sendMessageTask = new SendMessageTask();
+			//
+			// Message msg = new Message(currentUser, o, "Normal", "lala");
+			// sendMessageTask.execute(msg);
+			// }
+			// });
 			listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
 				@Override
-				public void onItemClick(AdapterView<?> adapter, View view, int position,
-						long id) {
+				public void onItemClick(AdapterView<?> adapter, View view,
+						int position, long id) {
 					// TODO Auto-generated method stub
-					User o = (User)adapter.getItemAtPosition(position);
+					User o = (User) adapter.getItemAtPosition(position);
 					String str_text = o.getName();
-					Toast.makeText(getApplicationContext(),str_text+" \n"+"IP = "+o.getIp()+"\nLat="+o.getLatitude()+" Lon="+o.getLongtitude(), Toast.LENGTH_LONG).show();
-					Intent intent = new Intent(getApplicationContext(), Profile.class);
+					Toast.makeText(
+							getApplicationContext(),
+							str_text + " \n" + "IP = " + o.getIp() + "\nLat="
+									+ o.getLatitude() + " Lon="
+									+ o.getLongtitude(), Toast.LENGTH_LONG)
+							.show();
+					Intent intent = new Intent(getApplicationContext(),
+							Profile.class);
+
 					intent.putExtra("user", o);
+					intent.putExtra("user2", (User)null);
 
 					startActivity(intent);
 				}
 
+
 			});  
+
 		}
 	}
 
@@ -236,20 +252,40 @@ public class Demo extends Activity implements IObserver {
 		}
 	}
 
-	private class SendMessageTask extends
-	AsyncTask<Message, Integer, Message> {
+
+
+	private class SendMessageTask extends AsyncTask<Message, Integer, Message> {
+
 		@Override
 		protected Message doInBackground(Message... params) {
-			CoreFacade.getInstance().sendMessage(params[0].getDst(), (String)params[0].getData());
+			CoreFacade.getInstance().sendMessage(params[0].getDst(),
+					(String) params[0].getData());
 			return params[0];
 		}
 
 		@Override
 		protected void onPostExecute(Message result) {
-			String str_text = String.format("msg sent.  msg = %s", result.toString());
+			String str_text = String.format("msg sent.  msg = %s",
+					result.toString());
 			Toast.makeText(getApplicationContext(), str_text, Toast.LENGTH_LONG)
 			.show();
 		}
 	}
+
+
+	private class LogoutTask extends AsyncTask<Object, Integer, Object> {
+		@Override
+		protected Object doInBackground(Object... params) {
+			CoreFacade.getInstance().logout();
+			return null;
+		}
+
+		@Override
+		protected void onPostExecute(Object result) {
+			Toast.makeText(getApplicationContext(), "Good bye!",
+					Toast.LENGTH_LONG).show();
+		}
+	}
+
 
 }

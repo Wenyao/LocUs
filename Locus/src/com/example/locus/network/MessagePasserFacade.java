@@ -9,26 +9,26 @@ import com.example.locus.entity.User;
 
 public class MessagePasserFacade implements IMessagePasser {
 	private static MessagePasserFacade instance = null;
-	
+
 	private static int port = 2222;
-	
-	//private IMessagePasser messagePasser;
-	
-	private MessagePasserFacade(){
-		//TODO set message passer
+
+	// private IMessagePasser messagePasser;
+
+	private MessagePasserFacade() {
+		// TODO set message passer
 	}
-	
-	public static MessagePasserFacade getInstance(){
-		if (instance == null){
+
+	public static MessagePasserFacade getInstance() {
+		if (instance == null) {
 			instance = new MessagePasserFacade();
 		}
-		
+
 		return instance;
 	}
 
 	@Override
 	public Result addObserver(IObserver obs) {
-		//return messagePasser.addObserver(obs);
+		// return messagePasser.addObserver(obs);
 		return null;
 	}
 
@@ -40,23 +40,32 @@ public class MessagePasserFacade implements IMessagePasser {
 
 	@Override
 	public Result broadcast(User src, Set<User> targets, String msg) {
-		for (User target : targets){
-			MessagePasser.sendMessage(src, target, port, msg);
+		for (User target : targets) {
+			if (!src.equals(target)) {
+				MessagePasser.sendMessage(src, target, port, msg);
+			}
 		}
 		return Result.Success;
 	}
 
 	@Override
 	public Result startReceive() {
-		//CheckProfile.listen(port, CoreFacade.getInstance());
+		// CheckProfile.listen(port, CoreFacade.getInstance());
 		MessagePasser.listen(port, CoreFacade.getInstance());
 		return Result.Success;
-	}  
+	}
 
 	@Override
 	public User getUserProfile(User target) {
-		//return (User) CheckProfile.connect(target.getIp(), port);
+		// return (User) CheckProfile.connect(target.getIp(), port);
 		return (User) MessagePasser.checkProfile(target, Integer.valueOf(port));
-		//return null;
+		// return null;
 	}
+
+	@Override
+	public Result stopReceive() {
+		MessagePasser.stopListen();
+		return Result.Success;
+	}
+
 }

@@ -57,6 +57,7 @@ public final class R {
         public static final int textView4=0x7f070008;
         public static final int textView5=0x7f07001a;
         public static final int textView6=0x7f07001b;
+        public static final int voice=0x7f070020;
     }
     public static final class layout {
         public static final int activity_broad_cast=0x7f030000;
