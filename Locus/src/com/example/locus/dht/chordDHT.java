@@ -126,7 +126,6 @@ public class chordDHT implements IDHT {
 		try {
 			ip_address = IPAddress.getIPAddress(true);
 		} catch (IOException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		try {
@@ -224,7 +223,7 @@ public class chordDHT implements IDHT {
 			 * and then retrieve all the users from these tile numbers.
 			 */
 			for (String tile : nearby_tiles) {
-				s = chord_instance.retrieve(new TileKey(user.getTileNumber()));
+				s = chord_instance.retrieve(new TileKey(tile));
 				if (s != null) {
 					for (Serializable serializableObjs : s) {
 						nearby_users.add(new User((String) serializableObjs));
