@@ -4,7 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -53,12 +57,23 @@ public class Chat extends Activity implements OnClickListener, IObserver {
 		chatAdapter = new ChatAdapter(this, R.layout.activity_chat_adapter, msg);
 		chatView.setAdapter(chatAdapter);
 
+		//To populate the list with the previous msgs
+		msg.removeAll(msg);
+
+		List<Message> chats = new ArrayList<Message>();
+		chats = CoreFacade.getInstance().getMessagesByUser(oppUser);
+		if( chats != null){
+			for(Message s : chats){
+				addItemsToList(s);
+			}
+		}
+
 	}
 
 	private void addItemsToList(Message m) {
 		//msg.add(m);
 		//chatAdapter.clear();
-		
+
 		chatAdapter.add(m);
 		chatAdapter.notifyDataSetChanged();
 	}
@@ -74,14 +89,52 @@ public class Chat extends Activity implements OnClickListener, IObserver {
 	public void onClick(View v) {
 		//Message m = new Message();
 		String messg = tv.getText().toString();
-		
+
 		SendMessageTask sendMessageTask = new SendMessageTask();
-		
+
 		User currentUser = CoreFacade.getInstance().getCurrentUser();
 		Message mesg = new Message(currentUser, oppUser, "Normal", messg);
 		addItemsToList(mesg);
 		sendMessageTask.execute(mesg);
 		tv.setText("");
+		scrollMyListViewToBottom();
+
+
+	}
+	private void scrollMyListViewToBottom() {
+		chatView.post(new Runnable() {
+			@Override
+			public void run() {
+				// Select the last row so it will scroll into view...
+				chatView.setSelection(chatView.getCount() - 1);
+			}
+		});
+	}
+	@SuppressLint("NewApi")
+	public void createNotification(Message m){
+		Intent intent2 = new Intent(getApplicationContext(), Chat.class);
+		PendingIntent pIntent = PendingIntent.getActivity(this, 0, intent2, 0);
+
+		// Build notification
+		// Actions are just fake
+		Notification noti = new Notification.Builder(this)
+		.setContentTitle("New Message from " + m.getSrc().getName())
+		.setContentText(m.getData().toString())
+		.setSmallIcon(R.drawable.locus)
+		.setContentIntent(pIntent)
+		.addAction(R.drawable.a, "View", pIntent).build();
+
+
+		NotificationManager notificationManager = 
+				(NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+
+		// Hide the notification after its selected
+		noti.flags |= Notification.FLAG_AUTO_CANCEL;
+		noti.flags |= Notification.DEFAULT_VIBRATE;
+		noti.flags |= Notification.DEFAULT_SOUND;
+
+		notificationManager.notify(0, noti); 
+
 
 	}
 	private class SendMessageTask extends
@@ -106,6 +159,7 @@ public class Chat extends Activity implements OnClickListener, IObserver {
 		updateUITask.execute(msg);
 	}
 
+
 	@Override
 	public void onReceiveUserProfile(User user) {
 	}
@@ -127,12 +181,13 @@ public class Chat extends Activity implements OnClickListener, IObserver {
 			Toast.makeText(getApplicationContext(), str_text, Toast.LENGTH_LONG)
 			.show();
 			msg.removeAll(msg);
-			
+
 			List<Message> chats = CoreFacade.getInstance().getMessagesByUser(result.getSrc());
-			
+
 			for(Message s : chats){
 				addItemsToList(s);
 			}
+			createNotification(chats.get(chats.size()-1));
 
 
 		}
