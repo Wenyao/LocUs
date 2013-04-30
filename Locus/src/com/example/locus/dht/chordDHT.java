@@ -241,7 +241,7 @@ public class chordDHT implements IDHT {
 	public Result delete(User user) {
 
 		try {
-			chord_instance.remove(new TileKey(user.getTileNumber()), user);
+			chord_instance.remove(new TileKey(user.getTileNumber()), user.serialize());
 		} catch (ServiceException e) {
 			return new Result(false, ErrorCodes.DHTError);
 		}
