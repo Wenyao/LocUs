@@ -63,7 +63,7 @@ public class Demo extends Activity implements IObserver {
 		ipAdd = intent.getStringExtra("IP");
 		gender = intent.getStringExtra("sex");
 		imageInByte = intent.getByteArrayExtra("pic");
-		if (gender.equals("Male"))
+		if (gender.equals("Male   "))
 			sex = Sex.Male;
 		else
 			sex = Sex.Female;
