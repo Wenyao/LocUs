@@ -48,7 +48,7 @@ public class AccountDataSource {
 		return isDatabaseOpen;
 	}
 
-	public User createUser(User user) {
+	public void createUser(User user) {
 		ContentValues values = new ContentValues();
 		values.put(AccountSQLiteHelper.COLUMN_ID, user.getId());
 		values.put(AccountSQLiteHelper.COLUMN_NAME, user.getName());
@@ -70,19 +70,8 @@ public class AccountDataSource {
 					AccountSQLiteHelper.COLUMN_ID + " = '" + user.getId() + "'",
 					null);
 		}
-		cursor = database.query(AccountSQLiteHelper.TABLE_ACCOUNT, allColumns,
-				AccountSQLiteHelper.COLUMN_ID + " = '" + user.getId() + "'",
-				null, null, null, null);
-		cursor.moveToFirst();
-		User newUser = cursorToUser(cursor);
-		cursor.close();
-
-		newUser.setIp(user.getIp());
-		newUser.setLatitude(user.getLatitude());
-		newUser.setLongtitude(user.getLongtitude());
 
 		Log.i(Constants.AppCoreTag, "new user created or updated = " + user);
-		return newUser;
 	}
 
 	public void deleteUser(User user) {
