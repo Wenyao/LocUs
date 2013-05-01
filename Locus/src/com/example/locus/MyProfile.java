@@ -1,6 +1,11 @@
 package com.example.locus;
 
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
+
+import javax.imageio.ImageIO;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -25,6 +30,10 @@ public class MyProfile extends Activity {
 	private RadioGroup radioGenderGroup;
 	User currentUser;
 	 private static int RESULT_LOAD_IMAGE = 1;
+	 ByteArrayOutputStream baos;
+	 byte[] imageInByte;
+	 
+	 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -61,6 +70,23 @@ public class MyProfile extends Activity {
              
             ImageView imageView = (ImageView) findViewById(R.id.imgView);
             imageView.setImageBitmap(BitmapFactory.decodeFile(picturePath));
+            
+            //Convert image to byte array
+            try{
+            	 
+            	BufferedImage originalImage = 
+                                          ImageIO.read(new File(picturePath));
+             
+            	baos = new ByteArrayOutputStream();
+            	ImageIO.write( originalImage, "jpg", baos );
+            	baos.flush();
+            	imageInByte = baos.toByteArray();
+            	baos.close();
+             
+            	}catch(IOException e){
+            		System.out.println(e.getMessage());
+            	}	
+            
          
         }
      
@@ -107,6 +133,7 @@ public class MyProfile extends Activity {
 				intent.putExtra("sex", gender);	
 				intent.putExtra("IP", ipAdd);
 				intent.putExtra("interests", interests);
+				intent.putExtra("pic", imageInByte);
 				startActivity(intent);
 			}
 			else{
@@ -119,6 +146,7 @@ public class MyProfile extends Activity {
 				intent.putExtra("interests", interests);
 				intent.putExtra("latitude", lati);
 				intent.putExtra("longitude", longi);
+				intent.putExtra("pic", imageInByte);
 				startActivity(intent);
 
 			}

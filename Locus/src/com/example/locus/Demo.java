@@ -43,6 +43,7 @@ public class Demo extends Activity implements IObserver {
 
 	private int groupId1 = 1;
 	private int editProfileId = Menu.FIRST;
+	byte[] imageInByte;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +58,7 @@ public class Demo extends Activity implements IObserver {
 		longitude = Double.parseDouble(intent.getStringExtra("longitude"));
 		ipAdd = intent.getStringExtra("IP");
 		gender = intent.getStringExtra("sex");
+		imageInByte = intent.getByteArrayExtra("pic");
 		if (gender.equals("Male"))
 			sex = Sex.Male;
 		else
@@ -66,7 +68,7 @@ public class Demo extends Activity implements IObserver {
 
 		if (currentUser == null) {
 			currentUser = new User(username, sex, ipAdd, latitude, longitude,
-					interests);
+					interests, imageInByte);
 			core.addObserver(this);
 		} else {
 			currentUser.setLatitude(latitude);
@@ -75,6 +77,7 @@ public class Demo extends Activity implements IObserver {
 			currentUser.setName(username);
 			currentUser.setInterests(interests);
 			currentUser.setSex(sex);
+			currentUser.setPicURL(imageInByte);
 		}
 
 
