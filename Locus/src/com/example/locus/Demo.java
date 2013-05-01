@@ -5,9 +5,13 @@ import java.util.List;
 import java.util.Set;
 
 import android.app.Activity;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -261,10 +265,40 @@ public class Demo extends Activity implements IObserver {
 			String str_text = result.toString();
 			Toast.makeText(getApplicationContext(), str_text, Toast.LENGTH_LONG)
 			.show();
+			createNotification(result);
 		}
 	}
 
 
+	public void createNotification(Message m){
+		Intent intent2 = new Intent(getApplicationContext(), Chat.class);
+		intent2.setFlags( Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
+		intent2.putExtra("user", m.getSrc());
+		PendingIntent pIntent = PendingIntent.getActivity(this, 0, intent2, 0);
+		
+		// Build notification
+		// Actions are just fake
+		Notification noti = new NotificationCompat.Builder(this).setAutoCancel(true)
+		.setContentTitle("New Message from " + m.getSrc().getName())
+		.setContentText(m.getData().toString())
+		.setSmallIcon(R.drawable.locus)
+		.setContentIntent(pIntent)
+		.addAction(R.drawable.a, "View", pIntent).build();
+
+
+		NotificationManager notificationManager = 
+				(NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+
+		// Hide the notification after its selected
+		noti.flags |= Notification.FLAG_AUTO_CANCEL;
+	
+		//noti.flags |= Notification.DEFAULT_VIBRATE;
+		//noti.flags |= Notification.DEFAULT_SOUND;
+		
+		notificationManager.notify(0, noti); 
+
+
+	}
 
 	private class SendMessageTask extends AsyncTask<Message, Integer, Message> {
 
