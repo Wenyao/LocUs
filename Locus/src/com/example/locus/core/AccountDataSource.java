@@ -23,7 +23,8 @@ public class AccountDataSource {
 			AccountSQLiteHelper.COLUMN_NAME, AccountSQLiteHelper.COLUMN_SEX,
 			AccountSQLiteHelper.COLUMN_INTEREST,
 			AccountSQLiteHelper.COLUMN_PIC, AccountSQLiteHelper.COLUMN_LATI,
-			AccountSQLiteHelper.COLUMN_LONGTI, };
+			AccountSQLiteHelper.COLUMN_LONGTI,
+			AccountSQLiteHelper.COLUMN_LOGGEDIN};
 
 	public AccountDataSource(Context context) {
 		dbHelper = new AccountSQLiteHelper(context);
@@ -74,6 +75,40 @@ public class AccountDataSource {
 		Log.i(Constants.AppCoreTag, "new user created or updated = " + user);
 	}
 
+	public void loginUser(User user) {
+		ContentValues values = new ContentValues();
+		values.put(AccountSQLiteHelper.COLUMN_ID, user.getId());
+		values.put(AccountSQLiteHelper.COLUMN_NAME, user.getName());
+		values.put(AccountSQLiteHelper.COLUMN_SEX, user.getSex().getValue());
+		values.put(AccountSQLiteHelper.COLUMN_INTEREST, user.getInterests());
+		values.put(AccountSQLiteHelper.COLUMN_PIC, user.getPicURL());
+		values.put(AccountSQLiteHelper.COLUMN_LATI, "" + user.getLatitude());
+		values.put(AccountSQLiteHelper.COLUMN_LONGTI, "" + user.getLongtitude());
+		values.put(AccountSQLiteHelper.COLUMN_LOGGEDIN, Constants.LoggedIn);
+		database.update(AccountSQLiteHelper.TABLE_ACCOUNT, values,
+				AccountSQLiteHelper.COLUMN_ID + " = '" + user.getId() + "'",
+				null);
+		
+		Log.i(Constants.AppCoreTag, "new user loggedin = " + user);
+	}
+
+	public void logoutUser(User user) {
+		ContentValues values = new ContentValues();
+		values.put(AccountSQLiteHelper.COLUMN_ID, user.getId());
+		values.put(AccountSQLiteHelper.COLUMN_NAME, user.getName());
+		values.put(AccountSQLiteHelper.COLUMN_SEX, user.getSex().getValue());
+		values.put(AccountSQLiteHelper.COLUMN_INTEREST, user.getInterests());
+		values.put(AccountSQLiteHelper.COLUMN_PIC, user.getPicURL());
+		values.put(AccountSQLiteHelper.COLUMN_LATI, "" + user.getLatitude());
+		values.put(AccountSQLiteHelper.COLUMN_LONGTI, "" + user.getLongtitude());
+		values.put(AccountSQLiteHelper.COLUMN_LOGGEDIN, Constants.LoggedOut);
+		database.update(AccountSQLiteHelper.TABLE_ACCOUNT, values,
+				AccountSQLiteHelper.COLUMN_ID + " = '" + user.getId() + "'",
+				null);
+		
+		Log.i(Constants.AppCoreTag, "new user loggedout = " + user);
+	}
+
 	public void deleteUser(User user) {
 		String id = user.getId();
 		System.out.println("User deleted with id: " + id);
@@ -116,6 +151,7 @@ public class AccountDataSource {
 		user.setId(cursor.getString(0));
 		user.setLatitude(Double.parseDouble(cursor.getString(5)));
 		user.setLongtitude(Double.parseDouble(cursor.getString(6)));
+		user.setLoggedIn(Boolean.parseBoolean(cursor.getString(7)));
 		return user;
 	}
 }

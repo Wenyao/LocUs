@@ -50,9 +50,9 @@ public class CoreImpl implements ICore {
 			user.setLatitude(lati);
 			user.setLongtitude(longti);
 
-			if (oldUser != null){
+			if (oldUser != null && oldUser.isLoggedIn()){
 				Log.i(Constants.AppCoreTag, "delete old user = " + oldUser);
-				dht.delete(user);
+				dht.delete(oldUser);
 			}
 			
 			Log.i(Constants.AppCoreTag, "put new user = " + user);
@@ -108,6 +108,8 @@ public class CoreImpl implements ICore {
 		if (accountDataSource != null) {
 			oldUser = accountDataSource.getUserById(user.getId());
 			accountDataSource.createUser(user);
+			accountDataSource.loginUser(user);
+			user.setLoggedIn(true);
 			this.user = user;
 			
 			if (!isJoined) {
@@ -115,9 +117,6 @@ public class CoreImpl implements ICore {
 				this.user.setPublicKey(SecurityFacade.getInstance()
 						.generate_keypair());
 				
-				//just joined, not on Chord
-				oldUser = null;
-
 				Log.v(Constants.AppCoreTag, "Enter join dht");
 				dht.join();
 				isJoined = true;
@@ -138,6 +137,8 @@ public class CoreImpl implements ICore {
 		 if (user != null) {
 			 Log.i(Constants.AppCoreTag, "delete user on chord");
 			 dht.delete(user);
+			 user.setLoggedIn(false);
+			 accountDataSource.logoutUser(user);
 		 }
 
 		 if (isJoined) {

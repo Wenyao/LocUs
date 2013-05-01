@@ -15,15 +15,16 @@ public class AccountSQLiteHelper extends SQLiteOpenHelper {
 	public static final String COLUMN_PIC = "pic";
 	public static final String COLUMN_LATI = "lati";
 	public static final String COLUMN_LONGTI = "longti";
+	public static final String COLUMN_LOGGEDIN = "loggedin";
 
 	private static final String DATABASE_NAME = "locus.db";
 	private static final int DATABASE_VERSION = 1;
 
 	// Database creation sql statement
 	private static final String DATABASE_CREATE = String
-			.format("create table %s(%s text primary key ON CONFLICT REPLACE, %s text not null, %s integer, %s text, %s text, %s text, %s text);",
+			.format("create table %s(%s text primary key ON CONFLICT REPLACE, %s text not null, %s integer, %s text, %s text, %s text, %s text, %s text);",
 					TABLE_ACCOUNT, COLUMN_ID, COLUMN_NAME, COLUMN_SEX,
-					COLUMN_INTEREST, COLUMN_PIC, COLUMN_LATI, COLUMN_LONGTI);
+					COLUMN_INTEREST, COLUMN_PIC, COLUMN_LATI, COLUMN_LONGTI, COLUMN_LOGGEDIN);
 
 	public AccountSQLiteHelper(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);

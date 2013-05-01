@@ -26,7 +26,16 @@ public class User implements Serializable {
 	private String interests;
 	private String picURL;
 	private byte[] pic;
+	private boolean loggedIn;
 	
+	public boolean isLoggedIn() {
+		return loggedIn;
+	}
+
+	public void setLoggedIn(boolean loggedIn) {
+		this.loggedIn = loggedIn;
+	}
+
 	public byte[] getPic() {
 		return pic;
 	}
