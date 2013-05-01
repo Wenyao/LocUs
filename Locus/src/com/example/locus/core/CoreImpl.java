@@ -107,7 +107,8 @@ public class CoreImpl implements ICore {
 		Log.v(Constants.AppCoreTag, "Enter Register user = " + user);
 		if (accountDataSource != null) {
 			oldUser = accountDataSource.getUserById(user.getId());
-			this.user = accountDataSource.createUser(user);
+			accountDataSource.createUser(user);
+			this.user = user;
 			
 			if (!isJoined) {
 				Log.v(Constants.AppCoreTag, "Generate public key");
