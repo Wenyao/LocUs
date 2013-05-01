@@ -22,7 +22,7 @@ public class AccountSQLiteHelper extends SQLiteOpenHelper {
 
 	// Database creation sql statement
 	private static final String DATABASE_CREATE = String
-			.format("create table %s(%s text primary key ON CONFLICT REPLACE, %s text not null, %s integer, %s text, %s text, %s text, %s text, %s text);",
+			.format("create table %s(%s text primary key ON CONFLICT REPLACE, %s text not null, %s integer, %s text, %s blob, %s text, %s text, %s text);",
 					TABLE_ACCOUNT, COLUMN_ID, COLUMN_NAME, COLUMN_SEX,
 					COLUMN_INTEREST, COLUMN_PIC, COLUMN_LATI, COLUMN_LONGTI, COLUMN_LOGGEDIN);
 

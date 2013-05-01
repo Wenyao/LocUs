@@ -55,7 +55,7 @@ public class AccountDataSource {
 		values.put(AccountSQLiteHelper.COLUMN_NAME, user.getName());
 		values.put(AccountSQLiteHelper.COLUMN_SEX, user.getSex().getValue());
 		values.put(AccountSQLiteHelper.COLUMN_INTEREST, user.getInterests());
-		values.put(AccountSQLiteHelper.COLUMN_PIC, user.getPicURL());
+		values.put(AccountSQLiteHelper.COLUMN_PIC, user.getPic());
 		values.put(AccountSQLiteHelper.COLUMN_LATI, "" + user.getLatitude());
 		values.put(AccountSQLiteHelper.COLUMN_LONGTI, "" + user.getLongtitude());
 		Cursor cursor = database.query(AccountSQLiteHelper.TABLE_ACCOUNT,
@@ -81,7 +81,7 @@ public class AccountDataSource {
 		values.put(AccountSQLiteHelper.COLUMN_NAME, user.getName());
 		values.put(AccountSQLiteHelper.COLUMN_SEX, user.getSex().getValue());
 		values.put(AccountSQLiteHelper.COLUMN_INTEREST, user.getInterests());
-		values.put(AccountSQLiteHelper.COLUMN_PIC, user.getPicURL());
+		values.put(AccountSQLiteHelper.COLUMN_PIC, user.getPic());
 		values.put(AccountSQLiteHelper.COLUMN_LATI, "" + user.getLatitude());
 		values.put(AccountSQLiteHelper.COLUMN_LONGTI, "" + user.getLongtitude());
 		values.put(AccountSQLiteHelper.COLUMN_LOGGEDIN, Constants.LoggedIn);
@@ -98,7 +98,7 @@ public class AccountDataSource {
 		values.put(AccountSQLiteHelper.COLUMN_NAME, user.getName());
 		values.put(AccountSQLiteHelper.COLUMN_SEX, user.getSex().getValue());
 		values.put(AccountSQLiteHelper.COLUMN_INTEREST, user.getInterests());
-		values.put(AccountSQLiteHelper.COLUMN_PIC, user.getPicURL());
+		values.put(AccountSQLiteHelper.COLUMN_PIC, user.getPic());
 		values.put(AccountSQLiteHelper.COLUMN_LATI, "" + user.getLatitude());
 		values.put(AccountSQLiteHelper.COLUMN_LONGTI, "" + user.getLongtitude());
 		values.put(AccountSQLiteHelper.COLUMN_LOGGEDIN, Constants.LoggedOut);
@@ -147,11 +147,12 @@ public class AccountDataSource {
 
 	private User cursorToUser(Cursor cursor) {
 		User user = new User(cursor.getString(1), cursor.getInt(2),
-				cursor.getString(3), cursor.getString(4));
+				cursor.getString(3), null);
 		user.setId(cursor.getString(0));
 		user.setLatitude(Double.parseDouble(cursor.getString(5)));
 		user.setLongtitude(Double.parseDouble(cursor.getString(6)));
 		user.setLoggedIn(Boolean.parseBoolean(cursor.getString(7)));
+		user.setPic(cursor.getBlob(4));
 		return user;
 	}
 }
