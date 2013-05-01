@@ -25,6 +25,7 @@ public class AdapterList extends ArrayAdapter<User> {
     {
         ImageView ImageView;
         TextView NameTextView;
+        TextView InterestTextView;
     }
     
     public AdapterList(Context context, int layoutResourceId, List<User> data){
@@ -46,6 +47,7 @@ public class AdapterList extends ArrayAdapter<User> {
             holder = new ListDetailsHolder();
             holder.ImageView = (ImageView)row.findViewById(R.id.ImageView);
             holder.NameTextView = (TextView)row.findViewById(R.id.NameTextView);
+            holder.InterestTextView = (TextView)row.findViewById(R.id.InterestTextview);
             
             row.setTag(holder);
         }
@@ -56,6 +58,7 @@ public class AdapterList extends ArrayAdapter<User> {
         
         User user = data.get(position);
         holder.NameTextView.setText(user.getName());
+        holder.InterestTextView.setText(user.getInterests());
         if(user.getSex() == Sex.Female)
         	holder.ImageView.setImageResource(R.drawable.femaleicon);
         else

@@ -162,17 +162,10 @@ public class Demo extends Activity implements IObserver {
 
 		@Override
 		protected Set<User> doInBackground(User... params) {
-			try{
+			
 			CoreFacade.getInstance().register(currentUser);
 			return CoreFacade.getInstance().getUsersNearby();
-			}
-			catch(Exception e){
-				Toast.makeText(
-						getApplicationContext(),
-						"User Currently Offline", Toast.LENGTH_LONG)
-						.show();
-				return null;
-			}
+			
 		}
 
 		@Override
