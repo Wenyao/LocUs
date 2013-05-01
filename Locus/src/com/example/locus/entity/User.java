@@ -25,7 +25,16 @@ public class User implements Serializable {
 	private double longtitude;
 	private String interests;
 	private String picURL;
+	private byte[] pic;
 	
+	public byte[] getPic() {
+		return pic;
+	}
+
+	public void setPic(byte[] pic) {
+		this.pic = pic;
+	}
+
 	private String publicKey;
 
 	public String getPublicKey() {
