@@ -13,22 +13,23 @@ public final class R {
     public static final class drawable {
         public static final int a=0x7f020000;
         public static final int b=0x7f020001;
-        public static final int c=0x7f020002;
-        public static final int d=0x7f020003;
-        public static final int e=0x7f020004;
-        public static final int edittext=0x7f020005;
-        public static final int f=0x7f020006;
-        public static final int female_icon=0x7f020007;
-        public static final int femaleicon=0x7f020008;
-        public static final int ic_launcher=0x7f020009;
-        public static final int locus=0x7f02000a;
-        public static final int main=0x7f02000b;
-        public static final int male_icon=0x7f02000c;
-        public static final int maleicon=0x7f02000d;
-        public static final int msg1=0x7f02000e;
-        public static final int msg2=0x7f02000f;
-        public static final int noti_msg=0x7f020010;
-        public static final int title=0x7f020011;
+        public static final int back=0x7f020002;
+        public static final int c=0x7f020003;
+        public static final int d=0x7f020004;
+        public static final int e=0x7f020005;
+        public static final int edittext=0x7f020006;
+        public static final int f=0x7f020007;
+        public static final int female_icon=0x7f020008;
+        public static final int femaleicon=0x7f020009;
+        public static final int ic_launcher=0x7f02000a;
+        public static final int locus=0x7f02000b;
+        public static final int main=0x7f02000c;
+        public static final int male_icon=0x7f02000d;
+        public static final int maleicon=0x7f02000e;
+        public static final int msg1=0x7f02000f;
+        public static final int msg2=0x7f020010;
+        public static final int noti_msg=0x7f020011;
+        public static final int title=0x7f020012;
     }
     public static final class id {
         public static final int ImageView=0x7f07000b;

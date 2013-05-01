@@ -38,7 +38,7 @@ public class MyProfile extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_my_profile);
-		getWindow().getDecorView().setBackgroundColor(Color.BLACK);
+		//getWindow().getDecorView().setBackgroundColor(Color.BLACK);
 		 Button buttonLoadImage = (Button) findViewById(R.id.imageButton);
 	        buttonLoadImage.setOnClickListener(new View.OnClickListener() {
 
