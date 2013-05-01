@@ -283,7 +283,7 @@ public class Demo extends Activity implements IObserver {
 		.setContentText(m.getData().toString())
 		.setSmallIcon(R.drawable.locus)
 		.setContentIntent(pIntent)
-		.addAction(R.drawable.a, "View", pIntent).build();
+		.addAction(R.drawable.noti_msg, "View", pIntent).build();
 
 
 		NotificationManager notificationManager = 

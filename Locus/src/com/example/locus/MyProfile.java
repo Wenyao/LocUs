@@ -108,9 +108,7 @@ public class MyProfile extends Activity {
 		radioGenderGroup = (RadioGroup) findViewById(R.id.genderRadioGroup);
 	
 		RadioButton rB;
-        RadioButton rd2=(RadioButton) findViewById(R.id.radio2);
-        RadioButton rd1=(RadioButton) findViewById(R.id.radio1);
-   
+         
         
 		int selectedID = radioGenderGroup.getCheckedRadioButtonId();
         rB = (RadioButton) findViewById(selectedID);
