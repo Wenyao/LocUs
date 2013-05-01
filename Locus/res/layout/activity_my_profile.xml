@@ -6,19 +6,10 @@
     
     android:orientation="vertical" >
 
-    <LinearLayout
-        android:id="@+id/linearLayout1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal" >
+   
 
-        <ImageView
-            android:id="@+id/imgView"
-            android:layout_width="22dp"
-            android:layout_height="16dp"
-            android:src="@drawable/a" />
+        
 
-    </LinearLayout>
 
     <EditText
         android:id="@+id/editText3"
@@ -123,15 +114,11 @@
         android:layout_alignParentRight="true"
         android:layout_alignTop="@+id/genderRadioGroup"
         android:text="LoadImage" />
-
     <ImageView
-        android:id="@+id/imageView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/genderRadioGroup"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/linearLayout1"
-        android:layout_marginBottom="15dp"
-        android:src="@drawable/title" />
+            android:id="@+id/imgView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@id/imageButton"
+            android:src="@drawable/a" />
 
 </RelativeLayout>

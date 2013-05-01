@@ -140,20 +140,20 @@ public class Demo extends Activity implements IObserver {
 	public void onReceiveUserProfile(User user) {
 	}
 
-//	public void onDestroy() {
-//		super.onDestroy();
-//		LogoutTask logoutTask = new LogoutTask();
-//		logoutTask.execute(new Object[1]);
-//	}
+	//	public void onDestroy() {
+	//		super.onDestroy();
+	//		LogoutTask logoutTask = new LogoutTask();
+	//		logoutTask.execute(new Object[1]);
+	//	}
 
 	public void onBackButtonPressed(){
 		LogoutTask logoutTask = new LogoutTask();
 		logoutTask.execute(new Object[1]);
 		System.exit(0);
-		
+
 	}
-		
-	
+
+
 	@Override
 	public void onReceiveNearbyUsers(Set<User> users) {
 	}
@@ -162,8 +162,17 @@ public class Demo extends Activity implements IObserver {
 
 		@Override
 		protected Set<User> doInBackground(User... params) {
+			try{
 			CoreFacade.getInstance().register(currentUser);
 			return CoreFacade.getInstance().getUsersNearby();
+			}
+			catch(Exception e){
+				Toast.makeText(
+						getApplicationContext(),
+						"User Currently Offline", Toast.LENGTH_LONG)
+						.show();
+				return null;
+			}
 		}
 
 		@Override
@@ -211,21 +220,31 @@ public class Demo extends Activity implements IObserver {
 				public void onItemClick(AdapterView<?> adapter, View view,
 						int position, long id) {
 					// TODO Auto-generated method stub
-					User o = (User) adapter.getItemAtPosition(position);
-					String str_text = o.getName();
-					Toast.makeText(
-							getApplicationContext(),
-							str_text + " \n" + "IP = " + o.getIp() + "\nLat="
-									+ o.getLatitude() + " Lon="
-									+ o.getLongtitude(), Toast.LENGTH_LONG)
-							.show();
-					Intent intent = new Intent(getApplicationContext(),
-							Profile.class);
+					int x = 0;
+					try{
+						User o = (User) adapter.getItemAtPosition(position);
 
-					intent.putExtra("user", o);
-					intent.putExtra("user2", (User)null);
+						String str_text = o.getName();
+						Toast.makeText(
+								getApplicationContext(),
+								str_text + " \n" + "IP = " + o.getIp() + "\nLat="
+										+ o.getLatitude() + " Lon="
+										+ o.getLongtitude(), Toast.LENGTH_LONG)
+										.show();
 
-					startActivity(intent);
+						Intent intent = new Intent(getApplicationContext(),
+								Profile.class);
+
+						intent.putExtra("user", o);
+						intent.putExtra("user2", (User)null);
+
+						startActivity(intent);
+					}catch(Exception e){
+						Toast.makeText(
+								getApplicationContext(),
+								"User Currently Offline", Toast.LENGTH_LONG)
+								.show();
+					}
 				}
 
 
@@ -275,15 +294,15 @@ public class Demo extends Activity implements IObserver {
 		intent2.setFlags( Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
 		intent2.putExtra("user", m.getSrc());
 		PendingIntent pIntent = PendingIntent.getActivity(this, 0, intent2, 0);
-		
+
 		// Build notification
 		// Actions are just fake
 		Notification noti = new NotificationCompat.Builder(this).setAutoCancel(true)
-		.setContentTitle("New Message from " + m.getSrc().getName())
-		.setContentText(m.getData().toString())
-		.setSmallIcon(R.drawable.locus)
-		.setContentIntent(pIntent)
-		.addAction(R.drawable.msg1, "View", pIntent).build();
+				.setContentTitle("New Message from " + m.getSrc().getName())
+				.setContentText(m.getData().toString())
+				.setSmallIcon(R.drawable.locus)
+				.setContentIntent(pIntent)
+				.addAction(R.drawable.msg1, "View", pIntent).build();
 
 
 		NotificationManager notificationManager = 
@@ -291,10 +310,10 @@ public class Demo extends Activity implements IObserver {
 
 		// Hide the notification after its selected
 		noti.flags |= Notification.FLAG_AUTO_CANCEL;
-	
+
 		//noti.flags |= Notification.DEFAULT_VIBRATE;
 		//noti.flags |= Notification.DEFAULT_SOUND;
-		
+
 		notificationManager.notify(0, noti); 
 
 

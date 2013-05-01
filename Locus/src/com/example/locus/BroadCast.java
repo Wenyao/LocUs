@@ -22,8 +22,9 @@ public class BroadCast extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_broad_cast);
-		EditText et = (EditText) findViewById(R.id.broadCasteditText);
+		et = (EditText) findViewById(R.id.broadCasteditText);
 		bcButton = (Button) findViewById(R.id.broadcastbutton);
+		
 		
 	}
 
