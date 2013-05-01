@@ -5,4 +5,7 @@ public class Constants {
 	public static String AppCoreTag = "com.example.locus.Core";
 	public static String AppUITag = "com.example.locus.UI";
 	public static String appChordTag = "com.example.locus.Chord";
+	
+	public static String PlainTextKind = "PlainText";
+	public static String ImageKind = "Image";
 }
