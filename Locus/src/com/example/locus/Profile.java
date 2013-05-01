@@ -1,83 +1,116 @@
 package com.example.locus;
 
+import java.util.Set;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.locus.core.CoreFacade;
+import com.example.locus.core.IObserver;
+import com.example.locus.entity.Message;
 import com.example.locus.entity.Sex;
 import com.example.locus.entity.User;
-public class Profile extends Activity {
 
-	 private int groupId1=1;
-	 private int editProfileId = Menu.FIRST;
-	 User user;
-	 ImageView image;
-	 
-	 
+public class Profile extends Activity implements IObserver {
+
+	private int groupId1 = 1;
+	private int editProfileId = Menu.FIRST;
+	User user;
+	ImageView image;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_profile);
-		
+
 		Intent intent = getIntent();
-		user = (User)intent.getSerializableExtra("user");
+		user = (User) intent.getSerializableExtra("user");
+
+		CoreFacade.getInstance().addObserver(this);
 		
-//		User userProfile = new User();
-		
-//		userProfile = CoreFacade.getInstance().getUserProfile(user);
-		
+		UpdateUserProfileTask updateUserProfileTask = new UpdateUserProfileTask();
+		updateUserProfileTask.execute(user);
+	}
+
+	public void chatClick(View view) {
+		Intent intent = new Intent(this, Chat.class);
+		intent.putExtra("user", user);
+		startActivity(intent);
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		menu.add(groupId1, editProfileId, editProfileId, "Edit Profile");
+
+		return super.onCreateOptionsMenu(menu);
+	}
+
+	public boolean onOptionsItemSelected(MenuItem item) {
+
+		switch (item.getItemId()) {
+
+		case 1:
+			Intent intent = new Intent(this, MyProfile.class);
+			startActivity(intent);
+			break;
+
+		}
+		return super.onOptionsItemSelected(item);
+	}
+
+	private void updateUI(User user) {
 		TextView textName = (TextView) findViewById(R.id.textView2);
 		TextView textGender = (TextView) findViewById(R.id.textView4);
 		TextView textInterests = (TextView) findViewById(R.id.textView6);
-		image = (ImageView)findViewById(R.id.imageView1);
-		
-//		InputStream in = new ByteArrayInputStream(user.getPic());
-//		BufferedImage bufImg = ImageIO.read(in);
-//		ImageIcon icon = new ImageIcon(bufImg);
-//		image.setImageBitmap(icon);
+		image = (ImageView) findViewById(R.id.imageView1);
 
-		Bitmap bitmap = BitmapFactory.decodeByteArray(user.getPic() , 0, user.getPic().length);
-		 image.setImageBitmap(bitmap );
-		 
+		if (user.getPic() != null) {
+			Bitmap bitmap = BitmapFactory.decodeByteArray(user.getPic(), 0,
+					user.getPic().length);
+			image.setImageBitmap(bitmap);
+		}
+
 		textName.setText(user.getName());
-		if(user.getSex() == Sex.Male)
+		if (user.getSex() == Sex.Male)
 			textGender.setText("Male");
 		else
 			textGender.setText("Female");
 		textInterests.setText(user.getInterests());
 	}
-	
-	public void chatClick(View view){
-		Intent intent = new Intent(this, Chat.class);
-		intent.putExtra("user", user);
-		startActivity(intent);
-	}
-	
 
 	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		menu.add(groupId1, editProfileId, editProfileId, "Edit Profile" );
-		
-		return super.onCreateOptionsMenu(menu);
+	public void onReceiveMessage(Message msg) {
 	}
-	
-	 public boolean onOptionsItemSelected(MenuItem item) {
-		 
-		 switch (item.getItemId()){
-		 	
-		 case 1 : Intent intent = new Intent(this, MyProfile.class);
-		 		  startActivity(intent);
-		 		  break;
-		 
-		 }
-		 return super.onOptionsItemSelected(item);
-	 }
+
+	@Override
+	public void onReceiveUserProfile(User user) {
+	}
+
+	@Override
+	public void onReceiveNearbyUsers(Set<User> users) {
+	}
+
+	private class UpdateUserProfileTask extends AsyncTask<User, Integer, User> {
+		@Override
+		protected User doInBackground(User... params) {
+			return CoreFacade.getInstance().getUserProfile(params[0]);
+		}
+
+		@Override
+		protected void onPostExecute(User result) {
+			updateUI(result);
+		}
+	}
+
 }

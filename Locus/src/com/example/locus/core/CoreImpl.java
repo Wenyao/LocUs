@@ -96,7 +96,9 @@ public class CoreImpl implements ICore {
 
 	@Override
 	public Result addObserver(IObserver obs) {
-		observers.add(obs);
+		if (!observers.contains(obs)){
+			observers.add(obs);
+		}
 		return Result.Success;
 	}
 
