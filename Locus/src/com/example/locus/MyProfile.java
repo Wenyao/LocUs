@@ -84,7 +84,7 @@ public class MyProfile extends Activity {
 				bstream = new BufferedInputStream(fstream);
 				bstream.read(imageArray, 0, imageArray.length);
 				
-				currentUser.setPic(imageArray);
+				//currentUser.setPic(imageArray);
 				
             	}catch(IOException e){
             		System.out.println(e.getMessage());

@@ -24,8 +24,9 @@ public final class R {
         public static final int locus=0x7f02000a;
         public static final int male_icon=0x7f02000b;
         public static final int maleicon=0x7f02000c;
-        public static final int noti_msg=0x7f02000d;
-        public static final int title=0x7f02000e;
+        public static final int msg1=0x7f02000d;
+        public static final int noti_msg=0x7f02000e;
+        public static final int title=0x7f02000f;
     }
     public static final class id {
         public static final int ImageView=0x7f07000b;
