@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.locus.core.Constants;
 import com.example.locus.core.CoreFacade;
 import com.example.locus.core.IObserver;
 import com.example.locus.entity.Message;
@@ -109,6 +111,7 @@ public class Profile extends Activity implements IObserver {
 
 		@Override
 		protected void onPostExecute(User result) {
+			Log.v(Constants.AppUITag, "get user pic = " + result.getPicURL());
 			updateUI(result);
 		}
 	}
