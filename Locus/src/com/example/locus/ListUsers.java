@@ -233,9 +233,15 @@ public class ListUsers extends Activity implements LocationListener, IObserver {
 
 	}
 
-	public void onDestroy(){
-		super.onDestroy();
+//	public void onDestroy(){
+//		super.onDestroy();
+//		core.logout();
+//	}
+	
+	public void onBackButtonPressed(){
 		core.logout();
+		System.exit(0);
+		
 	}
 
 	@Override

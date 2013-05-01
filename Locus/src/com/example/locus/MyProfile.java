@@ -1,16 +1,15 @@
 package com.example.locus;
 
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
+import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
-
-import javax.imageio.ImageIO;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -30,14 +29,16 @@ public class MyProfile extends Activity {
 	private RadioGroup radioGenderGroup;
 	User currentUser;
 	 private static int RESULT_LOAD_IMAGE = 1;
-	 ByteArrayOutputStream baos;
-	 byte[] imageInByte;
-	 
+	
+	 FileInputStream fstream;
+	 BufferedInputStream bstream;
+	 byte[] imageArray;
 	 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_my_profile);
+		getWindow().getDecorView().setBackgroundColor(Color.BLACK);
 		 Button buttonLoadImage = (Button) findViewById(R.id.imageButton);
 	        buttonLoadImage.setOnClickListener(new View.OnClickListener() {
 
@@ -74,20 +75,21 @@ public class MyProfile extends Activity {
             //Convert image to byte array
             try{
             	 
-            	BufferedImage originalImage = 
-                                          ImageIO.read(new File(picturePath));
-             
-            	baos = new ByteArrayOutputStream();
-            	ImageIO.write( originalImage, "jpg", baos );
-            	baos.flush();
-            	imageInByte = baos.toByteArray();
-            	baos.close();
-             
+            	File fileImageActual = new File(picturePath);
+				//Size of file
+            	imageArray = new byte[(int) fileImageActual.length()];
+
+				//Read File & Write Image
+				fstream = new FileInputStream(fileImageActual);
+				bstream = new BufferedInputStream(fstream);
+				bstream.read(imageArray, 0, imageArray.length);
+				
+				//currentUser.setPic(imageArray);
+				
             	}catch(IOException e){
             		System.out.println(e.getMessage());
             	}	
-            
-         
+                   
         }
      
      
@@ -104,8 +106,11 @@ public class MyProfile extends Activity {
 	public void onClick(View view) throws IOException{
 
 		radioGenderGroup = (RadioGroup) findViewById(R.id.genderRadioGroup);
+	
 		RadioButton rB;
-        //RadioButton rd2=(RadioButton) findViewById(R.id.radio2);
+        RadioButton rd2=(RadioButton) findViewById(R.id.radio2);
+        RadioButton rd1=(RadioButton) findViewById(R.id.radio1);
+   
         
 		int selectedID = radioGenderGroup.getCheckedRadioButtonId();
         rB = (RadioButton) findViewById(selectedID);
@@ -121,11 +126,15 @@ public class MyProfile extends Activity {
 
 		EditText lat = (EditText) findViewById(R.id.editText2);
 		EditText lon = (EditText) findViewById(R.id.editText3);
+		
+		
 
 		if(isEmpty(userName))
 			Toast.makeText(this,"Enter UserName" , Toast.LENGTH_LONG).show();
 		else if ( isEmpty(interestText))
 			Toast.makeText(this,"Enter Interests" , Toast.LENGTH_LONG).show();
+		else if(imageArray == null)
+			Toast.makeText(this, "Select a Picture", Toast.LENGTH_LONG).show();
 		else{
 			if( isEmpty(lat) || isEmpty(lon)){
 				Intent intent = new Intent(this, ListUsers.class);
@@ -133,7 +142,7 @@ public class MyProfile extends Activity {
 				intent.putExtra("sex", gender);	
 				intent.putExtra("IP", ipAdd);
 				intent.putExtra("interests", interests);
-				intent.putExtra("pic", imageInByte);
+				intent.putExtra("pic", imageArray);
 				startActivity(intent);
 			}
 			else{
@@ -146,7 +155,7 @@ public class MyProfile extends Activity {
 				intent.putExtra("interests", interests);
 				intent.putExtra("latitude", lati);
 				intent.putExtra("longitude", longi);
-				intent.putExtra("pic", imageInByte);
+				intent.putExtra("pic", imageArray);
 				startActivity(intent);
 
 			}

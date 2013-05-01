@@ -2,13 +2,15 @@ package com.example.locus;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.locus.core.CoreFacade;
 import com.example.locus.entity.Sex;
 import com.example.locus.entity.User;
 public class Profile extends Activity {
@@ -16,6 +18,7 @@ public class Profile extends Activity {
 	 private int groupId1=1;
 	 private int editProfileId = Menu.FIRST;
 	 User user;
+	 ImageView image;
 	 
 	 
 	@Override
@@ -33,7 +36,16 @@ public class Profile extends Activity {
 		TextView textName = (TextView) findViewById(R.id.textView2);
 		TextView textGender = (TextView) findViewById(R.id.textView4);
 		TextView textInterests = (TextView) findViewById(R.id.textView6);
+		image = (ImageView)findViewById(R.id.imageView1);
 		
+//		InputStream in = new ByteArrayInputStream(user.getPic());
+//		BufferedImage bufImg = ImageIO.read(in);
+//		ImageIcon icon = new ImageIcon(bufImg);
+//		image.setImageBitmap(icon);
+
+		Bitmap bitmap = BitmapFactory.decodeByteArray(user.getPic() , 0, user.getPic().length);
+		 image.setImageBitmap(bitmap );
+		 
 		textName.setText(user.getName());
 		if(user.getSex() == Sex.Male)
 			textGender.setText("Male");

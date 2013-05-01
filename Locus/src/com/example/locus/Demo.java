@@ -68,7 +68,8 @@ public class Demo extends Activity implements IObserver {
 
 		if (currentUser == null) {
 			currentUser = new User(username, sex, ipAdd, latitude, longitude,
-					interests, imageInByte);
+					interests);
+			currentUser.setPic(imageInByte);
 			core.addObserver(this);
 		} else {
 			currentUser.setLatitude(latitude);
@@ -77,7 +78,7 @@ public class Demo extends Activity implements IObserver {
 			currentUser.setName(username);
 			currentUser.setInterests(interests);
 			currentUser.setSex(sex);
-			currentUser.setPicURL(imageInByte);
+			currentUser.setPic(imageInByte);
 		}
 
 
@@ -135,12 +136,20 @@ public class Demo extends Activity implements IObserver {
 	public void onReceiveUserProfile(User user) {
 	}
 
-	public void onDestroy() {
-		super.onDestroy();
+//	public void onDestroy() {
+//		super.onDestroy();
+//		LogoutTask logoutTask = new LogoutTask();
+//		logoutTask.execute(new Object[1]);
+//	}
+
+	public void onBackButtonPressed(){
 		LogoutTask logoutTask = new LogoutTask();
 		logoutTask.execute(new Object[1]);
+		System.exit(0);
+		
 	}
-
+		
+	
 	@Override
 	public void onReceiveNearbyUsers(Set<User> users) {
 	}

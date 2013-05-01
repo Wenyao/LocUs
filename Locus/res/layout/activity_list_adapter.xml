@@ -33,6 +33,8 @@
         android:paddingLeft="3dp"
         android:paddingRight="2dp"
         android:paddingTop="1dp"
+        android:padding="5dip"
+    android:background="@drawable/edittext"
         android:scrollHorizontally="false"
         android:singleLine="false"
         android:textSize="14sp" />
