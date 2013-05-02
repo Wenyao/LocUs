@@ -8,6 +8,7 @@ import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -174,6 +175,16 @@ public class Demo extends Activity implements IObserver {
 	}
 
 	private class RegisterTask extends AsyncTask<User, Integer, Set<User>> {
+		
+		private ProgressDialog dialog = new ProgressDialog(Demo.this);
+
+	    /** progress dialog to show user that the backup is processing. */
+	    /** application context. */
+
+	    protected void onPreExecute() {
+	        this.dialog.setMessage("Getting Nearby Users ..");
+	        this.dialog.show();
+	    }
 
 		@Override
 		protected Set<User> doInBackground(User... params) {
@@ -191,8 +202,12 @@ public class Demo extends Activity implements IObserver {
 
 		@Override
 		protected void onPostExecute(Set<User> result) {
+			
+			 if (dialog.isShowing()) {
+		            dialog.dismiss();
+		        }
 			if (result == null) {
-				Toast.makeText(getApplicationContext(), "No users Nearby",
+				Toast.makeText(getApplicationContext(), "No users Nearby...",
 						Toast.LENGTH_LONG).show();
 			} else {
 				if (result != null) {
@@ -352,8 +367,8 @@ public class Demo extends Activity implements IObserver {
 		// Hide the notification after its selected
 		noti.flags |= Notification.FLAG_AUTO_CANCEL;
 
-		 noti.flags |= Notification.DEFAULT_VIBRATE;
-		 noti.flags |= Notification.DEFAULT_SOUND;
+		 //noti.flags |= Notification.DEFAULT_VIBRATE;
+		 //noti.flags |= Notification.DEFAULT_SOUND;
 
 		notificationManager.notify(0, noti);
 
