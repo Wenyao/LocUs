@@ -24,7 +24,7 @@ public class BroadCast extends Activity {
 		setContentView(R.layout.activity_broad_cast);
 		et = (EditText) findViewById(R.id.broadCasteditText);
 		bcButton = (Button) findViewById(R.id.broadcastbutton);
-
+		
 
 	}
 
@@ -33,6 +33,7 @@ public class BroadCast extends Activity {
 
 		BroadMessageTask task = new BroadMessageTask();
 		task.execute(txt);
+		finish();
 	}
 
 
