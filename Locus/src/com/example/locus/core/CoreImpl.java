@@ -160,7 +160,12 @@ public class CoreImpl implements ICore {
 		if (isJoined) {
 			Log.i(Constants.AppCoreTag, "leave chord");
 			System.out.println(Constants.AppCoreTag + " logout");
-			//dht.leave();
+			try{
+				dht.leave();
+			}
+			catch (Exception e){
+				Log.e(Constants.AppCoreTag, "dht leave error = " + e);
+			}
 			mp.stopReceive();
 			isJoined = false;
 		}
@@ -242,10 +247,9 @@ public class CoreImpl implements ICore {
 	public User getUserProfile(User target) throws Exception {
 		if (target != null) {
 			User user = null;
-			try{
-			 user = mp.getUserProfile(target);
-			}
-			catch (Exception e) {
+			try {
+				user = mp.getUserProfile(target);
+			} catch (Exception e) {
 				dht.delete(target);
 				throw e;
 			}
