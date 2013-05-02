@@ -111,6 +111,7 @@
         android:id="@+id/imgView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:adjustViewBounds="true"
         android:layout_above="@id/imageButton"
         android:src="@drawable/a" />
 
