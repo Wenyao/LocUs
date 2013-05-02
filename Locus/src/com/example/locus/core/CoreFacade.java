@@ -90,7 +90,7 @@ public class CoreFacade implements ICore {
 	}
 
 	@Override
-	public User getUserProfile(User target) {
+	public User getUserProfile(User target)throws Exception {
 		return coreImpl.getUserProfile(target);
 	}
 

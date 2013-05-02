@@ -85,7 +85,6 @@ public class Demo extends Activity implements IObserver {
 			currentUser.setPic(imageInByte);
 		}
 
-
 		AsyncTask<User, Integer, Set<User>> registerTask = new RegisterTask();
 		registerTask.execute(currentUser);
 
@@ -141,19 +140,18 @@ public class Demo extends Activity implements IObserver {
 	public void onReceiveUserProfile(User user) {
 	}
 
-	//	public void onDestroy() {
-	//		super.onDestroy();
-	//		LogoutTask logoutTask = new LogoutTask();
-	//		logoutTask.execute(new Object[1]);
-	//	}
+	// public void onDestroy() {
+	// super.onDestroy();
+	// LogoutTask logoutTask = new LogoutTask();
+	// logoutTask.execute(new Object[1]);
+	// }
 
-	public void onBackButtonPressed(){
+	public void onBackButtonPressed() {
 		LogoutTask logoutTask = new LogoutTask();
 		logoutTask.execute(new Object[1]);
 		System.exit(0);
 
 	}
-
 
 	@Override
 	public void onReceiveNearbyUsers(Set<User> users) {
@@ -163,24 +161,23 @@ public class Demo extends Activity implements IObserver {
 
 		@Override
 		protected Set<User> doInBackground(User... params) {
-			try{
+			try {
 				CoreFacade.getInstance().register(currentUser);
 				return CoreFacade.getInstance().getUsersNearby();
-			}
-			catch(Exception e){
+			} catch (Exception e) {
 				return null;
 			}
 		}
 
 		@Override
 		protected void onPostExecute(Set<User> result) {
-			if (result == null){
-				Toast.makeText(getApplicationContext(), "No users Nearby", Toast.LENGTH_LONG).show();
-			}
-			else{
+			if (result == null) {
+				Toast.makeText(getApplicationContext(), "No users Nearby",
+						Toast.LENGTH_LONG).show();
+			} else {
 				if (result != null) {
-					Log.i(Constants.AppUITag,
-							"refreshed user number = " + result.size());
+					Log.i(Constants.AppUITag, "refreshed user number = "
+							+ result.size());
 				}
 
 				List<User> data = new ArrayList<User>();
@@ -197,7 +194,8 @@ public class Demo extends Activity implements IObserver {
 				listView = (ListView) findViewById(R.id.listView);
 				listView.setAdapter(adapter);
 
-				Intent intent = new Intent(getApplicationContext(), Profile.class);
+				Intent intent = new Intent(getApplicationContext(),
+						Profile.class);
 
 				// listView.setOnItemClickListener(new
 				// AdapterView.OnItemClickListener() {
@@ -206,7 +204,8 @@ public class Demo extends Activity implements IObserver {
 				// public void onItemClick(AdapterView<?> adapter, View view,
 				// int position, long id) {
 				// User o = (User) adapter.getItemAtPosition(position);
-				// GetUserProfileTask getUserProfileTask = new GetUserProfileTask();
+				// GetUserProfileTask getUserProfileTask = new
+				// GetUserProfileTask();
 				// getUserProfileTask.execute(o);
 				//
 				// SendMessageTask sendMessageTask = new SendMessageTask();
@@ -222,34 +221,32 @@ public class Demo extends Activity implements IObserver {
 							int position, long id) {
 						// TODO Auto-generated method stub
 						int x = 0;
-						try{
+						try {
 							User o = (User) adapter.getItemAtPosition(position);
 
 							String str_text = o.getName();
 							Toast.makeText(
 									getApplicationContext(),
-									str_text + " \n" + "IP = " + o.getIp() + "\nLat="
-											+ o.getLatitude() + " Lon="
-											+ o.getLongtitude(), Toast.LENGTH_LONG)
-											.show();
+									str_text + " \n" + "IP = " + o.getIp()
+											+ "\nLat=" + o.getLatitude()
+											+ " Lon=" + o.getLongtitude(),
+									Toast.LENGTH_LONG).show();
 
 							Intent intent = new Intent(getApplicationContext(),
 									Profile.class);
 
 							intent.putExtra("user", o);
-							intent.putExtra("user2", (User)null);
+							intent.putExtra("user2", (User) null);
 
 							startActivity(intent);
-						}catch(Exception e){
-							Toast.makeText(
-									getApplicationContext(),
+						} catch (Exception e) {
+							Toast.makeText(getApplicationContext(),
 									"User Currently Offline", Toast.LENGTH_LONG)
 									.show();
 						}
 					}
 
-
-				});  
+				});
 
 			}
 		}
@@ -258,77 +255,82 @@ public class Demo extends Activity implements IObserver {
 	private class GetUserProfileTask extends AsyncTask<User, Integer, User> {
 		@Override
 		protected User doInBackground(User... params) {
-			return CoreFacade.getInstance().getUserProfile(params[0]);
+			try {
+				return CoreFacade.getInstance().getUserProfile(params[0]);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+			return null;
 		}
 
 		@Override
 		protected void onPostExecute(User result) {
-			String str_text = result.getName();
-			Toast.makeText(
-					getApplicationContext(),
-					str_text + " \n" + "IP = " + result.getIp() + "\nLat="
-							+ result.getLatitude() + " Lon="
-							+ result.getLongtitude() + " Int = "
-							+ result.getInterests(), Toast.LENGTH_LONG).show();
+			if (result != null) {
+
+				String str_text = result.getName();
+				Toast.makeText(
+						getApplicationContext(),
+						str_text + " \n" + "IP = " + result.getIp() + "\nLat="
+								+ result.getLatitude() + " Lon="
+								+ result.getLongtitude() + " Int = "
+								+ result.getInterests(), Toast.LENGTH_LONG)
+						.show();
+			}
 		}
 	}
 
 	private class OnReceiveMessageUpdateUITask extends
-	AsyncTask<Message, Integer, Message> {
+			AsyncTask<Message, Integer, Message> {
 		@Override
 		protected Message doInBackground(Message... params) {
-			try{
+			try {
 				return params[0];
-			}
-			catch(Exception e){
+			} catch (Exception e) {
 				return null;
 			}
 		}
 
 		@Override
 		protected void onPostExecute(Message result) {
-			if(result == null){
-				Toast.makeText(getApplicationContext(), "User has gone offline", Toast.LENGTH_LONG)
-				.show();
-			}
-			else{
+			if (result == null) {
+				Toast.makeText(getApplicationContext(),
+						"User has gone offline", Toast.LENGTH_LONG).show();
+			} else {
 				// TODO add new message notification on the list
 				String str_text = result.toString();
-				Toast.makeText(getApplicationContext(), str_text, Toast.LENGTH_LONG)
-				.show();
+				Toast.makeText(getApplicationContext(), str_text,
+						Toast.LENGTH_LONG).show();
 				createNotification(result);
 			}
 		}
 	}
 
-
-	public void createNotification(Message m){
+	public void createNotification(Message m) {
 		Intent intent2 = new Intent(getApplicationContext(), Chat.class);
-		intent2.setFlags( Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
+		intent2.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
+				| Intent.FLAG_ACTIVITY_SINGLE_TOP);
 		intent2.putExtra("user", m.getSrc());
 		PendingIntent pIntent = PendingIntent.getActivity(this, 0, intent2, 0);
 
 		// Build notification
 		// Actions are just fake
-		Notification noti = new NotificationCompat.Builder(this).setAutoCancel(true)
+		Notification noti = new NotificationCompat.Builder(this)
+				.setAutoCancel(true)
 				.setContentTitle("New Message from " + m.getSrc().getName())
 				.setContentText(m.getData().toString())
-				.setSmallIcon(R.drawable.locus)
-				.setContentIntent(pIntent)
+				.setSmallIcon(R.drawable.locus).setContentIntent(pIntent)
 				.addAction(R.drawable.msg1, "View", pIntent).build();
 
-
-		NotificationManager notificationManager = 
-				(NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+		NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
 		// Hide the notification after its selected
 		noti.flags |= Notification.FLAG_AUTO_CANCEL;
 
-		//noti.flags |= Notification.DEFAULT_VIBRATE;
-		//noti.flags |= Notification.DEFAULT_SOUND;
+		// noti.flags |= Notification.DEFAULT_VIBRATE;
+		// noti.flags |= Notification.DEFAULT_SOUND;
 
-		notificationManager.notify(0, noti); 
-
+		notificationManager.notify(0, noti);
 
 	}
 
@@ -346,15 +348,14 @@ public class Demo extends Activity implements IObserver {
 			String str_text = String.format("msg sent.  msg = %s",
 					result.toString());
 			Toast.makeText(getApplicationContext(), str_text, Toast.LENGTH_LONG)
-			.show();
+					.show();
 		}
 	}
-
 
 	private class LogoutTask extends AsyncTask<Object, Integer, Object> {
 		@Override
 		protected Object doInBackground(Object... params) {
-			
+
 			CoreFacade.getInstance().logout();
 			return null;
 		}
@@ -365,6 +366,5 @@ public class Demo extends Activity implements IObserver {
 					Toast.LENGTH_LONG).show();
 		}
 	}
-
 
 }

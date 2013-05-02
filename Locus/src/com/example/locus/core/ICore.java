@@ -19,7 +19,7 @@ public interface ICore extends IObservable, IObserver {
 	Result sendMessage(User target, String msg);
 	Result sendExMessage(User target, String kind, byte[] obj);
 	Result broadcastMessage(String msg);
-	User getUserProfile(User target);
+	User getUserProfile(User target)throws Exception;
 	
 	User getCurrentUser();
 }
