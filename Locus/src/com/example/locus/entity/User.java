@@ -176,7 +176,15 @@ public class User implements Serializable {
 	}
 	
 	public String serialize(){
-		return String.format("%s`%s`%s`%s`%f`%f`%s`%s", id, name, sex, ip, latitude, longtitude, interests, publicKey);
+		return String.format("%s`%s`%s`%s`%f`%f`%s`%s", 
+				id, 
+				name, 
+				sex, 
+				ip, 
+				latitude, 
+				longtitude, 
+				interests, 
+				publicKey);
 	}
 	
 	@Override

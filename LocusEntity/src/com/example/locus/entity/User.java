@@ -24,7 +24,16 @@ public class User implements Serializable {
 	private String interests;
 	private String picURL;
 	private byte[] pic;
+	private boolean loggedIn;
 	
+	public boolean isLoggedIn() {
+		return loggedIn;
+	}
+
+	public void setLoggedIn(boolean loggedIn) {
+		this.loggedIn = loggedIn;
+	}
+
 	public byte[] getPic() {
 		return pic;
 	}
@@ -78,7 +87,7 @@ public class User implements Serializable {
 	
 	public User(String value){
 		//TODO refactor
-		String[] splitsStrings = value.split(",");
+		String[] splitsStrings = value.split("`");
 		id = splitsStrings[0];
 		name = splitsStrings[1];
 
@@ -88,10 +97,12 @@ public class User implements Serializable {
 		latitude = Double.parseDouble(splitsStrings[4]);
 		longtitude = Double.parseDouble(splitsStrings[5]);
 		
-		publicKey = splitsStrings[6];
-		if (splitsStrings.length > 7){
-			for (int i = 7; i < splitsStrings.length; i++) {
-				publicKey += "," + splitsStrings[i];
+		interests = splitsStrings[6];
+		
+		publicKey = splitsStrings[7];
+		if (splitsStrings.length > 8){
+			for (int i = 8; i < splitsStrings.length; i++) {
+				publicKey += "`" + splitsStrings[i];
 			}
 			
 		}
@@ -163,7 +174,15 @@ public class User implements Serializable {
 	}
 	
 	public String serialize(){
-		return String.format("%s,%s,%s,%s,%f,%f,%s", id, name, sex, ip, latitude, longtitude,publicKey);
+		return String.format("%s`%s`%s`%s`%f`%f`%s`%s", 
+				id, 
+				name, 
+				sex, 
+				ip, 
+				latitude, 
+				longtitude, 
+				interests, 
+				publicKey);
 	}
 	
 	@Override
