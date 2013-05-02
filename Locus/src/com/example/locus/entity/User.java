@@ -192,7 +192,7 @@ public class User implements Serializable {
 	public String toString() {
 		return "User [id = "+ id + ", name = " + name + ", sex=" + sex + ", ip=" + ip + ", lat="
 				+ latitude + ", lon=" + longtitude + ", tile="
-				+ getTileNumber() + "]";
+				+ getTileNumber() + ", isLoggedIn = " + isLoggedIn() + "]";
 	}
 
 	@Override

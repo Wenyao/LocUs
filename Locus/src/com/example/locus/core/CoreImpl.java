@@ -49,6 +49,10 @@ public class CoreImpl implements ICore {
 		if (user != null) {
 			user.setLatitude(lati);
 			user.setLongtitude(longti);
+			
+			Log.v(Constants.AppCoreTag, "refresh user on chord");
+			Log.v(Constants.AppCoreTag, "old user = " + oldUser);
+			Log.v(Constants.AppCoreTag, "new user = " + user);
 
 			if (oldUser != null && oldUser.isLoggedIn()){
 				Log.i(Constants.AppCoreTag, "delete old user = " + oldUser);
@@ -69,7 +73,9 @@ public class CoreImpl implements ICore {
 			nearbyUsers = dht.getUsersByKey(user);
 
 			for (User user : nearbyUsers) {
-				accountDataSource.createUser(user);
+				if (!user.equals(this.user)){
+					accountDataSource.createUser(user);
+				}
 			}
 
 			onReceiveNearbyUsers(nearbyUsers);
@@ -112,6 +118,8 @@ public class CoreImpl implements ICore {
 		Log.v(Constants.AppCoreTag, "Enter Register user = " + user);
 		if (accountDataSource != null) {
 			oldUser = accountDataSource.getUserById(user.getId());
+			Log.v(Constants.AppCoreTag, "old user = " + oldUser);
+			
 			accountDataSource.createUser(user);
 			accountDataSource.loginUser(user);
 			user.setLoggedIn(true);
