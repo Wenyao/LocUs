@@ -134,6 +134,7 @@ public class CoreImpl implements ICore {
 	@Override
 	public Result logout() {
 		Log.i(Constants.AppCoreTag, "logout");
+		System.out.println(Constants.AppCoreTag + " logout");
 		
 		 if (user != null) {
 			 Log.i(Constants.AppCoreTag, "delete user on chord");
@@ -144,6 +145,7 @@ public class CoreImpl implements ICore {
 
 		 if (isJoined) {
 			 Log.i(Constants.AppCoreTag, "leave chord");
+			 System.out.println(Constants.AppCoreTag + " logout");
 			 dht.leave();
 			 mp.stopReceive();
 			 isJoined = false;

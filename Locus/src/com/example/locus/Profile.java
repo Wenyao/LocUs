@@ -119,7 +119,7 @@ public class Profile extends Activity implements IObserver {
 			if(result == null)
 				Toast.makeText(getApplicationContext(), "Check Internet Connection", Toast.LENGTH_LONG).show();
 			else{
-				Log.v(Constants.AppUITag, "get user pic = " + result.getPicURL());
+				Log.v(Constants.AppUITag, "get user pic = " + result.getPic());
 				updateUI(result);
 			}
 		}

@@ -41,6 +41,7 @@ public class User implements Serializable {
 	}
 
 	public void setPic(byte[] pic) {
+		System.out.println("set user = " + id + " pic = " + pic);
 		this.pic = pic;
 	}
 
