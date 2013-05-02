@@ -136,14 +136,18 @@ public class Demo extends Activity implements IObserver {
 			Handler handler = new Handler(); 
 			handler.postDelayed(new Runnable() { 
 				public void run() { 
-					System.exit(0);
-
+					Intent intent = new Intent(Intent.ACTION_MAIN);
+					intent.addCategory(Intent.CATEGORY_HOME);
+					intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+					startActivity(intent);
 				} 
-			}, 500); 
+			}, 3000); 
+			break;
 
 		}
 		return super.onOptionsItemSelected(item);
 	}
+
 
 	@Override
 	public void onReceiveMessage(Message msg) {
