@@ -16,6 +16,8 @@
             android:layout_width="66dp"
             android:layout_height="66dp"
             android:gravity="left"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop"
             android:layout_weight="1.0"  
             android:src="@drawable/a" />
 
@@ -23,7 +25,9 @@
             android:id="@+id/oppImage"
             android:layout_width="66dp"
             android:layout_height="66dp"
-            android:layout_weight="1.0"  
+            android:layout_weight="1.0" 
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop" 
             android:gravity="right"
             android:src="@drawable/a" />
 
