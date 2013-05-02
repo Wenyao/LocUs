@@ -11,6 +11,8 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
@@ -22,6 +24,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -42,6 +45,11 @@ public class Chat extends Activity implements OnClickListener, IObserver {
 	private List<Message> msg;
 	private ChatAdapter chatAdapter;
 	User oppUser;
+	User currUser;
+	ImageView currImage;
+	ImageView oppImage;
+	Bitmap bitmap1;
+	Bitmap bitmap2;
 	protected static final int RESULT_SPEECH = 1;
 
 	@Override
@@ -50,10 +58,24 @@ public class Chat extends Activity implements OnClickListener, IObserver {
 
 		Intent intent = getIntent();
 		oppUser = (User) intent.getSerializableExtra("user");
+		
 		CoreFacade.getInstance().addObserver(this);
 
 		setContentView(R.layout.activity_chat);
-
+		currImage = (ImageView)findViewById(R.id.currImage);
+		oppImage = (ImageView)findViewById(R.id.oppImage);
+		currUser = CoreFacade.getInstance().getCurrentUser();
+		if (oppUser.getPic() != null) {
+			bitmap1 = BitmapFactory.decodeByteArray(oppUser.getPic(), 0,
+					oppUser.getPic().length);
+			oppImage.setImageBitmap(bitmap1);
+		}
+		if (currUser.getPic() != null) {
+			bitmap2 = BitmapFactory.decodeByteArray(currUser.getPic(), 0,
+					currUser.getPic().length);
+			currImage.setImageBitmap(bitmap2);
+		}
+		
 		chatView = (ListView) findViewById(R.id.listViewChat);
 		sendButton = (Button) findViewById(R.id.sendButton);
 		tv = (EditText) findViewById(R.id.chatText);

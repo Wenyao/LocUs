@@ -4,16 +4,12 @@ import java.util.List;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.locus.core.CoreFacade;
@@ -30,7 +26,6 @@ public class ChatAdapter extends ArrayAdapter<Message> {
     {
         TextView NameView;
         TextView StringView;
-        ImageView ImageView;
     }
     
     public ChatAdapter(Context context, int layoutResourceId, List<Message> data){
@@ -52,7 +47,6 @@ public class ChatAdapter extends ArrayAdapter<Message> {
             holder = new ChatHolder();
             holder.NameView = (TextView)row.findViewById(R.id.textView1);
             holder.StringView = (TextView)row.findViewById(R.id.chatTextView);
-            holder.ImageView = (ImageView)row.findViewById(R.id.imageView1);
             
             row.setTag(holder);
         }
@@ -65,32 +59,18 @@ public class ChatAdapter extends ArrayAdapter<Message> {
         User user = CoreFacade.getInstance().getCurrentUser();
         
         if(msg.getSrc().getName().equals(user.getName())){
-        	holder.ImageView.setLayoutParams(new LinearLayout.LayoutParams(holder.ImageView.getWidth(), holder.ImageView.getHeight(), Gravity.LEFT));
+        	
         	holder.StringView.setGravity(Gravity.LEFT);
         	holder.NameView.setGravity(Gravity.LEFT);
         	holder.NameView.setTextColor(Color.GREEN);
-        	if (user.getPic() != null) {
-    			Bitmap bitmap = BitmapFactory.decodeByteArray(user.getPic(), 0,
-    					user.getPic().length);
-    			holder.ImageView.setImageBitmap(bitmap);
-    		}
-        	
         	holder.StringView.setText((String) msg.getData());
             holder.NameView.setText((String) msg.getSrc().getName());
         	
         }else{
-        	holder.ImageView.setLayoutParams(new LinearLayout.LayoutParams(holder.ImageView.getWidth(), holder.ImageView.getHeight(), Gravity.RIGHT));
         	holder.StringView.setGravity(Gravity.RIGHT);
-        	
         	holder.NameView.setGravity(Gravity.RIGHT);
         	holder.NameView.setTextColor(Color.BLUE);
         	holder.StringView.setText((String) msg.getData());
-        	if (msg.getSrc().getPic() != null) {
-    			Bitmap bitmap = BitmapFactory.decodeByteArray(msg.getSrc().getPic(), 0,
-    					msg.getSrc().getPic().length);
-    			holder.ImageView.setImageBitmap(bitmap);
-    		}
-        	
             holder.NameView.setText((String) msg.getSrc().getName());
         }
        
