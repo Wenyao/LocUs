@@ -114,4 +114,9 @@ public class CoreFacade implements ICore {
 	public List<Message> getMessagesByUser(User user) {
 		return coreImpl.getMessagesByUser(user);
 	}
+
+	@Override
+	public Result sendExMessage(User target, String kind, byte[] obj) {
+		return coreImpl.sendExMessage(target, kind, obj);
+	}
 }

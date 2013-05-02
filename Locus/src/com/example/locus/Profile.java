@@ -124,7 +124,7 @@ public class Profile extends Activity implements IObserver {
 				btn.setEnabled(false);
 			}
 			else{
-				Log.v(Constants.AppUITag, "get user pic = " + result.getPicURL());
+				Log.v(Constants.AppUITag, "get user pic = " + result.getPic());
 				updateUI(result);
 			}
 		}

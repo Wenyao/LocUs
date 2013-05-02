@@ -80,13 +80,18 @@ public class CoreImpl implements ICore {
 	}
 
 	@Override
-	public Result sendMessage(User user, String msg) {
+	public Result sendMessage(User target, String msg) {
 		// Save message to database
-		Message newMsg = new Message(this.user, user, "Normal", msg);
+		Message newMsg = new Message(this.user, target, Constants.PlainTextKind, msg);
 		newMsg.setId();
 		messageDataSource.createMessage(newMsg);
 
-		return mp.sendMessage(this.user, user, msg);
+		return mp.sendMessage(this.user, target, msg);
+	}
+	
+	@Override
+	public Result sendExMessage(User target, String kind, byte[] obj) {
+		return mp.sendImage(this.user, user, obj);
 	}
 
 	@Override
@@ -134,6 +139,7 @@ public class CoreImpl implements ICore {
 	@Override
 	public Result logout() {
 		Log.i(Constants.AppCoreTag, "logout");
+		System.out.println(Constants.AppCoreTag + " logout");
 		
 		 if (user != null) {
 			 Log.i(Constants.AppCoreTag, "delete user on chord");
@@ -144,6 +150,7 @@ public class CoreImpl implements ICore {
 
 		 if (isJoined) {
 			 Log.i(Constants.AppCoreTag, "leave chord");
+			 System.out.println(Constants.AppCoreTag + " logout");
 			 dht.leave();
 			 mp.stopReceive();
 			 isJoined = false;

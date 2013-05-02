@@ -111,4 +111,9 @@ public class FakeCoreImpl implements ICore {
 		return null;
 	}
 
+	@Override
+	public Result sendExMessage(User target, String kind, byte[] obj) {
+		return null;
+	}
+
 }

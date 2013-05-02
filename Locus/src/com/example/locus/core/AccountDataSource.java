@@ -22,8 +22,8 @@ public class AccountDataSource {
 	private String[] allColumns = { AccountSQLiteHelper.COLUMN_ID,
 			AccountSQLiteHelper.COLUMN_NAME, AccountSQLiteHelper.COLUMN_SEX,
 			AccountSQLiteHelper.COLUMN_INTEREST,
-			AccountSQLiteHelper.COLUMN_PIC, AccountSQLiteHelper.COLUMN_LATI,
-			AccountSQLiteHelper.COLUMN_LONGTI,
+			AccountSQLiteHelper.COLUMN_PIC, AccountSQLiteHelper.COLUMN_IP,
+			AccountSQLiteHelper.COLUMN_LATI, AccountSQLiteHelper.COLUMN_LONGTI,
 			AccountSQLiteHelper.COLUMN_LOGGEDIN };
 
 	public AccountDataSource(Context context) {
@@ -50,16 +50,7 @@ public class AccountDataSource {
 	}
 
 	public void createUser(User user) {
-		ContentValues values = new ContentValues();
-		values.put(AccountSQLiteHelper.COLUMN_ID, user.getId());
-		values.put(AccountSQLiteHelper.COLUMN_NAME, user.getName());
-		values.put(AccountSQLiteHelper.COLUMN_SEX, user.getSex().getValue());
-		values.put(AccountSQLiteHelper.COLUMN_INTEREST, user.getInterests());
-		if (user.getPic() != null) {
-			values.put(AccountSQLiteHelper.COLUMN_PIC, user.getPic());
-		}
-		values.put(AccountSQLiteHelper.COLUMN_LATI, "" + user.getLatitude());
-		values.put(AccountSQLiteHelper.COLUMN_LONGTI, "" + user.getLongtitude());
+		ContentValues values = userToContentValues(user);
 		Cursor cursor = database.query(AccountSQLiteHelper.TABLE_ACCOUNT,
 				allColumns,
 				AccountSQLiteHelper.COLUMN_ID + " = '" + user.getId() + "'",
@@ -78,17 +69,8 @@ public class AccountDataSource {
 	}
 
 	public void loginUser(User user) {
-		ContentValues values = new ContentValues();
-		values.put(AccountSQLiteHelper.COLUMN_ID, user.getId());
-		values.put(AccountSQLiteHelper.COLUMN_NAME, user.getName());
-		values.put(AccountSQLiteHelper.COLUMN_SEX, user.getSex().getValue());
-		values.put(AccountSQLiteHelper.COLUMN_INTEREST, user.getInterests());
-		if (user.getPic() != null) {
-			values.put(AccountSQLiteHelper.COLUMN_PIC, user.getPic());
-		}
-		values.put(AccountSQLiteHelper.COLUMN_LATI, "" + user.getLatitude());
-		values.put(AccountSQLiteHelper.COLUMN_LONGTI, "" + user.getLongtitude());
-		values.put(AccountSQLiteHelper.COLUMN_LOGGEDIN, Constants.LoggedIn);
+		user.setLoggedIn(true);
+		ContentValues values = userToContentValues(user);
 		database.update(AccountSQLiteHelper.TABLE_ACCOUNT, values,
 				AccountSQLiteHelper.COLUMN_ID + " = '" + user.getId() + "'",
 				null);
@@ -97,17 +79,8 @@ public class AccountDataSource {
 	}
 
 	public void logoutUser(User user) {
-		ContentValues values = new ContentValues();
-		values.put(AccountSQLiteHelper.COLUMN_ID, user.getId());
-		values.put(AccountSQLiteHelper.COLUMN_NAME, user.getName());
-		values.put(AccountSQLiteHelper.COLUMN_SEX, user.getSex().getValue());
-		values.put(AccountSQLiteHelper.COLUMN_INTEREST, user.getInterests());
-		if (user.getPic() != null) {
-			values.put(AccountSQLiteHelper.COLUMN_PIC, user.getPic());
-		}
-		values.put(AccountSQLiteHelper.COLUMN_LATI, "" + user.getLatitude());
-		values.put(AccountSQLiteHelper.COLUMN_LONGTI, "" + user.getLongtitude());
-		values.put(AccountSQLiteHelper.COLUMN_LOGGEDIN, Constants.LoggedOut);
+		user.setLoggedIn(false);
+		ContentValues values = userToContentValues(user);
 		database.update(AccountSQLiteHelper.TABLE_ACCOUNT, values,
 				AccountSQLiteHelper.COLUMN_ID + " = '" + user.getId() + "'",
 				null);
@@ -151,14 +124,33 @@ public class AccountDataSource {
 		return users;
 	}
 
+	private ContentValues userToContentValues(User user){
+		ContentValues values = new ContentValues();
+		values.put(AccountSQLiteHelper.COLUMN_ID, user.getId());
+		values.put(AccountSQLiteHelper.COLUMN_NAME, user.getName());
+		values.put(AccountSQLiteHelper.COLUMN_SEX, user.getSex().getValue());
+		values.put(AccountSQLiteHelper.COLUMN_INTEREST, user.getInterests());
+		if (user.getPic() != null) {
+			values.put(AccountSQLiteHelper.COLUMN_PIC, user.getPic());
+		}
+		values.put(AccountSQLiteHelper.COLUMN_IP, user.getIp());
+		values.put(AccountSQLiteHelper.COLUMN_LATI, "" + user.getLatitude());
+		values.put(AccountSQLiteHelper.COLUMN_LONGTI, "" + user.getLongtitude());
+		values.put(AccountSQLiteHelper.COLUMN_LOGGEDIN, 
+				"" + (user.isLoggedIn()? Constants.LoggedIn : Constants.LoggedOut));
+		return values;
+	}
+
 	private User cursorToUser(Cursor cursor) {
 		User user = new User(cursor.getString(1), cursor.getInt(2),
 				cursor.getString(3), null);
 		user.setId(cursor.getString(0));
-		user.setLatitude(Double.parseDouble(cursor.getString(5)));
-		user.setLongtitude(Double.parseDouble(cursor.getString(6)));
-		user.setLoggedIn(Boolean.parseBoolean(cursor.getString(7)));
+		user.setIp(cursor.getString(5));
+		user.setLatitude(Double.parseDouble(cursor.getString(6)));
+		user.setLongtitude(Double.parseDouble(cursor.getString(7)));
+		user.setLoggedIn(Boolean.parseBoolean(cursor.getString(8)));
 		user.setPic(cursor.getBlob(4));
+		Log.v(Constants.AppCoreTag, "get user = " + user.getId() + "**" + user.getPic());
 		return user;
 	}
 }
