@@ -3,7 +3,7 @@
           android:title="EditProfile" />
           
      <item android:id="@+id/broadCast"         
-          android:title="MultiCast" />
+          android:title="BroadCast" />
      
      <item android:id="@+id/refresh"         
           android:title="Refresh List" />

@@ -49,10 +49,9 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/genderRadioGroup"
         android:layout_alignRight="@+id/genderRadioGroup"
-        android:background="@drawable/edittext"
-        android:checked="true"
-        android:padding="5dip"
-        android:text="Male   " />
+                android:checked="true"
+       
+        android:text="Male" />
 
     <RadioButton
         android:id="@+id/radio2"
@@ -60,8 +59,7 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/genderRadioGroup"
         android:layout_alignLeft="@+id/editText3"
-        android:background="@drawable/edittext"
-        android:padding="5dip"
+        
         android:text="Female" />
 </RadioGroup>
 

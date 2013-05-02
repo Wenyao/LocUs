@@ -61,7 +61,7 @@ public class Chat extends Activity implements OnClickListener, IObserver {
 		msgText = (TextView) findViewById(R.id.chatText);
 
 		msg = new ArrayList<Message>();
-		
+
 		chatAdapter = new ChatAdapter(this, R.layout.activity_chat_adapter, msg);
 		chatView.setAdapter(chatAdapter);
 
@@ -162,15 +162,15 @@ public class Chat extends Activity implements OnClickListener, IObserver {
 		intent2.setFlags( Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
 		intent2.putExtra("user", oppUser);
 		PendingIntent pIntent = PendingIntent.getActivity(this, 0, intent2, 0);
-		
+
 		// Build notification
 		// Actions are just fake
 		Notification noti = new NotificationCompat.Builder(this).setAutoCancel(true)
-		.setContentTitle("New Message from " + m.getSrc().getName())
-		.setContentText(m.getData().toString())
-		.setSmallIcon(R.drawable.locus)
-		.setContentIntent(pIntent)
-		.addAction(R.drawable.msg1, "View", pIntent).build();
+				.setContentTitle("New Message from " + m.getSrc().getName())
+				.setContentText(m.getData().toString())
+				.setSmallIcon(R.drawable.locus)
+				.setContentIntent(pIntent)
+				.addAction(R.drawable.msg1, "View", pIntent).build();
 
 
 		NotificationManager notificationManager = 
@@ -178,10 +178,10 @@ public class Chat extends Activity implements OnClickListener, IObserver {
 
 		// Hide the notification after its selected
 		noti.flags |= Notification.FLAG_AUTO_CANCEL;
-	
+
 		//noti.flags |= Notification.DEFAULT_VIBRATE;
 		//noti.flags |= Notification.DEFAULT_SOUND;
-		
+
 		notificationManager.notify(0, noti); 
 
 
@@ -190,18 +190,31 @@ public class Chat extends Activity implements OnClickListener, IObserver {
 	private class SendMessageTask extends AsyncTask<Message, Integer, Message> {
 		@Override
 		protected Message doInBackground(Message... params) {
-			CoreFacade.getInstance().sendMessage(params[0].getDst(),
-					(String) params[0].getData());
-			return params[0];
+			try{
+				CoreFacade.getInstance().sendMessage(params[0].getDst(),
+						(String) params[0].getData());
+				return params[0];
+			}
+			catch(Exception e){
+				return null;
+
+			}
+
 		}
 
 		@Override
 		protected void onPostExecute(Message result) {
-			String str_text = String.format("msg sent.  msg = %s",
-					result.toString());
-			Toast.makeText(getApplicationContext(), str_text, Toast.LENGTH_LONG)
-					.show();
-		}
+			if(result == null){
+				Toast.makeText(getApplicationContext(), "Check Internet Connection", Toast.LENGTH_LONG)
+				.show();
+
+			}
+			else{
+				String str_text = String.format("msg sent.  msg = %s",
+						result.toString());
+				Toast.makeText(getApplicationContext(), str_text, Toast.LENGTH_LONG)
+				.show();
+			}}
 	}
 
 	@Override
@@ -221,27 +234,38 @@ public class Chat extends Activity implements OnClickListener, IObserver {
 	}
 
 	private class OnReceiveMessageUpdateUITask extends
-			AsyncTask<Message, Integer, Message> {
+	AsyncTask<Message, Integer, Message> {
 		@Override
 		protected Message doInBackground(Message... params) {
-			return params[0];
+			try{
+				return params[0];
+			}
+			catch(Exception e){
+				return null;
+			}
 		}
 
 		@Override
 		protected void onPostExecute(Message result) {
-			String str_text = result.toString();
-			Toast.makeText(getApplicationContext(), str_text, Toast.LENGTH_LONG)
-					.show();
-			msg.removeAll(msg);
-
-
-			List<Message> chats = CoreFacade.getInstance().getMessagesByUser(
-					result.getSrc());
-
-			for (Message s : chats) {
-				addItemsToList(s);
+			if (result == null){
+				Toast.makeText(getApplicationContext(), "Check Internet Connection", Toast.LENGTH_LONG)
+				.show();
 			}
-			createNotification(chats.get(chats.size()-1));
+			else{
+				String str_text = result.toString();
+				Toast.makeText(getApplicationContext(), str_text, Toast.LENGTH_LONG)
+				.show();
+				msg.removeAll(msg);
+
+
+				List<Message> chats = CoreFacade.getInstance().getMessagesByUser(
+						result.getSrc());
+
+				for (Message s : chats) {
+					addItemsToList(s);
+				}
+				createNotification(chats.get(chats.size()-1));
+			}
 
 		}
 	}

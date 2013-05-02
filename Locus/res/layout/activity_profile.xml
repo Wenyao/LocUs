@@ -23,8 +23,7 @@
         android:layout_alignBottom="@+id/textView1"
         android:layout_alignParentRight="true"
         android:layout_toRightOf="@+id/textView1"
-        android:padding="5dip"
-    android:background="@drawable/edittext"
+
         android:text=""
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
@@ -35,8 +34,7 @@
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/textView1"
         android:layout_marginTop="24dp"
-        android:padding="5dip"
-    android:background="@drawable/edittext"
+
         android:text="Gender    "
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
@@ -48,8 +46,7 @@
         android:layout_alignLeft="@+id/textView2"
         android:layout_alignParentRight="true"
         android:text=""
-        android:padding="5dip"
-    android:background="@drawable/edittext"
+
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <TextView
@@ -57,11 +54,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
+        android:layout_alignRight="@+id/textView1"
         android:layout_below="@+id/textView3"
         android:layout_marginTop="24dp"
-        android:padding="5dip"
-    android:background="@drawable/edittext"
-        android:text="Interests "
+		android:text="Interests "
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <TextView
@@ -72,8 +68,7 @@
         android:layout_alignLeft="@+id/textView4"
         android:layout_alignParentRight="true"
         android:text=""
-        android:padding="5dip"
-    android:background="@drawable/edittext"
+
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <ImageView
@@ -92,8 +87,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
-        android:background="@drawable/edittext"
-        android:padding="5dip"
+
         android:text="Name      "
         android:textAppearance="?android:attr/textAppearanceMedium" />
 

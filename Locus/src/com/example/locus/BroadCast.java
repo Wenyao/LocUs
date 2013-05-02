@@ -16,16 +16,16 @@ public class BroadCast extends Activity {
 
 	public Button bcButton;
 	public EditText et;
-	
-	
+
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_broad_cast);
 		et = (EditText) findViewById(R.id.broadCasteditText);
 		bcButton = (Button) findViewById(R.id.broadcastbutton);
-		
-		
+
+
 	}
 
 	public void sendBroadCast(View view){
@@ -34,28 +34,39 @@ public class BroadCast extends Activity {
 		BroadMessageTask task = new BroadMessageTask();
 		task.execute(txt);
 	}
-	
-	
+
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.activity_broad_cast, menu);
 		return true;
 	}
-	
+
 	private class BroadMessageTask extends
 	AsyncTask<String, Integer, String> {
 		@Override
 		protected String doInBackground(String... params) {
-			CoreFacade.getInstance().broadcastMessage((String)params[0]);
-			return params[0];
+			try{
+				CoreFacade.getInstance().broadcastMessage((String)params[0]);
+				return params[0];
+			}
+			catch(Exception e){
+
+				return null;
+			}
 		}
 
 		@Override
 		protected void onPostExecute(String result) {
-			String str_text = String.format("Broadcast msg sent.", result.toString());
-			Toast.makeText(getApplicationContext(), str_text, Toast.LENGTH_LONG)
-			.show();
+			if(result == null)
+				Toast.makeText(getApplicationContext(), "Error in BroadCasting", Toast.LENGTH_LONG)
+				.show();
+			else{
+				String str_text = String.format("Broadcast msg sent.", result.toString());
+				Toast.makeText(getApplicationContext(), str_text, Toast.LENGTH_LONG)
+				.show();
+			}
 		}
 	}
 

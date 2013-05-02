@@ -58,7 +58,7 @@ public class AdapterList extends ArrayAdapter<User> {
         
         User user = data.get(position);
         holder.NameTextView.setText(user.getName());
-        holder.InterestTextView.setText(user.getInterests());
+        holder.InterestTextView.setText("> "+user.getInterests());
         if(user.getSex() == Sex.Female)
         	holder.ImageView.setImageResource(R.drawable.femaleicon);
         else

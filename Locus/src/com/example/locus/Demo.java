@@ -63,7 +63,7 @@ public class Demo extends Activity implements IObserver {
 		ipAdd = intent.getStringExtra("IP");
 		gender = intent.getStringExtra("sex");
 		imageInByte = intent.getByteArrayExtra("pic");
-		if (gender.equals("Male   "))
+		if (gender.equals("Male"))
 			sex = Sex.Male;
 		else
 			sex = Sex.Female;
@@ -162,87 +162,95 @@ public class Demo extends Activity implements IObserver {
 
 		@Override
 		protected Set<User> doInBackground(User... params) {
-			
-			CoreFacade.getInstance().register(currentUser);
-			return CoreFacade.getInstance().getUsersNearby();
-			
+			try{
+				CoreFacade.getInstance().register(currentUser);
+				return CoreFacade.getInstance().getUsersNearby();
+			}
+			catch(Exception e){
+				return null;
+			}
 		}
 
 		@Override
 		protected void onPostExecute(Set<User> result) {
-			if (result != null) {
-				Log.i(Constants.AppUITag,
-						"refreshed user number = " + result.size());
+			if (result == null){
+				Toast.makeText(getApplicationContext(), "No users Nearby", Toast.LENGTH_LONG).show();
 			}
-
-			List<User> data = new ArrayList<User>();
-			try {
-				data.addAll(result);
-			} catch (NullPointerException e) {
-				Toast.makeText(getBaseContext(), "No users Nearby",
-						Toast.LENGTH_SHORT).show();
-			}
-
-			AdapterList adapter = new AdapterList(Demo.this,
-					R.layout.activity_list_adapter, data);
-
-			listView = (ListView) findViewById(R.id.listView);
-			listView.setAdapter(adapter);
-
-			Intent intent = new Intent(getApplicationContext(), Profile.class);
-
-			// listView.setOnItemClickListener(new
-			// AdapterView.OnItemClickListener() {
-			//
-			// @Override
-			// public void onItemClick(AdapterView<?> adapter, View view,
-			// int position, long id) {
-			// User o = (User) adapter.getItemAtPosition(position);
-			// GetUserProfileTask getUserProfileTask = new GetUserProfileTask();
-			// getUserProfileTask.execute(o);
-			//
-			// SendMessageTask sendMessageTask = new SendMessageTask();
-			//
-			// Message msg = new Message(currentUser, o, "Normal", "lala");
-			// sendMessageTask.execute(msg);
-			// }
-			// });
-			listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-				@Override
-				public void onItemClick(AdapterView<?> adapter, View view,
-						int position, long id) {
-					// TODO Auto-generated method stub
-					int x = 0;
-					try{
-						User o = (User) adapter.getItemAtPosition(position);
-
-						String str_text = o.getName();
-						Toast.makeText(
-								getApplicationContext(),
-								str_text + " \n" + "IP = " + o.getIp() + "\nLat="
-										+ o.getLatitude() + " Lon="
-										+ o.getLongtitude(), Toast.LENGTH_LONG)
-										.show();
-
-						Intent intent = new Intent(getApplicationContext(),
-								Profile.class);
-
-						intent.putExtra("user", o);
-						intent.putExtra("user2", (User)null);
-
-						startActivity(intent);
-					}catch(Exception e){
-						Toast.makeText(
-								getApplicationContext(),
-								"User Currently Offline", Toast.LENGTH_LONG)
-								.show();
-					}
+			else{
+				if (result != null) {
+					Log.i(Constants.AppUITag,
+							"refreshed user number = " + result.size());
 				}
 
+				List<User> data = new ArrayList<User>();
+				try {
+					data.addAll(result);
+				} catch (NullPointerException e) {
+					Toast.makeText(getBaseContext(), "No users Nearby",
+							Toast.LENGTH_SHORT).show();
+				}
 
-			});  
+				AdapterList adapter = new AdapterList(Demo.this,
+						R.layout.activity_list_adapter, data);
 
+				listView = (ListView) findViewById(R.id.listView);
+				listView.setAdapter(adapter);
+
+				Intent intent = new Intent(getApplicationContext(), Profile.class);
+
+				// listView.setOnItemClickListener(new
+				// AdapterView.OnItemClickListener() {
+				//
+				// @Override
+				// public void onItemClick(AdapterView<?> adapter, View view,
+				// int position, long id) {
+				// User o = (User) adapter.getItemAtPosition(position);
+				// GetUserProfileTask getUserProfileTask = new GetUserProfileTask();
+				// getUserProfileTask.execute(o);
+				//
+				// SendMessageTask sendMessageTask = new SendMessageTask();
+				//
+				// Message msg = new Message(currentUser, o, "Normal", "lala");
+				// sendMessageTask.execute(msg);
+				// }
+				// });
+				listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+					@Override
+					public void onItemClick(AdapterView<?> adapter, View view,
+							int position, long id) {
+						// TODO Auto-generated method stub
+						int x = 0;
+						try{
+							User o = (User) adapter.getItemAtPosition(position);
+
+							String str_text = o.getName();
+							Toast.makeText(
+									getApplicationContext(),
+									str_text + " \n" + "IP = " + o.getIp() + "\nLat="
+											+ o.getLatitude() + " Lon="
+											+ o.getLongtitude(), Toast.LENGTH_LONG)
+											.show();
+
+							Intent intent = new Intent(getApplicationContext(),
+									Profile.class);
+
+							intent.putExtra("user", o);
+							intent.putExtra("user2", (User)null);
+
+							startActivity(intent);
+						}catch(Exception e){
+							Toast.makeText(
+									getApplicationContext(),
+									"User Currently Offline", Toast.LENGTH_LONG)
+									.show();
+						}
+					}
+
+
+				});  
+
+			}
 		}
 	}
 
@@ -268,16 +276,27 @@ public class Demo extends Activity implements IObserver {
 	AsyncTask<Message, Integer, Message> {
 		@Override
 		protected Message doInBackground(Message... params) {
-			return params[0];
+			try{
+				return params[0];
+			}
+			catch(Exception e){
+				return null;
+			}
 		}
 
 		@Override
 		protected void onPostExecute(Message result) {
-			// TODO add new message notification on the list
-			String str_text = result.toString();
-			Toast.makeText(getApplicationContext(), str_text, Toast.LENGTH_LONG)
-			.show();
-			createNotification(result);
+			if(result == null){
+				Toast.makeText(getApplicationContext(), "Check Internet Connection", Toast.LENGTH_LONG)
+				.show();
+			}
+			else{
+				// TODO add new message notification on the list
+				String str_text = result.toString();
+				Toast.makeText(getApplicationContext(), str_text, Toast.LENGTH_LONG)
+				.show();
+				createNotification(result);
+			}
 		}
 	}
 
@@ -334,6 +353,7 @@ public class Demo extends Activity implements IObserver {
 	private class LogoutTask extends AsyncTask<Object, Integer, Object> {
 		@Override
 		protected Object doInBackground(Object... params) {
+			
 			CoreFacade.getInstance().logout();
 			return null;
 		}

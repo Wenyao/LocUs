@@ -39,7 +39,7 @@ public class Profile extends Activity implements IObserver {
 		user = (User) intent.getSerializableExtra("user");
 
 		CoreFacade.getInstance().addObserver(this);
-		
+
 		UpdateUserProfileTask updateUserProfileTask = new UpdateUserProfileTask();
 		updateUserProfileTask.execute(user);
 	}
@@ -106,13 +106,22 @@ public class Profile extends Activity implements IObserver {
 	private class UpdateUserProfileTask extends AsyncTask<User, Integer, User> {
 		@Override
 		protected User doInBackground(User... params) {
-			return CoreFacade.getInstance().getUserProfile(params[0]);
+			try{
+				return CoreFacade.getInstance().getUserProfile(params[0]);
+			}
+			catch(Exception e){
+				return null;
+			}
 		}
 
 		@Override
 		protected void onPostExecute(User result) {
-			Log.v(Constants.AppUITag, "get user pic = " + result.getPicURL());
-			updateUI(result);
+			if(result == null)
+				Toast.makeText(getApplicationContext(), "Check Internet Connection", Toast.LENGTH_LONG).show();
+			else{
+				Log.v(Constants.AppUITag, "get user pic = " + result.getPicURL());
+				updateUI(result);
+			}
 		}
 	}
 
