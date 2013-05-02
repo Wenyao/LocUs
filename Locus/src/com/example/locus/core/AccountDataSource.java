@@ -41,6 +41,7 @@ public class AccountDataSource {
 	public void close() {
 		if (isDatabaseOpen) {
 			dbHelper.close();
+			database.close();
 			isDatabaseOpen = false;
 		}
 	}

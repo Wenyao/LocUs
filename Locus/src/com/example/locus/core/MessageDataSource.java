@@ -42,6 +42,7 @@ public class MessageDataSource {
 	public void close() {
 		if (isDatabaseOpen) {
 			dbHelper.close();
+			database.close();
 			isDatabaseOpen = false;
 		}
 	}

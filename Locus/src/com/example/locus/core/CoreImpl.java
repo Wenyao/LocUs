@@ -167,6 +167,7 @@ public class CoreImpl implements ICore {
 
 		accountDataSource.close();
 		messageDataSource.close();
+		Log.v(Constants.AppCoreTag, "database closed");
 		return Result.Success;
 	}
 
