@@ -2,6 +2,10 @@ package com.example.locus.network;
 
 import java.util.Set;
 
+import sun.util.logging.resources.logging;
+
+import android.util.Log;
+
 import com.example.locus.core.Constants;
 import com.example.locus.core.CoreFacade;
 import com.example.locus.core.IObserver;
@@ -37,15 +41,26 @@ public class MessagePasserFacade implements IMessagePasser {
 
 	@Override
 	public Result sendMessage(User src, User target, String msg) {
-		MessagePasser.sendMessage(src, target, port, Constants.PlainTextKind, SecurityFacade
-				.getInstance().encrypt_data(msg, target.getPublicKey()));
+		MessagePasser.sendMessage(
+				src,
+				target,
+				port,
+				Constants.PlainTextKind,
+				SecurityFacade.getInstance().encrypt_data(msg,
+						target.getPublicKey()));
 		return Result.Success;
 	}
-	
+
 	@Override
 	public Result sendImage(User src, User target, byte[] image) {
-		MessagePasser.sendMessage(src, target, port, Constants.ImageKind, SecurityFacade
-				.getInstance().encrypt_data(EncodeHelper.bytesToString(image), target.getPublicKey()));
+		MessagePasser.sendMessage(
+				src,
+				target,
+				port,
+				Constants.ImageKind,
+				SecurityFacade.getInstance().encrypt_data(
+						EncodeHelper.bytesToString(image),
+						target.getPublicKey()));
 		return Result.Success;
 	}
 
@@ -53,7 +68,11 @@ public class MessagePasserFacade implements IMessagePasser {
 	public Result broadcast(User src, Set<User> targets, String msg) {
 		for (User target : targets) {
 			if (!src.equals(target)) {
-				sendMessage(src, target, msg);
+				try {
+					sendMessage(src, target, msg);
+				} catch (Exception e) {
+					Log.e(Constants.AppCoreTag, "Broadcast message error");
+				}
 			}
 		}
 		return Result.Success;

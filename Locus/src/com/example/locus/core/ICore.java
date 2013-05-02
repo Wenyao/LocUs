@@ -17,6 +17,7 @@ public interface ICore extends IObservable, IObserver {
 	List<Message> getMessagesByUser(User user);
 	
 	Result sendMessage(User target, String msg);
+	Result sendExMessage(User target, String kind, byte[] obj);
 	Result broadcastMessage(String msg);
 	User getUserProfile(User target);
 	
