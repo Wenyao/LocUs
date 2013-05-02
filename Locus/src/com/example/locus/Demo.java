@@ -1,5 +1,6 @@
 package com.example.locus;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -11,6 +12,7 @@ import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.view.Menu;
@@ -127,6 +129,18 @@ public class Demo extends Activity implements IObserver {
 			startActivity(intentMain);
 			break;
 
+		case R.id.logout:
+
+			LogoutTask logoutTask = new LogoutTask();
+			logoutTask.execute(new Object[1]);
+			Handler handler = new Handler(); 
+			handler.postDelayed(new Runnable() { 
+				public void run() { 
+					System.exit(0);
+
+				} 
+			}, 500); 
+
 		}
 		return super.onOptionsItemSelected(item);
 	}
@@ -148,9 +162,6 @@ public class Demo extends Activity implements IObserver {
 	// }
 
 	public void onBackButtonPressed() {
-		LogoutTask logoutTask = new LogoutTask();
-		logoutTask.execute(new Object[1]);
-		System.exit(0);
 
 	}
 
@@ -233,8 +244,8 @@ public class Demo extends Activity implements IObserver {
 							Toast.makeText(
 									getApplicationContext(),
 									str_text + " \n" + "IP = " + o.getIp()
-											+ "\nLat=" + o.getLatitude()
-											+ " Lon=" + o.getLongtitude(),
+									+ "\nLat=" + o.getLatitude()
+									+ " Lon=" + o.getLongtitude(),
 									Toast.LENGTH_LONG).show();
 
 							Intent intent = new Intent(getApplicationContext(),
@@ -257,7 +268,7 @@ public class Demo extends Activity implements IObserver {
 		}
 	}
 
-	
+
 	private class UpdateUI extends AsyncTask<User, Integer, Set<User>> {
 
 		@Override
@@ -298,7 +309,7 @@ public class Demo extends Activity implements IObserver {
 
 				Intent intent = new Intent(getApplicationContext(), Profile.class);
 
-				
+
 				listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
 					@Override
@@ -338,7 +349,7 @@ public class Demo extends Activity implements IObserver {
 			}
 		}
 	}
-	
+
 	private class GetUserProfileTask extends AsyncTask<User, Integer, User> {
 		@Override
 		protected User doInBackground(User... params) {
@@ -362,13 +373,13 @@ public class Demo extends Activity implements IObserver {
 								+ result.getLatitude() + " Lon="
 								+ result.getLongtitude() + " Int = "
 								+ result.getInterests(), Toast.LENGTH_LONG)
-						.show();
+								.show();
 			}
 		}
 	}
 
 	private class OnReceiveMessageUpdateUITask extends
-			AsyncTask<Message, Integer, Message> {
+	AsyncTask<Message, Integer, Message> {
 		@Override
 		protected Message doInBackground(Message... params) {
 			try {
@@ -396,7 +407,7 @@ public class Demo extends Activity implements IObserver {
 			}
 		}
 	}
-	
+
 
 	public void createNotification(Message m) {
 		Intent intent2 = new Intent(getApplicationContext(), Chat.class);
@@ -408,11 +419,11 @@ public class Demo extends Activity implements IObserver {
 		// Build notification
 		// Actions are just fake
 		Notification noti = new NotificationCompat.Builder(this)
-				.setAutoCancel(true)
-				.setContentTitle("New Message from " + m.getSrc().getName())
-				.setContentText(m.getData().toString())
-				.setSmallIcon(R.drawable.locus).setContentIntent(pIntent)
-				.addAction(R.drawable.msg1, "View", pIntent).build();
+		.setAutoCancel(true)
+		.setContentTitle("New Message from " + m.getSrc().getName())
+		.setContentText(m.getData().toString())
+		.setSmallIcon(R.drawable.locus).setContentIntent(pIntent)
+		.addAction(R.drawable.msg1, "View", pIntent).build();
 
 		NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
@@ -440,7 +451,7 @@ public class Demo extends Activity implements IObserver {
 			String str_text = String.format("msg sent.  msg = %s",
 					result.toString());
 			Toast.makeText(getApplicationContext(), str_text, Toast.LENGTH_LONG)
-					.show();
+			.show();
 		}
 	}
 

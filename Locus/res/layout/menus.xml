@@ -7,6 +7,9 @@
      
      <item android:id="@+id/refresh"         
           android:title="Refresh List" />
+     
+     <item android:id="@+id/logout"         
+          android:title="LogOut" />
                
     
 </menu>
