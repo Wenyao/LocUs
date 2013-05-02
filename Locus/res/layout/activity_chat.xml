@@ -6,10 +6,10 @@
     android:background="@drawable/back"
     android:orientation="vertical" >
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal" >
+       >
 
         <ImageView
             android:id="@+id/currImage"
@@ -18,20 +18,21 @@
             android:gravity="left"
             android:adjustViewBounds="true"
             android:scaleType="centerCrop"
-            android:layout_weight="1.0"  
+    
             android:src="@drawable/a" />
 
         <ImageView
             android:id="@+id/oppImage"
             android:layout_width="66dp"
             android:layout_height="66dp"
-            android:layout_weight="1.0" 
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
             android:adjustViewBounds="true"
-            android:scaleType="centerCrop" 
             android:gravity="right"
+            android:scaleType="centerCrop"
             android:src="@drawable/a" />
 
-    </LinearLayout>
+    </RelativeLayout>
 
     <ListView
         android:id="@+id/listViewChat"
