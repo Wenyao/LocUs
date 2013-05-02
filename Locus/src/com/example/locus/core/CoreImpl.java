@@ -133,7 +133,8 @@ public class CoreImpl implements ICore {
 
 	@Override
 	public Result logout() {
-		// TODO
+		Log.i(Constants.AppCoreTag, "logout");
+		
 		 if (user != null) {
 			 Log.i(Constants.AppCoreTag, "delete user on chord");
 			 dht.delete(user);
