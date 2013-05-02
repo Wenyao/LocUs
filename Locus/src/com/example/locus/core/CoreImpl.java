@@ -49,16 +49,16 @@ public class CoreImpl implements ICore {
 		if (user != null) {
 			user.setLatitude(lati);
 			user.setLongtitude(longti);
-			
+
 			Log.v(Constants.AppCoreTag, "refresh user on chord");
 			Log.v(Constants.AppCoreTag, "old user = " + oldUser);
 			Log.v(Constants.AppCoreTag, "new user = " + user);
 
-			if (oldUser != null && oldUser.isLoggedIn()){
+			if (oldUser != null && oldUser.isLoggedIn()) {
 				Log.i(Constants.AppCoreTag, "delete old user = " + oldUser);
 				dht.delete(oldUser);
 			}
-			
+
 			Log.i(Constants.AppCoreTag, "put new user = " + user);
 			dht.put(user);
 			return Result.Success;
@@ -73,7 +73,7 @@ public class CoreImpl implements ICore {
 			nearbyUsers = dht.getUsersByKey(user);
 
 			for (User user : nearbyUsers) {
-				if (!user.equals(this.user)){
+				if (!user.equals(this.user)) {
 					accountDataSource.createUser(user);
 				}
 			}
@@ -88,13 +88,14 @@ public class CoreImpl implements ICore {
 	@Override
 	public Result sendMessage(User target, String msg) {
 		// Save message to database
-		Message newMsg = new Message(this.user, target, Constants.PlainTextKind, msg);
+		Message newMsg = new Message(this.user, target,
+				Constants.PlainTextKind, msg);
 		newMsg.setId();
 		messageDataSource.createMessage(newMsg);
 
 		return mp.sendMessage(this.user, target, msg);
 	}
-	
+
 	@Override
 	public Result sendExMessage(User target, String kind, byte[] obj) {
 		return mp.sendImage(this.user, user, obj);
@@ -107,7 +108,7 @@ public class CoreImpl implements ICore {
 
 	@Override
 	public Result addObserver(IObserver obs) {
-		if (!observers.contains(obs)){
+		if (!observers.contains(obs)) {
 			observers.add(obs);
 		}
 		return Result.Success;
@@ -119,17 +120,17 @@ public class CoreImpl implements ICore {
 		if (accountDataSource != null) {
 			oldUser = accountDataSource.getUserById(user.getId());
 			Log.v(Constants.AppCoreTag, "old user = " + oldUser);
-			
+
 			accountDataSource.createUser(user);
 			accountDataSource.loginUser(user);
 			user.setLoggedIn(true);
 			this.user = user;
-			
+
 			if (!isJoined) {
 				Log.v(Constants.AppCoreTag, "Generate public key");
 				this.user.setPublicKey(SecurityFacade.getInstance()
 						.generate_keypair());
-				
+
 				Log.v(Constants.AppCoreTag, "Enter join dht");
 				dht.join();
 				isJoined = true;
@@ -148,21 +149,21 @@ public class CoreImpl implements ICore {
 	public Result logout() {
 		Log.i(Constants.AppCoreTag, "logout");
 		System.out.println(Constants.AppCoreTag + " logout");
-		
-		 if (user != null) {
-			 Log.i(Constants.AppCoreTag, "delete user on chord");
-			 dht.delete(user);
-			 user.setLoggedIn(false);
-			 accountDataSource.logoutUser(user);
-		 }
 
-		 if (isJoined) {
-			 Log.i(Constants.AppCoreTag, "leave chord");
-			 System.out.println(Constants.AppCoreTag + " logout");
-			 dht.leave();
-			 mp.stopReceive();
-			 isJoined = false;
-		 }
+		if (user != null) {
+			Log.i(Constants.AppCoreTag, "delete user on chord");
+			dht.delete(user);
+			user.setLoggedIn(false);
+			accountDataSource.logoutUser(user);
+		}
+
+		if (isJoined) {
+			Log.i(Constants.AppCoreTag, "leave chord");
+			System.out.println(Constants.AppCoreTag + " logout");
+			dht.leave();
+			mp.stopReceive();
+			isJoined = false;
+		}
 
 		accountDataSource.close();
 		messageDataSource.close();
@@ -238,7 +239,16 @@ public class CoreImpl implements ICore {
 
 	@Override
 	public User getUserProfile(User target) {
-		return mp.getUserProfile(target);
+		if (target != null) {
+			User user = mp.getUserProfile(target);
+			if (user == null) {
+				dht.delete(target);
+			}
+			
+			return user;
+		}
+
+		return null;
 	}
 
 	@Override
