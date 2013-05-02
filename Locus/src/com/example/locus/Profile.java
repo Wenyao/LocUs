@@ -92,6 +92,8 @@ public class Profile extends Activity implements IObserver {
 		else
 			textGender.setText("Female");
 		textInterests.setText(user.getInterests());
+		
+		this.user = user;
 	}
 
 	@Override

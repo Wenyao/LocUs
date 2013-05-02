@@ -58,12 +58,15 @@ public class Chat extends Activity implements OnClickListener, IObserver {
 
 		Intent intent = getIntent();
 		oppUser = (User) intent.getSerializableExtra("user");
-		
+
 		CoreFacade.getInstance().addObserver(this);
 
 		setContentView(R.layout.activity_chat);
-		currImage = (ImageView)findViewById(R.id.currImage);
-		oppImage = (ImageView)findViewById(R.id.oppImage);
+		currImage = (ImageView) findViewById(R.id.currImage);
+		oppImage = (ImageView) findViewById(R.id.oppImage);
+		Log.v(Constants.AppUITag,
+				"get current user to show image user get pic = "
+						+ CoreFacade.getInstance().getCurrentUser().getPic());
 		currUser = CoreFacade.getInstance().getCurrentUser();
 		if (oppUser.getPic() != null) {
 			bitmap1 = BitmapFactory.decodeByteArray(oppUser.getPic(), 0,
@@ -75,7 +78,7 @@ public class Chat extends Activity implements OnClickListener, IObserver {
 					currUser.getPic().length);
 			currImage.setImageBitmap(bitmap2);
 		}
-		
+
 		chatView = (ListView) findViewById(R.id.listViewChat);
 		sendButton = (Button) findViewById(R.id.sendButton);
 		tv = (EditText) findViewById(R.id.chatText);
@@ -87,14 +90,14 @@ public class Chat extends Activity implements OnClickListener, IObserver {
 		chatAdapter = new ChatAdapter(this, R.layout.activity_chat_adapter, msg);
 		chatView.setAdapter(chatAdapter);
 
-		//To populate the list with the previous msgs
+		// To populate the list with the previous msgs
 		msg.removeAll(msg);
 
 		List<Message> chats = new ArrayList<Message>();
 		Log.v(Constants.AppUITag, "get msgs with user = " + oppUser);
 		chats = CoreFacade.getInstance().getMessagesByUser(oppUser);
-		if( chats != null){
-			for(Message s : chats){
+		if (chats != null) {
+			for (Message s : chats) {
 				addItemsToList(s);
 			}
 		}
@@ -167,8 +170,8 @@ public class Chat extends Activity implements OnClickListener, IObserver {
 		tv.setText("");
 		scrollMyListViewToBottom();
 
-
 	}
+
 	private void scrollMyListViewToBottom() {
 		chatView.post(new Runnable() {
 			@Override
@@ -178,46 +181,44 @@ public class Chat extends Activity implements OnClickListener, IObserver {
 			}
 		});
 	}
+
 	@SuppressLint("NewApi")
-	public void createNotification(Message m){
+	public void createNotification(Message m) {
 		Intent intent2 = new Intent(getApplicationContext(), Chat.class);
-		intent2.setFlags( Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
+		intent2.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
+				| Intent.FLAG_ACTIVITY_SINGLE_TOP);
 		intent2.putExtra("user", oppUser);
 		PendingIntent pIntent = PendingIntent.getActivity(this, 0, intent2, 0);
 
 		// Build notification
 		// Actions are just fake
-		Notification noti = new NotificationCompat.Builder(this).setAutoCancel(true)
+		Notification noti = new NotificationCompat.Builder(this)
+				.setAutoCancel(true)
 				.setContentTitle("New Message from " + m.getSrc().getName())
 				.setContentText(m.getData().toString())
-				.setSmallIcon(R.drawable.locus)
-				.setContentIntent(pIntent)
+				.setSmallIcon(R.drawable.locus).setContentIntent(pIntent)
 				.addAction(R.drawable.msg1, "View", pIntent).build();
 
-
-		NotificationManager notificationManager = 
-				(NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+		NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
 		// Hide the notification after its selected
 		noti.flags |= Notification.FLAG_AUTO_CANCEL;
 
-		//noti.flags |= Notification.DEFAULT_VIBRATE;
-		//noti.flags |= Notification.DEFAULT_SOUND;
+		// noti.flags |= Notification.DEFAULT_VIBRATE;
+		// noti.flags |= Notification.DEFAULT_SOUND;
 
-		notificationManager.notify(0, noti); 
-
+		notificationManager.notify(0, noti);
 
 	}
 
 	private class SendMessageTask extends AsyncTask<Message, Integer, Message> {
 		@Override
 		protected Message doInBackground(Message... params) {
-			try{
+			try {
 				CoreFacade.getInstance().sendMessage(params[0].getDst(),
 						(String) params[0].getData());
 				return params[0];
-			}
-			catch(Exception e){
+			} catch (Exception e) {
 				return null;
 
 			}
@@ -226,17 +227,17 @@ public class Chat extends Activity implements OnClickListener, IObserver {
 
 		@Override
 		protected void onPostExecute(Message result) {
-			if(result == null){
-				Toast.makeText(getApplicationContext(), "Check Internet Connection", Toast.LENGTH_LONG)
-				.show();
+			if (result == null) {
+				Toast.makeText(getApplicationContext(),
+						"Check Internet Connection", Toast.LENGTH_LONG).show();
 
-			}
-			else{
+			} else {
 				String str_text = String.format("msg sent.  msg = %s",
 						result.toString());
-				Toast.makeText(getApplicationContext(), str_text, Toast.LENGTH_LONG)
-				.show();
-			}}
+				Toast.makeText(getApplicationContext(), str_text,
+						Toast.LENGTH_LONG).show();
+			}
+		}
 	}
 
 	@Override
@@ -245,7 +246,6 @@ public class Chat extends Activity implements OnClickListener, IObserver {
 		AsyncTask<Message, Integer, Message> updateUITask = new OnReceiveMessageUpdateUITask();
 		updateUITask.execute(msg);
 	}
-
 
 	@Override
 	public void onReceiveUserProfile(User user) {
@@ -256,37 +256,34 @@ public class Chat extends Activity implements OnClickListener, IObserver {
 	}
 
 	private class OnReceiveMessageUpdateUITask extends
-	AsyncTask<Message, Integer, Message> {
+			AsyncTask<Message, Integer, Message> {
 		@Override
 		protected Message doInBackground(Message... params) {
-			try{
+			try {
 				return params[0];
-			}
-			catch(Exception e){
+			} catch (Exception e) {
 				return null;
 			}
 		}
 
 		@Override
 		protected void onPostExecute(Message result) {
-			if (result == null){
-				Toast.makeText(getApplicationContext(), "Check Internet Connection", Toast.LENGTH_LONG)
-				.show();
-			}
-			else{
+			if (result == null) {
+				Toast.makeText(getApplicationContext(),
+						"Check Internet Connection", Toast.LENGTH_LONG).show();
+			} else {
 				String str_text = result.toString();
-				Toast.makeText(getApplicationContext(), str_text, Toast.LENGTH_LONG)
-				.show();
+				Toast.makeText(getApplicationContext(), str_text,
+						Toast.LENGTH_LONG).show();
 				msg.removeAll(msg);
 
-
-				List<Message> chats = CoreFacade.getInstance().getMessagesByUser(
-						result.getSrc());
+				List<Message> chats = CoreFacade.getInstance()
+						.getMessagesByUser(result.getSrc());
 
 				for (Message s : chats) {
 					addItemsToList(s);
 				}
-				createNotification(chats.get(chats.size()-1));
+				createNotification(chats.get(chats.size() - 1));
 			}
 
 		}
