@@ -37,6 +37,7 @@ public final class R {
         public static final int NameTextView=0x7f07000e;
         public static final int broadCast=0x7f07001f;
         public static final int broadCasteditText=0x7f070000;
+        public static final int broadcast_voice=0x7f070022;
         public static final int broadcastbutton=0x7f070002;
         public static final int button1=0x7f070013;
         public static final int chatText=0x7f070006;
@@ -55,7 +56,7 @@ public final class R {
         public static final int listViewChat=0x7f070005;
         public static final int logout=0x7f070021;
         public static final int mainImageView=0x7f070010;
-        public static final int menu_settings=0x7f070022;
+        public static final int menu_settings=0x7f070023;
         public static final int oppImage=0x7f070004;
         public static final int radio1=0x7f070016;
         public static final int radio2=0x7f070017;
@@ -67,7 +68,7 @@ public final class R {
         public static final int textView4=0x7f07000a;
         public static final int textView5=0x7f07001b;
         public static final int textView6=0x7f07001c;
-        public static final int voice=0x7f070023;
+        public static final int voice=0x7f070024;
     }
     public static final class layout {
         public static final int activity_broad_cast=0x7f030000;

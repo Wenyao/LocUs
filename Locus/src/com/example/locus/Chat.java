@@ -187,7 +187,7 @@ public class Chat extends Activity implements OnClickListener, IObserver {
 		Intent intent2 = new Intent(getApplicationContext(), Chat.class);
 		intent2.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
 				| Intent.FLAG_ACTIVITY_SINGLE_TOP);
-		intent2.putExtra("user", oppUser);
+		intent2.putExtra("user", m.getSrc());
 		PendingIntent pIntent = PendingIntent.getActivity(this, 0, intent2, 0);
 
 		// Build notification
@@ -283,7 +283,12 @@ public class Chat extends Activity implements OnClickListener, IObserver {
 				for (Message s : chats) {
 					addItemsToList(s);
 				}
-				createNotification(chats.get(chats.size() - 1));
+				
+				try{
+					createNotification(chats.get(chats.size() - 1));
+				}catch (Exception e){
+					Log.e(Constants.AppUITag, "create notification error =" + e);
+				}
 			}
 
 		}

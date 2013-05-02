@@ -1,12 +1,18 @@
 package com.example.locus;
 
+import java.util.ArrayList;
+
 import com.example.locus.core.CoreFacade;
 import com.example.locus.entity.Message;
 
 import android.app.Activity;
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.speech.RecognizerIntent;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -16,7 +22,7 @@ public class BroadCast extends Activity {
 
 	public Button bcButton;
 	public EditText et;
-
+	protected static final int RESULT_SPEECH = 1;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +48,46 @@ public class BroadCast extends Activity {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.activity_broad_cast, menu);
 		return true;
+	}
+	
+	public boolean onOptionsItemSelected(MenuItem item) {
+
+		switch (item.getItemId()) {
+
+		case R.id.broadcast_voice:
+			Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+
+			intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, "en-US");
+
+			try {
+				startActivityForResult(intent, RESULT_SPEECH);
+				et.setText("");
+			} catch (ActivityNotFoundException a) {
+				Toast t = Toast.makeText(getApplicationContext(),
+						"Opps! Your device doesn't support Speech to Text",
+						Toast.LENGTH_SHORT);
+				t.show();
+			}
+			break;
+		}
+		return super.onOptionsItemSelected(item);
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+
+		switch (requestCode) {
+		case RESULT_SPEECH:
+			if (resultCode == RESULT_OK && null != data) {
+
+				ArrayList<String> text = data
+						.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+
+				et.setText(text.get(0));
+			}
+			break;
+		}
 	}
 
 	private class BroadMessageTask extends
