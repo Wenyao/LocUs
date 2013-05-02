@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,6 +30,7 @@ public class Profile extends Activity implements IObserver {
 	private int editProfileId = Menu.FIRST;
 	User user;
 	ImageView image;
+	Button btn;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +40,7 @@ public class Profile extends Activity implements IObserver {
 		Intent intent = getIntent();
 		user = (User) intent.getSerializableExtra("user");
 
+		btn = (Button)findViewById(R.id.button1);
 		CoreFacade.getInstance().addObserver(this);
 
 		UpdateUserProfileTask updateUserProfileTask = new UpdateUserProfileTask();
@@ -116,8 +119,10 @@ public class Profile extends Activity implements IObserver {
 
 		@Override
 		protected void onPostExecute(User result) {
-			if(result == null)
-				Toast.makeText(getApplicationContext(), "Check Internet Connection", Toast.LENGTH_LONG).show();
+			if(result == null){
+				Toast.makeText(getApplicationContext(), "User has gone Offline", Toast.LENGTH_LONG).show();
+				btn.setEnabled(false);
+			}
 			else{
 				Log.v(Constants.AppUITag, "get user pic = " + result.getPic());
 				updateUI(result);

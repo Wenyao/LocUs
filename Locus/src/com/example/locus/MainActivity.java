@@ -24,72 +24,80 @@ public class MainActivity extends Activity {
 
 		CoreFacade.getInstance().setContext(this.getApplicationContext());
 
-		iv = (ImageView)findViewById(R.id.mainImageView);
-		iv.setScaleType(ScaleType.FIT_XY);
+		
+		Intent intent = getIntent();
 
-		// SLEEP 2 SECONDS HERE ...
-		Handler handler = new Handler(); 
-		handler.postDelayed(new Runnable() { 
-			public void run() { 
+		if(intent.getExtras() == null){
+			// SLEEP 2 SECONDS HERE ...
+			iv = (ImageView)findViewById(R.id.mainImageView);
+			iv.setScaleType(ScaleType.FIT_XY);
+			iv.setImageResource(R.drawable.main);
 
-				User user = CoreFacade.getInstance().getCurrentUser();
-				if(user == null){
-					Intent intent = new Intent(getApplicationContext(), MyProfile.class);
-					startActivity(intent);
+			Handler handler = new Handler(); 
+			handler.postDelayed(new Runnable() { 
+				public void run() { 
 
-				}
-				else{
-					Intent listUser = new Intent(getApplicationContext(), Demo.class);
-					listUser.putExtra("userName", user.getName());
-					listUser.putExtra("latitude", ""+user.getLatitude());
-					listUser.putExtra("longitude", ""+user.getLongtitude());
-					listUser.putExtra("userName", user.getName());
-					String ipAdd;
-					try {
-						ipAdd = IPAddress.getIPAddress(true);
+					User user = CoreFacade.getInstance().getCurrentUser();
+					if(user == null){
+						Intent intent = new Intent(getApplicationContext(), MyProfile.class);
+						startActivity(intent);
 
-						listUser.putExtra("IP", ipAdd);
-						if(user.getSex() == Sex.Female)
-							listUser.putExtra("sex", "Female");
-						else
-							listUser.putExtra("sex", "Male");
-						listUser.putExtra("interests", user.getInterests());
 					}
-					catch (IOException e) {
-						e.printStackTrace();
-					}
-					startActivity(listUser);
-				}
-			} 
-		}, 2000); 
+					else{
+						Intent listUser = new Intent(getApplicationContext(), Demo.class);
+						listUser.putExtra("userName", user.getName());
+						listUser.putExtra("latitude", ""+user.getLatitude());
+						listUser.putExtra("longitude", ""+user.getLongtitude());
+						listUser.putExtra("userName", user.getName());
+						String ipAdd;
+						try {
+							ipAdd = IPAddress.getIPAddress(true);
 
-		//		if(user == null){
-		//			Intent intent = new Intent(this, MyProfile.class);
-		//			startActivity(intent);
-		//
-		//		}
-		//		else{
-		//			Intent listUser = new Intent(this, Demo.class);
-		//			listUser.putExtra("userName", user.getName());
-		//			listUser.putExtra("latitude", ""+user.getLatitude());
-		//			listUser.putExtra("longitude", ""+user.getLongtitude());
-		//			listUser.putExtra("userName", user.getName());
-		//			String ipAdd;
-		//			try {
-		//				ipAdd = IPAddress.getIPAddress(true);
-		//
-		//				listUser.putExtra("IP", ipAdd);
-		//				if(user.getSex() == Sex.Female)
-		//					listUser.putExtra("sex", "Female");
-		//				else
-		//					listUser.putExtra("sex", "Male");
-		//				listUser.putExtra("interests", user.getInterests());
-		//			}
-		//			catch (IOException e) {
-		//				e.printStackTrace();
-		//			}
-		//			startActivity(listUser);
-		//		}
+							listUser.putExtra("IP", ipAdd);
+							if(user.getSex() == Sex.Female)
+								listUser.putExtra("sex", "Female");
+							else
+								listUser.putExtra("sex", "Male");
+							listUser.putExtra("interests", user.getInterests());
+						}
+						catch (IOException e) {
+							e.printStackTrace();
+						}
+						startActivity(listUser);
+					}
+				} 
+			}, 2000); 
+		}
+		else{
+			User user = CoreFacade.getInstance().getCurrentUser();
+			if(user == null){
+				Intent intent1 = new Intent(this, MyProfile.class);
+				startActivity(intent1);
+
+			}
+			else{
+				Intent listUser = new Intent(this, Demo.class);
+				listUser.putExtra("userName", user.getName());
+				listUser.putExtra("latitude", ""+user.getLatitude());
+				listUser.putExtra("longitude", ""+user.getLongtitude());
+				listUser.putExtra("userName", user.getName());
+				String ipAdd;
+				try {
+					ipAdd = IPAddress.getIPAddress(true);
+
+					listUser.putExtra("IP", ipAdd);
+					if(user.getSex() == Sex.Female)
+						listUser.putExtra("sex", "Female");
+					else
+						listUser.putExtra("sex", "Male");
+					listUser.putExtra("interests", user.getInterests());
+				}
+				catch (IOException e) {
+					e.printStackTrace();
+				}
+				startActivity(listUser);
+			}
+		}
 
 	}
 

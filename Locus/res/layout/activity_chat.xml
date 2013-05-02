@@ -4,46 +4,45 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/back"
-    android:orientation="vertical">
-    
-        <ListView android:id="@+id/listViewChat"
-	    android:layout_width="fill_parent"
-	    android:layout_height="0dip"
-	    android:layout_weight="1"
-        android:smoothScrollbar="false"
-	    android:drawSelectorOnTop="false"/>
-        
-        <View
-    android:layout_width="fill_parent"
-    android:layout_height="3dp"
-    android:background="@android:color/darker_gray"/>
-        
-         <LinearLayout
-             android:layout_width="fill_parent"
-             android:layout_height="wrap_content"
-             android:orientation="horizontal" >
+    android:orientation="vertical" >
 
-             <EditText
-                 android:id="@+id/chatText"
-                 android:layout_width="wrap_content"
-                 android:layout_height="wrap_content"
-                 android:layout_weight="1.06"
-                 android:ems="10"
-                 android:padding="5dip"
-    android:background="@drawable/edittext"
-                 android:inputType="textMultiLine" >
+    <ListView
+        android:id="@+id/listViewChat"
+        android:layout_width="fill_parent"
+        android:layout_height="0dip"
+        android:layout_weight="1"
+        android:drawSelectorOnTop="false"
+        android:smoothScrollbar="false" />
 
-                 <requestFocus />
-             </EditText>
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="3dp"
+        android:background="@android:color/darker_gray" />
 
-             <Button
-                 android:id="@+id/sendButton"
-                 android:layout_width="wrap_content"
-                 android:layout_height="wrap_content"
-                 android:text="Send" 
-                 
-                 android:onClick = "onClick"
-                 />
-         </LinearLayout>
-             
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <EditText
+            android:id="@+id/chatText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.06"
+            android:background="@drawable/edittext"
+            android:ems="10"
+            android:inputType="textMultiLine"
+            android:padding="5dip" >
+
+            <requestFocus />
+        </EditText>
+
+        <Button
+            android:id="@+id/sendButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onClick"
+            android:text="Send" />
+    </LinearLayout>
+
 </LinearLayout>

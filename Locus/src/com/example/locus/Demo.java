@@ -123,6 +123,7 @@ public class Demo extends Activity implements IObserver {
 
 		case R.id.refresh:
 			Intent intentMain = new Intent(this, MainActivity.class);
+			intentMain.putExtra("check", "hello");
 			startActivity(intentMain);
 			break;
 
@@ -287,7 +288,7 @@ public class Demo extends Activity implements IObserver {
 		@Override
 		protected void onPostExecute(Message result) {
 			if(result == null){
-				Toast.makeText(getApplicationContext(), "Check Internet Connection", Toast.LENGTH_LONG)
+				Toast.makeText(getApplicationContext(), "User has gone offline", Toast.LENGTH_LONG)
 				.show();
 			}
 			else{
