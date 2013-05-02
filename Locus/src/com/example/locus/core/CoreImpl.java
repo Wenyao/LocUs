@@ -160,7 +160,7 @@ public class CoreImpl implements ICore {
 		if (isJoined) {
 			Log.i(Constants.AppCoreTag, "leave chord");
 			System.out.println(Constants.AppCoreTag + " logout");
-			dht.leave();
+			//dht.leave();
 			mp.stopReceive();
 			isJoined = false;
 		}
