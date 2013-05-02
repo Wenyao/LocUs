@@ -23,9 +23,9 @@
         android:layout_alignBottom="@+id/textView1"
         android:layout_alignParentRight="true"
         android:layout_toRightOf="@+id/textView1"
-
+		android:textStyle="bold"
         android:text=""
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <TextView
         android:id="@+id/textView3"
@@ -35,7 +35,7 @@
         android:layout_below="@+id/textView1"
         android:layout_marginTop="24dp"
 
-        android:text="Gender    "
+        android:text="Gender:    "
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <TextView
@@ -46,8 +46,8 @@
         android:layout_alignLeft="@+id/textView2"
         android:layout_alignParentRight="true"
         android:text=""
-
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+		android:textStyle="bold"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <TextView
         android:id="@+id/textView5"
@@ -57,7 +57,7 @@
         android:layout_alignRight="@+id/textView1"
         android:layout_below="@+id/textView3"
         android:layout_marginTop="24dp"
-		android:text="Interests "
+		android:text="Interests: "
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <TextView
@@ -68,8 +68,8 @@
         android:layout_alignLeft="@+id/textView4"
         android:layout_alignParentRight="true"
         android:text=""
-
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+	android:textStyle="bold"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <ImageView
         android:id="@+id/imageView1"
@@ -89,7 +89,7 @@
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
 
-        android:text="Name      "
+        android:text="Name:      "
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
 </RelativeLayout>
