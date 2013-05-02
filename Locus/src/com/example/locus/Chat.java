@@ -234,8 +234,8 @@ public class Chat extends Activity implements OnClickListener, IObserver {
 			} else {
 				String str_text = String.format("msg sent.  msg = %s",
 						result.toString());
-				Toast.makeText(getApplicationContext(), str_text,
-						Toast.LENGTH_LONG).show();
+//				Toast.makeText(getApplicationContext(), str_text,
+//						Toast.LENGTH_LONG).show();
 			}
 		}
 	}
@@ -273,8 +273,8 @@ public class Chat extends Activity implements OnClickListener, IObserver {
 						"Check Internet Connection", Toast.LENGTH_LONG).show();
 			} else {
 				String str_text = result.toString();
-				Toast.makeText(getApplicationContext(), str_text,
-						Toast.LENGTH_LONG).show();
+//				Toast.makeText(getApplicationContext(), str_text,
+//						Toast.LENGTH_LONG).show();
 				msg.removeAll(msg);
 
 				List<Message> chats = CoreFacade.getInstance()

@@ -337,8 +337,8 @@ public class Demo extends Activity implements IObserver {
 			} else {
 				// TODO add new message notification on the list
 				String str_text = result.toString();
-				Toast.makeText(getApplicationContext(), str_text,
-						Toast.LENGTH_LONG).show();
+//				Toast.makeText(getApplicationContext(), str_text,
+//						Toast.LENGTH_LONG).show();
 				createNotification(result);
 				
 			}
@@ -387,8 +387,8 @@ public class Demo extends Activity implements IObserver {
 		protected void onPostExecute(Message result) {
 			String str_text = String.format("msg sent.  msg = %s",
 					result.toString());
-			Toast.makeText(getApplicationContext(), str_text, Toast.LENGTH_LONG)
-			.show();
+//			Toast.makeText(getApplicationContext(), str_text, Toast.LENGTH_LONG)
+//			.show();
 		}
 	}
 
