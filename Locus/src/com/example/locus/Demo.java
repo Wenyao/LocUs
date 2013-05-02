@@ -48,6 +48,7 @@ public class Demo extends Activity implements IObserver {
 	private int groupId1 = 1;
 	private int editProfileId = Menu.FIRST;
 	byte[] imageInByte;
+	Set<User> listOfUsers;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -165,7 +166,8 @@ public class Demo extends Activity implements IObserver {
 		protected Set<User> doInBackground(User... params) {
 			try{
 				CoreFacade.getInstance().register(currentUser);
-				return CoreFacade.getInstance().getUsersNearby();
+				listOfUsers =  CoreFacade.getInstance().getUsersNearby();
+				return listOfUsers;
 			}
 			catch(Exception e){
 				return null;
@@ -255,6 +257,88 @@ public class Demo extends Activity implements IObserver {
 		}
 	}
 
+	
+	private class UpdateUI extends AsyncTask<User, Integer, Set<User>> {
+
+		@Override
+		protected Set<User> doInBackground(User... params) {
+			try{
+				listOfUsers =  CoreFacade.getInstance().getUsersNearby();
+				return listOfUsers;
+			}
+			catch(Exception e){
+				return null;
+			}
+		}
+
+		@Override
+		protected void onPostExecute(Set<User> result) {
+			if (result == null){
+				Toast.makeText(getApplicationContext(), "No users Nearby", Toast.LENGTH_LONG).show();
+			}
+			else{
+				if (result != null) {
+					Log.i(Constants.AppUITag,
+							"refreshed user number = " + result.size());
+				}
+
+				List<User> data = new ArrayList<User>();
+				try {
+					data.addAll(result);
+				} catch (NullPointerException e) {
+					Toast.makeText(getBaseContext(), "No users Nearby",
+							Toast.LENGTH_SHORT).show();
+				}
+
+				AdapterList adapter = new AdapterList(Demo.this,
+						R.layout.activity_list_adapter, data);
+
+				listView = (ListView) findViewById(R.id.listView);
+				listView.setAdapter(adapter);
+
+				Intent intent = new Intent(getApplicationContext(), Profile.class);
+
+				
+				listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+					@Override
+					public void onItemClick(AdapterView<?> adapter, View view,
+							int position, long id) {
+						// TODO Auto-generated method stub
+						int x = 0;
+						try{
+							User o = (User) adapter.getItemAtPosition(position);
+
+							String str_text = o.getName();
+							Toast.makeText(
+									getApplicationContext(),
+									str_text + " \n" + "IP = " + o.getIp() + "\nLat="
+											+ o.getLatitude() + " Lon="
+											+ o.getLongtitude(), Toast.LENGTH_LONG)
+											.show();
+
+							Intent intent = new Intent(getApplicationContext(),
+									Profile.class);
+
+							intent.putExtra("user", o);
+							intent.putExtra("user2", (User)null);
+
+							startActivity(intent);
+						}catch(Exception e){
+							Toast.makeText(
+									getApplicationContext(),
+									"User Currently Offline", Toast.LENGTH_LONG)
+									.show();
+						}
+					}
+
+
+				});  
+
+			}
+		}
+	}
+	
 	private class GetUserProfileTask extends AsyncTask<User, Integer, User> {
 		@Override
 		protected User doInBackground(User... params) {
@@ -297,9 +381,14 @@ public class Demo extends Activity implements IObserver {
 				Toast.makeText(getApplicationContext(), str_text, Toast.LENGTH_LONG)
 				.show();
 				createNotification(result);
+				if(!listOfUsers.contains(result.getSrc())){
+					AsyncTask<User, Integer, Set<User>> updateui = new UpdateUI();
+					updateui.execute(currentUser);
+				}
 			}
 		}
 	}
+	
 
 
 	public void createNotification(Message m){
