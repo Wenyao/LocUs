@@ -69,7 +69,8 @@ public class MessagePasserFacade implements IMessagePasser {
 		for (User target : targets) {
 			if (!src.equals(target)) {
 				try {
-					sendMessage(src, target, msg);
+					User targetWithPublicKey = getUserProfile(target);
+					sendMessage(src, targetWithPublicKey, msg);
 				} catch (Exception e) {
 					Log.e(Constants.AppCoreTag, "Broadcast message error");
 				}

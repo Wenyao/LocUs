@@ -102,13 +102,6 @@ public class User implements Serializable {
 		
 		interests = splitsStrings[6];
 		
-		publicKey = splitsStrings[7];
-		if (splitsStrings.length > 8){
-			for (int i = 8; i < splitsStrings.length; i++) {
-				publicKey += "`" + splitsStrings[i];
-			}
-			
-		}
 	}
 	
 	public String getId() {
@@ -177,15 +170,14 @@ public class User implements Serializable {
 	}
 	
 	public String serialize(){
-		return String.format("%s`%s`%s`%s`%f`%f`%s`%s", 
+		return String.format("%s`%s`%s`%s`%f`%f`%s", 
 				id, 
 				name, 
 				sex, 
 				ip, 
 				latitude, 
 				longtitude, 
-				interests, 
-				publicKey);
+				interests);
 	}
 	
 	@Override
