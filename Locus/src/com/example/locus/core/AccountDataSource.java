@@ -150,7 +150,7 @@ public class AccountDataSource {
 		user.setLongtitude(Double.parseDouble(cursor.getString(7)));
 		user.setLoggedIn(Boolean.parseBoolean(cursor.getString(8)));
 		user.setPic(cursor.getBlob(4));
-		Log.v(Constants.AppCoreTag, "get user = " + user.getId() + "**" + user.getPic());
+		Log.v(Constants.AppCoreTag, "get user = " + user);
 		return user;
 	}
 }
