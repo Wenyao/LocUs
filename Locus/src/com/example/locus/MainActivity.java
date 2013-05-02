@@ -49,6 +49,7 @@ public class MainActivity extends Activity {
 						listUser.putExtra("latitude", ""+user.getLatitude());
 						listUser.putExtra("longitude", ""+user.getLongtitude());
 						listUser.putExtra("userName", user.getName());
+						listUser.putExtra("pic", user.getPic());
 						String ipAdd;
 						try {
 							ipAdd = IPAddress.getIPAddress(true);
@@ -81,6 +82,7 @@ public class MainActivity extends Activity {
 				listUser.putExtra("latitude", ""+user.getLatitude());
 				listUser.putExtra("longitude", ""+user.getLongtitude());
 				listUser.putExtra("userName", user.getName());
+				listUser.putExtra("pic", user.getPic());
 				String ipAdd;
 				try {
 					ipAdd = IPAddress.getIPAddress(true);
