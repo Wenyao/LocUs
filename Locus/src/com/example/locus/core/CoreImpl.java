@@ -238,13 +238,17 @@ public class CoreImpl implements ICore {
 	}
 
 	@Override
-	public User getUserProfile(User target) {
+	public User getUserProfile(User target) throws Exception {
 		if (target != null) {
-			User user = mp.getUserProfile(target);
-			if (user == null) {
-				dht.delete(target);
+			User user = null;
+			try{
+			 user = mp.getUserProfile(target);
 			}
-			
+			catch (Exception e) {
+				dht.delete(target);
+				throw e;
+			}
+
 			return user;
 		}
 
